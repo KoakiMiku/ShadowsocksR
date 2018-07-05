@@ -1,12 +1,12 @@
 ﻿using Newtonsoft.Json;
-using Shadowsocks.Model;
+using ShadowsocksR.Model;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Text;
 
-namespace Shadowsocks.Controller
+namespace ShadowsocksR.Controller
 {
     public class GFWListUpdater
     {

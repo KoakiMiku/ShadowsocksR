@@ -1,15 +1,13 @@
-﻿using Shadowsocks.Model;
+﻿using ShadowsocksR.Model;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using System.Reflection;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Xml;
 using System.Windows.Forms;
+using System.Xml;
 
-namespace Shadowsocks.Controller
+namespace ShadowsocksR.Controller
 {
     public class UpdateChecker
     {
@@ -22,23 +20,9 @@ namespace Shadowsocks.Controller
         public const string Name = "ShadowsocksR";
         public const string Copyright = "Copyright © BreakWa11 2017. Fork from Shadowsocks by clowwindy";
         public const string Version = "4.7.0";
-#if !_DOTNET_4_0
+
         public const string NetVer = "2.0";
-#elif !_CONSOLE
-        public const string NetVer = "4.0";
-#else
-        public const string NetVer = "";
-#endif
-        public const string FullVersion = Version +
-#if DEBUG
-        " Debug";
-#else
-/*
-        " Alpha";
-/*/
-        "";
-//*/
-#endif
+        public const string FullVersion = Version;
 
         private static bool UseProxy = true;
 

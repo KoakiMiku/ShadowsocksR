@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
-namespace Shadowsocks.Encryption
+namespace ShadowsocksR.Encryption
 {
     public class MbedTLSEncryptor
         : IVEncryptor, IDisposable

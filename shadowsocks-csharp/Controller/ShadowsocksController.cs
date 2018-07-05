@@ -1,13 +1,11 @@
-﻿using System.IO;
-using Shadowsocks.Model;
+﻿using ShadowsocksR.Model;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading;
+using System.IO;
 using System.Net.Sockets;
-using System.Net;
+using System.Threading;
 
-namespace Shadowsocks.Controller
+namespace ShadowsocksR.Controller
 {
     public enum ProxyMode
     {
@@ -30,9 +28,7 @@ namespace Shadowsocks.Controller
         private Configuration _config;
         private ServerTransferTotal _transfer;
         public IPRangeSet _rangeSet;
-#if !_CONSOLE
         private HttpProxyRunner polipoRunner;
-#endif
         private GFWListUpdater gfwListUpdater;
         private bool stopped = false;
         private bool firstRun = true;
@@ -297,7 +293,6 @@ namespace Shadowsocks.Controller
             {
                 _listener.Stop();
             }
-#if !_CONSOLE
             if (polipoRunner != null)
             {
                 polipoRunner.Stop();
@@ -306,7 +301,6 @@ namespace Shadowsocks.Controller
             {
                 SystemProxy.Update(_config, true);
             }
-#endif
             ServerTransferTotal.Save(_transfer);
         }
 
@@ -378,12 +372,10 @@ namespace Shadowsocks.Controller
             hostMap.LoadHostFile();
             HostMap.Instance().Clear(hostMap);
 
-#if !_CONSOLE
             if (polipoRunner == null)
             {
                 polipoRunner = new HttpProxyRunner();
             }
-#endif
             if (_pacServer == null)
             {
                 _pacServer = new PACServer();
@@ -411,7 +403,6 @@ namespace Shadowsocks.Controller
                     {
                         Local local = new Local(_config, _transfer, _rangeSet);
                         _listener.GetServices()[0] = local;
-#if !_CONSOLE
                         if (polipoRunner.HasExited())
                         {
                             polipoRunner.Stop();
@@ -419,7 +410,6 @@ namespace Shadowsocks.Controller
 
                             _listener.GetServices()[3] = new HttpPortForwarder(polipoRunner.RunningPort, _config);
                         }
-#endif
                     }
                     else
                     {
@@ -429,19 +419,15 @@ namespace Shadowsocks.Controller
                             _listener = null;
                         }
 
-#if !_CONSOLE
                         polipoRunner.Stop();
                         polipoRunner.Start(_config);
-#endif
 
                         Local local = new Local(_config, _transfer, _rangeSet);
                         List<Listener.Service> services = new List<Listener.Service>();
                         services.Add(local);
                         services.Add(_pacServer);
                         services.Add(new APIServer(this, _config));
-#if !_CONSOLE
                         services.Add(new HttpPortForwarder(polipoRunner.RunningPort, _config));
-#endif
                         _listener = new Listener(services);
                         _listener.Start(_config, 0);
                     }
@@ -522,12 +508,10 @@ namespace Shadowsocks.Controller
 
         private void UpdateSystemProxy()
         {
-#if !_CONSOLE
             if (_config.sysProxyMode != (int)ProxyMode.NoModify)
             {
                 SystemProxy.Update(_config, false);
             }
-#endif
         }
 
         private void pacServer_PACFileChanged(object sender, EventArgs e)

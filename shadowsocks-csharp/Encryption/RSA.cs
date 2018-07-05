@@ -1,9 +1,6 @@
-﻿using System;
-using System.Text;
-using System.Security.Cryptography;
-using System.IO;
+﻿using System.Security.Cryptography;
 
-namespace Shadowsocks.Encryption
+namespace ShadowsocksR.Encryption
 {
     class RSA
     {

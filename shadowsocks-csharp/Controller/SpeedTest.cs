@@ -1,21 +1,17 @@
-﻿using System;
+﻿using ShadowsocksR.Model;
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Text;
-using Shadowsocks.Model;
 
-namespace Shadowsocks.Controller
+namespace ShadowsocksR.Controller
 {
 
     class SpeedTester
     {
-#if DEBUG
         struct TransLog
         {
             public int dir;
             public int size;
         }
-#endif
         public DateTime timeConnectBegin;
         public DateTime timeConnectEnd;
         public DateTime timeBeginUpload;
@@ -64,7 +60,6 @@ namespace Shadowsocks.Controller
             {
                 transfer.AddDownload(server, size);
             }
-#if DEBUG
             if (sizeTransfer.Count < 1024 * 128)
             {
                 lock (sizeTransfer)
@@ -72,7 +67,6 @@ namespace Shadowsocks.Controller
                     sizeTransfer.Add(new TransLog { dir = 1, size = size });
                 }
             }
-#endif
             return sizeDownload > 1024 * 256 && sizeDownload > (DateTime.Now - timeConnectEnd).TotalSeconds * 1024 * 16;
         }
         public void AddProtocolRecvSize(int size)
@@ -92,7 +86,6 @@ namespace Shadowsocks.Controller
             {
                 transfer.AddUpload(server, size);
             }
-#if DEBUG
             if (sizeTransfer.Count < 1024 * 128)
             {
                 lock (sizeTransfer)
@@ -100,14 +93,12 @@ namespace Shadowsocks.Controller
                     sizeTransfer.Add(new TransLog { dir = 0, size = size });
                 }
             }
-#endif
             return sizeUpload > 1024 * 256 && sizeUpload > (DateTime.Now - timeConnectEnd).TotalSeconds * 1024 * 16;
         }
 
         public string TransferLog()
         {
             string ret = "";
-#if DEBUG
             int lastdir = -1;
             foreach (TransLog t in sizeTransfer)
             {
@@ -118,7 +109,6 @@ namespace Shadowsocks.Controller
                 }
                 ret += " " + t.size.ToString();
             }
-#endif
             return ret;
         }
     }

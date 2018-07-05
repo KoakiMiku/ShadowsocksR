@@ -1,11 +1,10 @@
-﻿using System;
+﻿using ShadowsocksR.Controller;
+using ShadowsocksR.Encryption;
+using System;
 using System.Collections.Generic;
 using System.Security.Cryptography;
-using System.Text;
-using Shadowsocks.Controller;
-using Shadowsocks.Encryption;
 
-namespace Shadowsocks.Obfs
+namespace ShadowsocksR.Obfs
 {
     class xorshift128plus
     {

@@ -1,10 +1,10 @@
-﻿using System;
+﻿using ShadowsocksR.Model;
+using System;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
-using Shadowsocks.Model;
 
-namespace Shadowsocks.Controller
+namespace ShadowsocksR.Controller
 {
     class HttpPortForwarder : Listener.Service
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text;
 
-namespace Shadowsocks.Util
+namespace ShadowsocksR.Util
 {
     public static class Base64
     {

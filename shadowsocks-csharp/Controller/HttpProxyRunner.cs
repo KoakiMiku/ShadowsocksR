@@ -1,17 +1,13 @@
-﻿using Shadowsocks.Model;
-using Shadowsocks.Properties;
+﻿using ShadowsocksR.Model;
+using ShadowsocksR.Properties;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.IO.Compression;
-using System.Text;
-using System.Net.NetworkInformation;
 using System.Net;
-using System.Runtime.InteropServices;
-using System.Windows.Forms;
+using System.Net.NetworkInformation;
 
-namespace Shadowsocks.Controller
+namespace ShadowsocksR.Controller
 {
     class HttpProxyRunner
     {

@@ -1,19 +1,15 @@
-﻿using System;
+﻿using ShadowsocksR.Controller;
+using ShadowsocksR.Encryption;
+using ShadowsocksR.Model;
+using ShadowsocksR.Properties;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Drawing;
-using System.Text;
-using System.Windows.Forms;
-using System.Diagnostics;
 using System.Net;
-using Microsoft.Win32;
-using Shadowsocks.Controller;
-using Shadowsocks.Model;
-using Shadowsocks.Properties;
+using System.Windows.Forms;
 using ZXing.QrCode.Internal;
-using Shadowsocks.Encryption;
 
-namespace Shadowsocks.View
+namespace ShadowsocksR.View
 {
     public partial class ConfigForm : Form
     {

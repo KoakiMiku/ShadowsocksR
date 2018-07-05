@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
-using Shadowsocks.Controller;
-using Shadowsocks.Properties;
 
-namespace Shadowsocks.Encryption
+namespace ShadowsocksR.Encryption
 {
     class Libcrypto
     {

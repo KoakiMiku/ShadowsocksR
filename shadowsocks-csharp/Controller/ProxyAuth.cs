@@ -1,15 +1,11 @@
-﻿using System;
+﻿using ShadowsocksR.Model;
+using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Net;
 using System.Net.Sockets;
-using Shadowsocks.Encryption;
-using Shadowsocks.Obfs;
-using Shadowsocks.Model;
-using System.Timers;
-using System.Threading;
+using System.Text;
 
-namespace Shadowsocks.Controller
+namespace ShadowsocksR.Controller
 {
     public class ProtocolException : Exception
     {

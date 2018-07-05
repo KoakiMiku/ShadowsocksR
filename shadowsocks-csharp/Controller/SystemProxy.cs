@@ -1,15 +1,12 @@
-﻿using System.Windows.Forms;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
+using ShadowsocksR.Model;
 using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.IO;
-using Shadowsocks.Model;
-
 using System.ComponentModel;
+using System.IO;
+using System.Runtime.InteropServices;
 
-namespace Shadowsocks.Controller
+namespace ShadowsocksR.Controller
 {
     public enum INTERNET_OPTION
     {
@@ -499,17 +496,8 @@ namespace Shadowsocks.Controller
         }
         public static RegistryKey OpenUserRegKey(string name, bool writable)
         {
-            // we are building x86 binary for both x86 and x64, which will
-            // cause problem when opening registry key
-            // detect operating system instead of CPU
-#if _DOTNET_4_0
-            RegistryKey userKey = RegistryKey.OpenRemoteBaseKey(RegistryHive.CurrentUser, "",
-                Environment.Is64BitOperatingSystem ? RegistryView.Registry64 : RegistryView.Registry32
-                ).OpenSubKey(name, writable);
-#else
             RegistryKey userKey = RegistryKey.OpenRemoteBaseKey(RegistryHive.CurrentUser, ""
                 ).OpenSubKey(name, writable);
-#endif
             return userKey;
         }
 

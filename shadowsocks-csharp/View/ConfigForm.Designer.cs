@@ -1,4 +1,4 @@
-﻿namespace Shadowsocks.View
+﻿namespace ShadowsocksR.View
 {
     partial class ConfigForm
     {

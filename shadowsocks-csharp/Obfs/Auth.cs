@@ -1,10 +1,10 @@
-﻿using System;
+﻿using ShadowsocksR.Controller;
+using ShadowsocksR.Encryption;
+using System;
 using System.Collections.Generic;
-using Shadowsocks.Controller;
 using System.Security.Cryptography;
-using Shadowsocks.Encryption;
 
-namespace Shadowsocks.Obfs
+namespace ShadowsocksR.Obfs
 {
     public class AuthData : VerifyData
     {

@@ -1,12 +1,12 @@
 ﻿using Newtonsoft.Json;
-using Shadowsocks.Controller;
-using Shadowsocks.Encryption;
+using ShadowsocksR.Controller;
+using ShadowsocksR.Encryption;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace Shadowsocks.Model
+namespace ShadowsocksR.Model
 {
     public class UriVisitTime : IComparable
     {

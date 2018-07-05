@@ -1,4 +1,6 @@
-﻿using System;
+﻿using OpenDNS;
+using ShadowsocksR.Model;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -6,16 +8,11 @@ using System.IO;
 using System.IO.Compression;
 using System.Net;
 using System.Net.Sockets;
-using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
-using System.Text;
 using System.Windows.Forms;
-using OpenDNS;
-using Shadowsocks.Encryption;
-using Shadowsocks.Model;
 
-namespace Shadowsocks.Util
+namespace ShadowsocksR.Util
 {
     public class Utils
     {
@@ -35,7 +32,6 @@ namespace Shadowsocks.Util
 
         public static void ReleaseMemory()
         {
-#if !_CONSOLE
             // release any unused pages
             // making the numbers look good in task manager
             // this is totally nonsense in programming
@@ -57,7 +53,6 @@ namespace Shadowsocks.Util
                                          (UIntPtr)0xFFFFFFFFFFFFFFFF,
                                          (UIntPtr)0xFFFFFFFFFFFFFFFF);
             }
-#endif
         }
 
         public static string UnGzip(byte[] buf)
@@ -473,7 +468,6 @@ namespace Shadowsocks.Util
             return (dpi * 4 + 48) / 96;
         }
 
-#if !_CONSOLE
         public enum DeviceCap
         {
             DESKTOPVERTRES = 117,
@@ -499,6 +493,5 @@ namespace Shadowsocks.Util
         [return: MarshalAs(UnmanagedType.Bool)]
         private static extern bool SetProcessWorkingSetSize(IntPtr process,
             UIntPtr minimumWorkingSetSize, UIntPtr maximumWorkingSetSize);
-#endif
     }
 }

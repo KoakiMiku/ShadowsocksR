@@ -1,14 +1,14 @@
-﻿using System;
+﻿using ShadowsocksR.Model;
+using ShadowsocksR.Obfs;
+using ShadowsocksR.Util;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
-using Shadowsocks.Obfs;
-using Shadowsocks.Model;
-using System.Timers;
 using System.Threading;
-using Shadowsocks.Util;
+using System.Timers;
 
-namespace Shadowsocks.Controller
+namespace ShadowsocksR.Controller
 {
     class CallbackStatus
     {
@@ -126,8 +126,7 @@ namespace Shadowsocks.Controller
         public bool forceRandom = false;
     }
 
-    class Handler
-        : IHandler
+    class Handler : IHandler
     {
         private delegate IPHostEntry GetHostEntryHandler(string ip);
 
@@ -1645,7 +1644,7 @@ namespace Shadowsocks.Controller
                         ResetTimeout(cfg.TTL);
                     }
                     int send_len = RemoteSend(connetionRecvBuffer, bytesRead);
-                    if (!( send_len == 0 && bytesRead > 0) )
+                    if (!(send_len == 0 && bytesRead > 0))
                         doConnectionRecv();
                 }
                 else

@@ -1,15 +1,9 @@
-﻿using Shadowsocks.Model;
+﻿using ShadowsocksR.Model;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Net;
-using System.Reflection;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Xml;
-using System.Windows.Forms;
 
-namespace Shadowsocks.Controller
+namespace ShadowsocksR.Controller
 {
     public class UpdateFreeNode
     {

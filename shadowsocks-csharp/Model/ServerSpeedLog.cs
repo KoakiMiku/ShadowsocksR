@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
-namespace Shadowsocks.Model
+namespace ShadowsocksR.Model
 {
     public class TransLog
     {

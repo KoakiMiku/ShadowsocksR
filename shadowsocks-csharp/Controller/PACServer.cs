@@ -1,16 +1,13 @@
-﻿using Shadowsocks.Model;
-using Shadowsocks.Properties;
-using Shadowsocks.Util;
+﻿using ShadowsocksR.Model;
+using ShadowsocksR.Properties;
+using ShadowsocksR.Util;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.IO.Compression;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
-namespace Shadowsocks.Controller
+namespace ShadowsocksR.Controller
 {
     class PACServer : Listener.Service
     {

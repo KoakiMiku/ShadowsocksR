@@ -1,12 +1,10 @@
-﻿using System;
+﻿using ShadowsocksR.Controller;
+using ShadowsocksR.Properties;
+using System;
 using System.IO;
 using System.Runtime.InteropServices;
 
-using Shadowsocks.Controller;
-using Shadowsocks.Properties;
-using Shadowsocks.Util;
-
-namespace Shadowsocks.Encryption
+namespace ShadowsocksR.Encryption
 {
     public class MbedTLS
     {

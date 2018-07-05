@@ -1,13 +1,11 @@
+using ShadowsocksR.Controller;
 using System;
 using System.Collections.Generic;
-using System.Text;
-#if !_CONSOLE
-#endif
-using Shadowsocks.Controller;
-using System.Text.RegularExpressions;
 using System.Net;
+using System.Text;
+using System.Text.RegularExpressions;
 
-namespace Shadowsocks.Model
+namespace ShadowsocksR.Model
 {
     public class DnsBuffer
     {

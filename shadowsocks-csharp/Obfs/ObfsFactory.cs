@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 
-namespace Shadowsocks.Obfs
+namespace ShadowsocksR.Obfs
 {
     public static class ObfsFactory
     {
@@ -29,16 +29,6 @@ namespace Shadowsocks.Obfs
             {
                 _registeredObfs.Add(method, typeof(VerifyDeflateObfs));
             }
-#if DEBUG
-            foreach (string method in AuthSHA1.SupportedObfs())
-            {
-                _registeredObfs.Add(method, typeof(AuthSHA1));
-            }
-            foreach (string method in AuthSHA1V2.SupportedObfs())
-            {
-                _registeredObfs.Add(method, typeof(AuthSHA1V2));
-            }
-#endif
             foreach (string method in AuthSHA1V4.SupportedObfs())
             {
                 _registeredObfs.Add(method, typeof(AuthSHA1V4));

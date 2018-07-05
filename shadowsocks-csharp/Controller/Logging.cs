@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using ShadowsocksR.Obfs;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Net.Sockets;
-using System.Text;
-using Shadowsocks.Obfs;
 
-namespace Shadowsocks.Controller
+namespace ShadowsocksR.Controller
 {
     public enum LogLevel
     {

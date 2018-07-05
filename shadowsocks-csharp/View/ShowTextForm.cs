@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿using ShadowsocksR.Properties;
+using System;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
-using Shadowsocks.Properties;
 using ZXing.QrCode.Internal;
 
-namespace Shadowsocks.View
+namespace ShadowsocksR.View
 {
     public partial class ShowTextForm : Form
     {

@@ -1,4 +1,4 @@
-﻿namespace Shadowsocks.View
+﻿namespace ShadowsocksR.View
 {
     partial class ServerLogForm
     {
@@ -44,7 +44,7 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
-            this.ServerDataGrid = new Shadowsocks.View.ServerLogForm.DoubleBufferListView();
+            this.ServerDataGrid = new ShadowsocksR.View.ServerLogForm.DoubleBufferListView();
             this.timer = new System.Windows.Forms.Timer(this.components);
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();

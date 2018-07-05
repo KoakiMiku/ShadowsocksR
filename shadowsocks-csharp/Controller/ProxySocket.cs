@@ -1,13 +1,13 @@
-﻿using System;
+﻿using ShadowsocksR.Encryption;
+using ShadowsocksR.Model;
+using ShadowsocksR.Obfs;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using Shadowsocks.Encryption;
-using Shadowsocks.Model;
-using Shadowsocks.Obfs;
 
-namespace Shadowsocks.Controller
+namespace ShadowsocksR.Controller
 {
     public abstract class IHandler
     {

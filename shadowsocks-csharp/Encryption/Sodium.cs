@@ -1,12 +1,10 @@
-﻿using Shadowsocks.Controller;
-using Shadowsocks.Properties;
+﻿using ShadowsocksR.Controller;
+using ShadowsocksR.Properties;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Text;
 
-namespace Shadowsocks.Encryption
+namespace ShadowsocksR.Encryption
 {
     public class Sodium
     {

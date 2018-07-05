@@ -1,10 +1,8 @@
-﻿using System;
-using System.IO;
+﻿using ShadowsocksR.Controller;
+using System;
 using System.Collections.Generic;
-using Shadowsocks.Controller;
-using System.Security.Cryptography;
 
-namespace Shadowsocks.Obfs
+namespace ShadowsocksR.Obfs
 {
     public class VerifyData
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Security.Cryptography;
 
-namespace Shadowsocks.Obfs
+namespace ShadowsocksR.Obfs
 {
     class HttpSimpleObfs : ObfsBase
     {

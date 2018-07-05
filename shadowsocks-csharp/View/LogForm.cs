@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿using ShadowsocksR.Controller;
+using ShadowsocksR.Properties;
+using System;
 using System.Drawing;
 using System.IO;
-using System.Text;
 using System.Windows.Forms;
-using Shadowsocks.Controller;
-using Shadowsocks.Model;
-using Shadowsocks.Properties;
 
-namespace Shadowsocks.View
+namespace ShadowsocksR.View
 {
     public partial class LogForm : Form
     {

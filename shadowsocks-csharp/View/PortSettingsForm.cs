@@ -1,15 +1,12 @@
-﻿using System;
+﻿using ShadowsocksR.Controller;
+using ShadowsocksR.Model;
+using ShadowsocksR.Properties;
+using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Text;
 using System.Windows.Forms;
-using Shadowsocks.Controller;
-using Shadowsocks.Model;
-using Shadowsocks.Properties;
 
-namespace Shadowsocks.View
+namespace ShadowsocksR.View
 {
     public partial class PortSettingsForm : Form
     {

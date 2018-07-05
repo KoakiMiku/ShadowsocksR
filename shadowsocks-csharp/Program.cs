@@ -1,25 +1,18 @@
-﻿using Shadowsocks.Controller;
-using Shadowsocks.Properties;
+﻿using Microsoft.Win32;
+using ShadowsocksR.Controller;
+using ShadowsocksR.Model;
+using ShadowsocksR.View;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Windows.Forms;
-using Microsoft.Win32;
-using Shadowsocks.Model;
-#if !_CONSOLE
-using Shadowsocks.View;
-#endif
 
 namespace Shadowsocks
 {
     static class Program
     {
         static ShadowsocksController _controller;
-#if !_CONSOLE
         static MenuViewController _viewController;
-#endif
 
         /// <summary>
         /// 应用程序的主入口点。
@@ -27,18 +20,6 @@ namespace Shadowsocks
         [STAThread]
         static void Main(string[] args)
         {
-#if !_CONSOLE
-            foreach (string arg in args)
-            {
-                if (arg == "--setautorun")
-                {
-                    if (!Controller.AutoStartup.Switch())
-                    {
-                        Environment.ExitCode = 1;
-                    }
-                    return;
-                }
-            }
             using (Mutex mutex = new Mutex(false, "Global\\ShadowsocksR_" + Application.StartupPath.GetHashCode()))
             {
                 AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
@@ -54,12 +35,8 @@ namespace Shadowsocks
                         I18N.GetString("ShadowsocksR is already running."));
                     return;
                 }
-#endif
                 Directory.SetCurrentDirectory(Application.StartupPath);
-                //#if !DEBUG
                 Logging.OpenLogFile();
-                //#endif
-#if !_CONSOLE
                 int try_times = 0;
                 while (Configuration.Load() == null)
                 {
@@ -74,24 +51,13 @@ namespace Shadowsocks
                     }
                     try_times += 1;
                 }
-#endif
                 _controller = new ShadowsocksController();
                 HostMap.Instance().LoadHostFile();
-#if !_CONSOLE
                 _viewController = new MenuViewController(_controller);
-#endif
-
                 _controller.Start();
-
-#if !_CONSOLE
                 //Util.Utils.ReleaseMemory();
-
                 Application.Run();
             }
-#else
-            Console.ReadLine();
-            _controller.Stop();
-#endif
         }
 
         private static void SystemEvents_PowerModeChanged(object sender, PowerModeChangedEventArgs e)

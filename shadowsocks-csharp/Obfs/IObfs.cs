@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Shadowsocks.Obfs
+namespace ShadowsocksR.Obfs
 {
     public class ObfsException : Exception
     {

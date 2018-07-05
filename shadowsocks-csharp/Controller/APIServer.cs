@@ -1,12 +1,12 @@
 ﻿using Newtonsoft.Json;
-using Shadowsocks.Model;
+using ShadowsocksR.Model;
 using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 
-namespace Shadowsocks.Controller
+namespace ShadowsocksR.Controller
 {
     class APIServer : Listener.Service
     {
