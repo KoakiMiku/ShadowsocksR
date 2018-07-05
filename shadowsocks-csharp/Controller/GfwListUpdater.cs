@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Net;
-using System.IO;
-using Shadowsocks.Properties;
-using SimpleJson;
-using Shadowsocks.Util;
+﻿using Newtonsoft.Json;
 using Shadowsocks.Model;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using System.Text;
 
 namespace Shadowsocks.Controller
 {
@@ -85,7 +83,7 @@ namespace Shadowsocks.Controller
                 {
                     string local = File.ReadAllText(USER_RULE_FILE, Encoding.UTF8);
                     string[] rules = local.Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
-                    foreach(string rule in rules)
+                    foreach (string rule in rules)
                     {
                         if (rule.StartsWith("!") || rule.StartsWith("["))
                             continue;
@@ -101,7 +99,7 @@ namespace Shadowsocks.Controller
                 {
                     abpContent = gfwlist_template;
                 }
-                abpContent = abpContent.Replace("__RULES__", SimpleJson.SimpleJson.SerializeObject(lines));
+                abpContent = abpContent.Replace("__RULES__", JsonConvert.SerializeObject(lines));
                 if (File.Exists(PAC_FILE))
                 {
                     string original = File.ReadAllText(PAC_FILE, Encoding.UTF8);

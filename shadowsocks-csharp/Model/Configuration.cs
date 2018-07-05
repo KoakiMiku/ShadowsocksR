@@ -1,12 +1,10 @@
-﻿using Shadowsocks.Controller;
+﻿using Newtonsoft.Json;
+using Shadowsocks.Controller;
+using Shadowsocks.Encryption;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Text;
-using System.Windows.Forms;
-using System.Threading;
-using Shadowsocks.Encryption;
 
 namespace Shadowsocks.Model
 {
@@ -528,7 +526,7 @@ namespace Shadowsocks.Model
             {
                 using (StreamWriter sw = new StreamWriter(File.Open(CONFIG_FILE, FileMode.Create)))
                 {
-                    string jsonString = SimpleJson.SimpleJson.SerializeObject(config);
+                    string jsonString = JsonConvert.SerializeObject(config);
                     if (GlobalConfiguration.config_password.Length > 0)
                     {
                         IEncryptor encryptor = EncryptorFactory.GetEncryptor("aes-256-cfb", GlobalConfiguration.config_password);
@@ -568,7 +566,7 @@ namespace Shadowsocks.Model
             }
             try
             {
-                Configuration config = SimpleJson.SimpleJson.DeserializeObject<Configuration>(config_str, new JsonSerializerStrategy());
+                Configuration config = JsonConvert.DeserializeObject<Configuration>(config_str);
                 config.FixConfiguration();
                 return config;
             }
@@ -638,19 +636,6 @@ namespace Shadowsocks.Model
                 throw new ArgumentException(I18N.GetString("Server IP can not be blank"));
             }
         }
-
-        private class JsonSerializerStrategy : SimpleJson.PocoJsonSerializerStrategy
-        {
-            // convert string to int
-            public override object DeserializeObject(object value, Type type)
-            {
-                if (type == typeof(Int32) && value.GetType() == typeof(string))
-                {
-                    return Int32.Parse(value.ToString());
-                }
-                return base.DeserializeObject(value, type);
-            }
-        }
     }
 
     [Serializable]
@@ -706,7 +691,7 @@ namespace Shadowsocks.Model
                 {
 
                 }
-                config.servers = SimpleJson.SimpleJson.DeserializeObject<Dictionary<string, object>>(config_str, new JsonSerializerStrategy());
+                config.servers = JsonConvert.DeserializeObject<Dictionary<string, object>>(config_str);
                 config.Init();
                 return config;
             }
@@ -734,15 +719,15 @@ namespace Shadowsocks.Model
             {
                 using (StreamWriter sw = new StreamWriter(File.Open(LOG_FILE, FileMode.Create)))
                 {
-                    string jsonString = SimpleJson.SimpleJson.SerializeObject(config.servers);
+                    string jsonString = JsonConvert.SerializeObject(config.servers);
                     if (GlobalConfiguration.config_password.Length > 0)
                     {
                         IEncryptor encryptor = EncryptorFactory.GetEncryptor("aes-256-cfb", GlobalConfiguration.config_password);
-                        byte[] cfg_data = UTF8Encoding.UTF8.GetBytes(jsonString);
+                        byte[] cfg_data = Encoding.UTF8.GetBytes(jsonString);
                         byte[] cfg_encrypt = new byte[cfg_data.Length + 128];
                         int data_len;
                         encryptor.Encrypt(cfg_data, cfg_data.Length, cfg_encrypt, out data_len);
-                        jsonString = System.Convert.ToBase64String(cfg_encrypt, 0, data_len);
+                        jsonString = Convert.ToBase64String(cfg_encrypt, 0, data_len);
                     }
                     sw.Write(jsonString);
                     sw.Flush();
@@ -808,22 +793,5 @@ namespace Shadowsocks.Model
                 }
             }
         }
-
-        private class JsonSerializerStrategy : SimpleJson.PocoJsonSerializerStrategy
-        {
-            public override object DeserializeObject(object value, Type type)
-            {
-                if (type == typeof(Int64) && value.GetType() == typeof(string))
-                {
-                    return Int64.Parse(value.ToString());
-                }
-                else if (type == typeof(object))
-                {
-                    return base.DeserializeObject(value, typeof(ServerTrans));
-                }
-                return base.DeserializeObject(value, type);
-            }
-        }
-
     }
 }

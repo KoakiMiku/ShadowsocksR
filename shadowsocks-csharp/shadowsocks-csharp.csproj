@@ -66,6 +66,9 @@
   <PropertyGroup />
   <ItemGroup>
     <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -127,7 +130,6 @@
     <Compile Include="3rd\zxing\qrcode\encoder\MaskUtil.cs" />
     <Compile Include="3rd\zxing\qrcode\encoder\MatrixUtil.cs" />
     <Compile Include="3rd\zxing\qrcode\encoder\QRCode.cs" />
-    <Compile Include="3rd\SimpleJson.cs" />
     <Compile Include="3rd\zxing\qrcode\QRCodeReader.cs" />
     <Compile Include="3rd\zxing\Result.cs" />
     <Compile Include="3rd\zxing\ResultMetadataType.cs" />
@@ -288,6 +290,7 @@
     <None Include="Data\privoxy.exe.gz" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="Resources\ss20.png" />
     <None Include="Resources\ss16.png" />
     <None Include="Resources\ss24.png" />
