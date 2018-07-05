@@ -517,7 +517,7 @@ namespace Shadowsocks.View
             {
                 _oldSelectedIndex = 0;
             }
-            ServersListBox.SelectedIndex = _oldSelectedIndex;
+            //ServersListBox.SelectedIndex = _oldSelectedIndex; // crash!!
             LoadConfiguration(_modifiedConfiguration);
             SetServerListSelectedIndex(_oldSelectedIndex);
             LoadSelectedServer();
