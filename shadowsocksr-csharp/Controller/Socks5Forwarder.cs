@@ -77,16 +77,14 @@ namespace ShadowsocksR.Controller
                                 {
                                     if (_config.proxyRuleMode == (int)ProxyRuleMode.UserCustom)
                                     {
-                                        ShadowsocksR.Model.HostMap hostMap = HostMap.Instance();
+                                        HostMap hostMap = HostMap.Instance();
                                         string host_addr;
                                         if (hostMap.GetHost(host, out host_addr))
                                         {
                                             if (!String.IsNullOrEmpty(host_addr))
                                             {
                                                 string lower_host_addr = host_addr.ToLower();
-                                                if (lower_host_addr.StartsWith("reject")
-                                                    || lower_host_addr.StartsWith("direct")
-                                                    )
+                                                if (lower_host_addr.StartsWith("reject") || lower_host_addr.StartsWith("direct"))
                                                 {
                                                     return CONNECT_DIRECT;
                                                 }
@@ -117,7 +115,7 @@ namespace ShadowsocksR.Controller
                                 {
                                     if (host.IndexOf('.') >= 0)
                                     {
-                                        ipAddress = Util.Utils.QueryDns(host, _config.dnsServer);
+                                        ipAddress = Utils.QueryDns(host, _config.dnsServer);
                                     }
                                     else
                                     {
@@ -128,7 +126,7 @@ namespace ShadowsocksR.Controller
                                         Utils.DnsBuffer.Set(host, new IPAddress(ipAddress.GetAddressBytes()));
                                         if (host.IndexOf('.') >= 0)
                                         {
-                                            if (Util.Utils.isLAN(ipAddress)) // assume that it is polution if return LAN address
+                                            if (Utils.isLAN(ipAddress)) // assume that it is polution if return LAN address
                                             {
                                                 return CONNECT_REMOTEPROXY;
                                             }
@@ -153,14 +151,12 @@ namespace ShadowsocksR.Controller
                 {
                     if (_config.proxyRuleMode == (int)ProxyRuleMode.UserCustom)
                     {
-                        ShadowsocksR.Model.HostMap hostMap = HostMap.Instance();
+                        HostMap hostMap = HostMap.Instance();
                         string host_addr;
                         if (hostMap.GetIP(ipAddress, out host_addr))
                         {
                             string lower_host_addr = host_addr.ToLower();
-                            if (lower_host_addr.StartsWith("reject")
-                                || lower_host_addr.StartsWith("direct")
-                                )
+                            if (lower_host_addr.StartsWith("reject") || lower_host_addr.StartsWith("direct"))
                             {
                                 return CONNECT_DIRECT;
                             }
@@ -176,13 +172,12 @@ namespace ShadowsocksR.Controller
                     }
                     else
                     {
-                        if (Util.Utils.isLAN(ipAddress))
+                        if (Utils.isLAN(ipAddress))
                         {
                             return CONNECT_DIRECT;
                         }
-                        if ((_config.proxyRuleMode == (int)ProxyRuleMode.BypassLanAndChina || _config.proxyRuleMode == (int)ProxyRuleMode.BypassLanAndNotChina) && _IPRange != null
-                            && ipAddress.AddressFamily == AddressFamily.InterNetwork
-                            )
+                        if ((_config.proxyRuleMode == (int)ProxyRuleMode.BypassLanAndChina || _config.proxyRuleMode == (int)ProxyRuleMode.BypassLanAndNotChina) &&
+                            _IPRange != null && ipAddress.AddressFamily == AddressFamily.InterNetwork)
                         {
                             if (_IPRange.IsInIPRange(ipAddress))
                             {
@@ -275,7 +270,7 @@ namespace ShadowsocksR.Controller
                                 {
                                     if (_config.proxyRuleMode == (int)ProxyRuleMode.UserCustom)
                                     {
-                                        ShadowsocksR.Model.HostMap hostMap = HostMap.Instance();
+                                        HostMap hostMap = HostMap.Instance();
                                         string host_addr;
                                         if (hostMap.GetHost(_remote_host, out host_addr))
                                         {
@@ -306,7 +301,7 @@ namespace ShadowsocksR.Controller
                                 {
                                     if (_remote_host.IndexOf('.') >= 0)
                                     {
-                                        ipAddress = Util.Utils.QueryDns(_remote_host, _config.dnsServer);
+                                        ipAddress = Utils.QueryDns(_remote_host, _config.dnsServer);
                                     }
                                     else
                                     {
@@ -329,7 +324,7 @@ namespace ShadowsocksR.Controller
                     }
                     if (ipAddress != null && _config.proxyRuleMode == (int)ProxyRuleMode.UserCustom)
                     {
-                        ShadowsocksR.Model.HostMap hostMap = HostMap.Instance();
+                        HostMap hostMap = HostMap.Instance();
                         string host_addr;
                         if (hostMap.GetIP(ipAddress, out host_addr))
                         {

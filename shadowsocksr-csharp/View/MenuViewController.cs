@@ -42,8 +42,6 @@ namespace ShadowsocksR.View
 
         private MenuItem SeperatorItem;
         private MenuItem ServersItem;
-        private MenuItem SelectRandomItem;
-        private MenuItem sameHostForSameTargetItem;
         private ConfigForm configForm;
         private SettingsForm settingsForm;
         private ServerLogForm serverLogForm;
@@ -190,11 +188,22 @@ namespace ShadowsocksR.View
                 }
             }
 
+            string text = string.Empty;
+            if (enabled && global)
+            {
+                text = I18N.GetString("System Proxy On: ") + I18N.GetString("Global");
+            }
+            else if (enabled && !global)
+            {
+                text = I18N.GetString("System Proxy On: ") + I18N.GetString("PAC");
+            }
+            else
+            {
+                // this feedback is very important because they need to know Shadowsocks is running
+                text = String.Format(I18N.GetString("Running: Port {0}"), config.localPort);
+            }
+
             // we want to show more details but notify icon title is limited to 63 characters
-            string text = (enabled ?
-                    I18N.GetString("System Proxy On: ") + (global ? I18N.GetString("Global") : I18N.GetString("PAC")) :
-                    String.Format(I18N.GetString("Running: Port {0}"), config.localPort))  // this feedback is very important because they need to know Shadowsocks is running
-                    ;
             _notifyIcon.Text = text.Substring(0, Math.Min(63, text.Length));
         }
 
@@ -219,15 +228,7 @@ namespace ShadowsocksR.View
                     noModifyItem = CreateMenuItem("No modify system proxy", new EventHandler(NoModifyItem_Click))
                 }),
                 CreateMenuGroup("PAC ", new MenuItem[] {
-                    CreateMenuItem("Update local PAC from Lan IP list", new EventHandler(UpdatePACFromLanIPListItem_Click)),
-                    new MenuItem("-"),
-                    CreateMenuItem("Update local PAC from Chn White list", new EventHandler(UpdatePACFromCNWhiteListItem_Click)),
-                    CreateMenuItem("Update local PAC from Chn IP list", new EventHandler(UpdatePACFromCNIPListItem_Click)),
                     CreateMenuItem("Update local PAC from GFWList", new EventHandler(UpdatePACFromGFWListItem_Click)),
-                    new MenuItem("-"),
-                    CreateMenuItem("Update local PAC from Chn Only list", new EventHandler(UpdatePACFromCNOnlyListItem_Click)),
-                    new MenuItem("-"),
-                    CreateMenuItem("Copy PAC URL", new EventHandler(CopyPACURLItem_Click)),
                     CreateMenuItem("Edit local PAC file...", new EventHandler(EditPACFileItem_Click)),
                     CreateMenuItem("Edit user rule for GFWList...", new EventHandler(EditUserRuleFileForGFWListItem_Click)),
                 }),
@@ -244,8 +245,6 @@ namespace ShadowsocksR.View
                     SeperatorItem = new MenuItem("-"),
                     CreateMenuItem("Edit servers...", new EventHandler(Config_Click)),
                     CreateMenuItem("Import servers from file...", new EventHandler(Import_Click)),
-                    new MenuItem("-"),
-                    sameHostForSameTargetItem = CreateMenuItem("Same host for same address", new EventHandler(SelectSameHostForSameTargetItem_Click)),
                     new MenuItem("-"),
                     CreateMenuItem("Server statistic...", new EventHandler(ShowServerLogItem_Click)),
                     CreateMenuItem("Disconnect current", new EventHandler(DisconnectCurrent_Click)),
@@ -562,7 +561,6 @@ namespace ShadowsocksR.View
             UpdateServersMenu();
             UpdateSysProxyMode(config);
             UpdateProxyRule(config);
-            sameHostForSameTargetItem.Checked = config.sameHostForSameTarget;
         }
 
         private void UpdateServersMenu()
@@ -907,27 +905,6 @@ namespace ShadowsocksR.View
             controller.ToggleRuleMode((int)ProxyRuleMode.Disable);
         }
 
-        private void SelectSameHostForSameTargetItem_Click(object sender, EventArgs e)
-        {
-            sameHostForSameTargetItem.Checked = !sameHostForSameTargetItem.Checked;
-            controller.ToggleSameHostForSameTargetRandom(sameHostForSameTargetItem.Checked);
-        }
-
-        private void CopyPACURLItem_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                Configuration config = controller.GetCurrentConfiguration();
-                string pacUrl;
-                pacUrl = "http://127.0.0.1:" + config.localPort.ToString() + "/pac?" + "auth=" + config.localAuthPassword + "&t=" + Util.Utils.GetTimestamp(DateTime.Now);
-                Clipboard.SetText(pacUrl);
-            }
-            catch
-            {
-
-            }
-        }
-
         private void EditPACFileItem_Click(object sender, EventArgs e)
         {
             controller.TouchPACFile();
@@ -936,26 +913,6 @@ namespace ShadowsocksR.View
         private void UpdatePACFromGFWListItem_Click(object sender, EventArgs e)
         {
             controller.UpdatePACFromGFWList();
-        }
-
-        private void UpdatePACFromLanIPListItem_Click(object sender, EventArgs e)
-        {
-            controller.UpdatePACFromOnlinePac("https://raw.githubusercontent.com/breakwa11/breakwa11.github.io/master/ssr/ss_lanip.pac");
-        }
-
-        private void UpdatePACFromCNWhiteListItem_Click(object sender, EventArgs e)
-        {
-            controller.UpdatePACFromOnlinePac("https://raw.githubusercontent.com/breakwa11/breakwa11.github.io/master/ssr/ss_white.pac");
-        }
-
-        private void UpdatePACFromCNOnlyListItem_Click(object sender, EventArgs e)
-        {
-            controller.UpdatePACFromOnlinePac("https://raw.githubusercontent.com/breakwa11/breakwa11.github.io/master/ssr/ss_white_r.pac");
-        }
-
-        private void UpdatePACFromCNIPListItem_Click(object sender, EventArgs e)
-        {
-            controller.UpdatePACFromOnlinePac("https://raw.githubusercontent.com/breakwa11/breakwa11.github.io/master/ssr/ss_cnip.pac");
         }
 
         private void EditUserRuleFileForGFWListItem_Click(object sender, EventArgs e)

@@ -52,10 +52,7 @@ namespace ShadowsocksR.Controller
                 string response = e.Result;
                 FreeNodeResult = response;
 
-                if (NewFreeNodeFound != null)
-                {
-                    NewFreeNodeFound(this, new EventArgs());
-                }
+                NewFreeNodeFound?.Invoke(this, new EventArgs());
             }
             catch (Exception ex)
             {
@@ -64,10 +61,7 @@ namespace ShadowsocksR.Controller
                     Logging.Debug(e.Error.ToString());
                 }
                 Logging.Debug(ex.ToString());
-                if (NewFreeNodeFound != null)
-                {
-                    NewFreeNodeFound(this, new EventArgs());
-                }
+                NewFreeNodeFound?.Invoke(this, new EventArgs());
                 return;
             }
         }

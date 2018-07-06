@@ -77,10 +77,7 @@ namespace ShadowsocksR.Controller
 
         protected void ReportError(Exception e)
         {
-            if (Errored != null)
-            {
-                Errored(this, new ErrorEventArgs(e));
-            }
+            Errored?.Invoke(this, new ErrorEventArgs(e));
         }
 
         public void ReloadIPRange()
@@ -239,26 +236,14 @@ namespace ShadowsocksR.Controller
         {
             _config.sysProxyMode = (int)mode;
             SaveConfig(_config);
-            if (ToggleModeChanged != null)
-            {
-                ToggleModeChanged(this, new EventArgs());
-            }
+            ToggleModeChanged?.Invoke(this, new EventArgs());
         }
 
         public void ToggleRuleMode(int mode)
         {
             _config.proxyRuleMode = mode;
             SaveConfig(_config);
-            if (ToggleRuleModeChanged != null)
-            {
-                ToggleRuleModeChanged(this, new EventArgs());
-            }
-        }
-
-        public void ToggleSameHostForSameTargetRandom(bool enabled)
-        {
-            _config.sameHostForSameTarget = enabled;
-            SaveConfig(_config);
+            ToggleRuleModeChanged?.Invoke(this, new EventArgs());
         }
 
         public void SelectServerIndex(int index)
@@ -316,19 +301,13 @@ namespace ShadowsocksR.Controller
         public void TouchPACFile()
         {
             string pacFilename = _pacServer.TouchPACFile();
-            if (PACFileReadyToOpen != null)
-            {
-                PACFileReadyToOpen(this, new PathEventArgs() { Path = pacFilename });
-            }
+            PACFileReadyToOpen?.Invoke(this, new PathEventArgs() { Path = pacFilename });
         }
 
         public void TouchUserRuleFile()
         {
             string userRuleFilename = _pacServer.TouchUserRuleFile();
-            if (UserRuleFileReadyToOpen != null)
-            {
-                UserRuleFileReadyToOpen(this, new PathEventArgs() { Path = userRuleFilename });
-            }
+            UserRuleFileReadyToOpen?.Invoke(this, new PathEventArgs() { Path = userRuleFilename });
         }
 
         public void UpdatePACFromGFWList()
@@ -515,22 +494,17 @@ namespace ShadowsocksR.Controller
 
         private void pacServer_PACUpdateCompleted(object sender, GFWListUpdater.ResultEventArgs e)
         {
-            if (UpdatePACFromGFWListCompleted != null)
-                UpdatePACFromGFWListCompleted(sender, e);
+            UpdatePACFromGFWListCompleted?.Invoke(sender, e);
         }
 
         private void pacServer_PACUpdateError(object sender, ErrorEventArgs e)
         {
-            if (UpdatePACFromGFWListError != null)
-                UpdatePACFromGFWListError(sender, e);
+            UpdatePACFromGFWListError?.Invoke(sender, e);
         }
 
         public void ShowConfigForm(int index)
         {
-            if (ShowConfigFormEvent != null)
-            {
-                ShowConfigFormEvent(index, new EventArgs());
-            }
+            ShowConfigFormEvent?.Invoke(index, new EventArgs());
         }
     }
 }

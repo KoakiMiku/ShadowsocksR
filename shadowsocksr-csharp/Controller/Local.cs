@@ -117,8 +117,6 @@ namespace ShadowsocksR.Controller
         public string socks5RemoteUsername;
         public string socks5RemotePassword;
         public string proxyUserAgent;
-        // auto ban
-        public bool autoSwitchOff = true;
         // Reconnect
         public int reconnectTimesRemain = 0;
         public int reconnectTimes = 0;
@@ -386,10 +384,6 @@ namespace ShadowsocksR.Controller
                         {
                             lastErrCode = 2;
                             s.ServerSpeedLog().AddErrorTimes();
-                            if (s.ServerSpeedLog().ErrorConnectTimes >= 3 && cfg.autoSwitchOff)
-                            {
-                                s.setEnable(false);
-                            }
                         }
                     }
                     return 2; // ip not exist
@@ -485,10 +479,6 @@ namespace ShadowsocksR.Controller
         public void Start(byte[] firstPacket, int length, string rsp_protocol)
         {
             connection.local_sendback_protocol = rsp_protocol;
-            if (cfg.socks5RemotePort > 0)
-            {
-                cfg.autoSwitchOff = false;
-            }
             ResetTimeout(cfg.TTL);
             if (State == ConnectState.READY)
             {
@@ -906,7 +896,7 @@ namespace ShadowsocksR.Controller
                                 {
                                     if (serverHost.IndexOf('.') >= 0)
                                     {
-                                        ipAddress = Util.Utils.QueryDns(serverHost, cfg.dns_servers);
+                                        ipAddress = Utils.QueryDns(serverHost, cfg.dns_servers);
                                     }
                                     else
                                     {
@@ -1270,7 +1260,7 @@ namespace ShadowsocksR.Controller
             List<byte[]> buffer_list = new List<byte[]>();
             lock (recvUDPoverTCPLock)
             {
-                Util.Utils.SetArrayMinSize(ref remoteUDPRecvBuffer, bytesToSend + remoteUDPRecvBufferLength);
+                Utils.SetArrayMinSize(ref remoteUDPRecvBuffer, bytesToSend + remoteUDPRecvBufferLength);
                 Array.Copy(send_buffer, 0, remoteUDPRecvBuffer, remoteUDPRecvBufferLength, bytesToSend);
                 remoteUDPRecvBufferLength += bytesToSend;
                 while (remoteUDPRecvBufferLength > 6)
@@ -1555,10 +1545,7 @@ namespace ShadowsocksR.Controller
 
                 if (lastKeepTime == null || (DateTime.Now - lastKeepTime).TotalSeconds > 5)
                 {
-                    if (keepCurrentServer != null)
-                    {
-                        keepCurrentServer(localPort, cfg.targetHost, server.id);
-                    }
+                    keepCurrentServer?.Invoke(localPort, cfg.targetHost, server.id);
                     lastKeepTime = DateTime.Now;
                 }
 

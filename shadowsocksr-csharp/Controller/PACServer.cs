@@ -65,7 +65,7 @@ namespace ShadowsocksR.Controller
                     }
                     else if (kv.Length == 1)
                     {
-                        if (!Util.Utils.isLocal(socket) || line.IndexOf("auth=" + _config.localAuthPassword) > 0)
+                        if (!Utils.isLocal(socket) || line.IndexOf("auth=" + _config.localAuthPassword) > 0)
                         {
                             if (line.IndexOf(" /pac?") > 0 && line.IndexOf("GET") == 0)
                             {
@@ -250,18 +250,12 @@ Connection: Close
 
         private void Watcher_Changed(object sender, FileSystemEventArgs e)
         {
-            if (PACFileChanged != null)
-            {
-                PACFileChanged(this, new EventArgs());
-            }
+            PACFileChanged?.Invoke(this, new EventArgs());
         }
 
         private void UserRuleFileWatcher_Changed(object sender, FileSystemEventArgs e)
         {
-            if (UserRuleFileChanged != null)
-            {
-                UserRuleFileChanged(this, new EventArgs());
-            }
+            UserRuleFileChanged?.Invoke(this, new EventArgs());
         }
 
         private string GetPACAddress(byte[] requestBuf, int length, IPEndPoint localEndPoint, int socksType)

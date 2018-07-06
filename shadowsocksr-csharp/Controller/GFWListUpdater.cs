@@ -61,10 +61,7 @@ namespace ShadowsocksR.Controller
             }
             catch (Exception ex)
             {
-                if (Error != null)
-                {
-                    Error(this, new ErrorEventArgs(ex));
-                }
+                Error?.Invoke(this, new ErrorEventArgs(ex));
             }
         }
 
@@ -156,10 +153,7 @@ namespace ShadowsocksR.Controller
             }
             catch (Exception ex)
             {
-                if (Error != null)
-                {
-                    Error(this, new ErrorEventArgs(ex));
-                }
+                Error?.Invoke(this, new ErrorEventArgs(ex));
             }
 
         }
