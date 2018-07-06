@@ -222,14 +222,14 @@ namespace ShadowsocksR.Controller
                 httpRequestBuffer = nextbuffer;
             }
             Dictionary<string, string> header_dict = ParseHttpHeader(data);
-            this.httpPort = 80;
+            httpPort = 80;
             if (header_dict["@0"] == "CONNECT")
             {
-                this.httpHost = ParseHostAndPort(header_dict["@1"], ref this.httpPort);
+                httpHost = ParseHostAndPort(header_dict["@1"], ref httpPort);
             }
             else if (header_dict.ContainsKey("Host"))
             {
-                this.httpHost = ParseHostAndPort(header_dict["Host"], ref this.httpPort);
+                httpHost = ParseHostAndPort(header_dict["Host"], ref httpPort);
             }
             else
             {
@@ -239,7 +239,7 @@ namespace ShadowsocksR.Controller
             {
                 httpContentLength = Convert.ToInt32(header_dict["Content-Length"]) + 2;
             }
-            HostToHandshakeBuffer(this.httpHost, this.httpPort, ref remoteHeaderSendBuffer);
+            HostToHandshakeBuffer(httpHost, httpPort, ref remoteHeaderSendBuffer);
             if (redir)
             {
                 if (header_dict.ContainsKey("Proxy-Connection"))

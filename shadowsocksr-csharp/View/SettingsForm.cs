@@ -15,10 +15,10 @@ namespace ShadowsocksR.View
 
         public SettingsForm(ShadowsocksController controller)
         {
-            this.Font = System.Drawing.SystemFonts.MessageBoxFont;
+            Font = SystemFonts.MessageBoxFont;
             InitializeComponent();
 
-            this.Icon = Icon.FromHandle(Resources.ssw128.GetHicon());
+            Icon = Icon.FromHandle(Resources.ssw128.GetHicon());
             this.controller = controller;
 
             UpdateTexts();
@@ -60,10 +60,7 @@ namespace ShadowsocksR.View
 
         private void UpdateTexts()
         {
-            this.Text = I18N.GetString("Global Settings") + "("
-                + (controller.GetCurrentConfiguration().shareOverLan ? "any" : "local") + ":" + controller.GetCurrentConfiguration().localPort.ToString()
-                + I18N.GetString(" Version") + UpdateChecker.FullVersion
-                + ")";
+            Text = I18N.GetString("Global Settings") + "(" + (controller.GetCurrentConfiguration().shareOverLan ? "any" : "local") + ":" + controller.GetCurrentConfiguration().localPort.ToString() + ")";
 
             ListenGroup.Text = I18N.GetString(ListenGroup.Text);
             checkShareOverLan.Text = I18N.GetString(checkShareOverLan.Text);
@@ -110,8 +107,8 @@ namespace ShadowsocksR.View
 
         private void ShowWindow()
         {
-            this.Opacity = 1;
-            this.Show();
+            Opacity = 1;
+            Show();
         }
 
         private int SaveOldSelectedServer()
@@ -205,12 +202,12 @@ namespace ShadowsocksR.View
                 return;
             }
             controller.SaveServersConfig(_modifiedConfiguration);
-            this.Close();
+            Close();
         }
 
         private void CancelButton_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void buttonDefault_Click(object sender, EventArgs e)

@@ -38,7 +38,7 @@ namespace ShadowsocksR.Controller
 
             public ResultEventArgs(bool success)
             {
-                this.Success = success;
+                Success = success;
             }
         }
 

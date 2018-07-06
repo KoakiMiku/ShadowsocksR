@@ -514,20 +514,20 @@ namespace ShadowsocksR.Model
 
         public object getObfsData()
         {
-            return this.obfsdata;
+            return obfsdata;
         }
         public void setObfsData(object data)
         {
-            this.obfsdata = data;
+            obfsdata = data;
         }
 
         public object getProtocolData()
         {
-            return this.protocoldata;
+            return protocoldata;
         }
         public void setProtocolData(object data)
         {
-            this.protocoldata = data;
+            protocoldata = data;
         }
     }
 }

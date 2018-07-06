@@ -363,7 +363,7 @@ namespace ShadowsocksR.Obfs
         {
             byte[] key = new byte[Server.key.Length + 32];
             Server.key.CopyTo(key, 0);
-            ((TlsAuthData)this.Server.data).clientID.CopyTo(key, Server.key.Length);
+            ((TlsAuthData)Server.data).clientID.CopyTo(key, Server.key.Length);
 
             HMACSHA1 sha1 = new HMACSHA1(key);
             byte[] sha1data = sha1.ComputeHash(data, 0, length - 10);
@@ -379,7 +379,7 @@ namespace ShadowsocksR.Obfs
                 g_random.GetBytes(randomdata);
                 randomdata.CopyTo(outdata, 4);
             }
-            TlsAuthData authData = (TlsAuthData)this.Server.data;
+            TlsAuthData authData = (TlsAuthData)Server.data;
             lock (authData)
             {
                 if (authData.clientID == null)
@@ -499,7 +499,7 @@ namespace ShadowsocksR.Obfs
                 string str_buf = "001cc02bc02fcca9cca8cc14cc13c00ac014c009c013009c0035002f000a0100";
                 ssl_buf.AddRange(rnd);
                 ssl_buf.Add(32);
-                ssl_buf.AddRange(((TlsAuthData)this.Server.data).clientID);
+                ssl_buf.AddRange(((TlsAuthData)Server.data).clientID);
                 ssl_buf.AddRange(to_bin(str_buf));
 
                 str_buf = "ff01000100";
@@ -522,7 +522,7 @@ namespace ShadowsocksR.Obfs
                 string str_buf2 = "001700000023";
                 ext_buf.AddRange(to_bin(str_buf2));
                 {
-                    TlsAuthData authData = (TlsAuthData)this.Server.data;
+                    TlsAuthData authData = (TlsAuthData)Server.data;
                     byte[] ticket = null;
                     lock (authData)
                     {

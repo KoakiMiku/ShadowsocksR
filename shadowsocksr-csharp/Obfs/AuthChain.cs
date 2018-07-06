@@ -205,7 +205,7 @@ namespace ShadowsocksR.Obfs
         {
             const int authhead_len = 4 + 8 + 4 + 16 + 4;
             byte[] encrypt = new byte[24];
-            AuthDataAesChain authData = this.Server.data as AuthDataAesChain;
+            AuthDataAesChain authData = Server.data as AuthDataAesChain;
 
             lock (authData)
             {

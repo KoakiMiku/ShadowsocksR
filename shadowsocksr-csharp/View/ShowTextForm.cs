@@ -10,11 +10,11 @@ namespace ShadowsocksR.View
     {
         public ShowTextForm(string title, string text)
         {
-            this.Icon = Icon.FromHandle(Resources.ssw128.GetHicon());
+            Icon = Icon.FromHandle(Resources.ssw128.GetHicon());
             InitializeComponent();
 
-            this.Text = title;
-            PictureQRcode.Height = this.ClientSize.Height - textBox.Height;
+            Text = title;
+            PictureQRcode.Height = ClientSize.Height - textBox.Height;
             textBox.Text = text;
         }
 
@@ -25,7 +25,7 @@ namespace ShadowsocksR.View
             try
             {
                 string qrText = ssconfig;
-                QRCode code = ZXing.QrCode.Internal.Encoder.encode(qrText, ErrorCorrectionLevel.M);
+                QRCode code = Encoder.encode(qrText, ErrorCorrectionLevel.M);
                 ByteMatrix m = code.Matrix;
                 int blockSize = Math.Max(width / (m.Width + 2), 1);
                 Bitmap drawArea = new Bitmap(((m.Width + 2) * blockSize), ((m.Height + 2) * blockSize));
@@ -66,7 +66,7 @@ namespace ShadowsocksR.View
 
         private void ShowTextForm_SizeChanged(object sender, EventArgs e)
         {
-            PictureQRcode.Height = this.ClientSize.Height - textBox.Height;
+            PictureQRcode.Height = ClientSize.Height - textBox.Height;
             GenQR(textBox.Text);
         }
 

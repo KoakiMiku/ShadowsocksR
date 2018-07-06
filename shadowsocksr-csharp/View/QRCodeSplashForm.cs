@@ -14,20 +14,20 @@ namespace ShadowsocksR.View
 
         public QRCodeSplashForm()
         {
-            this.Load += QRCodeSplashForm_Load;
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(1, 1);
-            this.ControlBox = false;
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Name = "QRCodeSplashForm";
-            this.ShowIcon = false;
-            this.ShowInTaskbar = false;
-            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
-            this.TopMost = true;
+            Load += QRCodeSplashForm_Load;
+            AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            BackColor = System.Drawing.Color.White;
+            ClientSize = new System.Drawing.Size(1, 1);
+            ControlBox = false;
+            FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            MaximizeBox = false;
+            MinimizeBox = false;
+            Name = "QRCodeSplashForm";
+            ShowIcon = false;
+            ShowInTaskbar = false;
+            SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
+            StartPosition = System.Windows.Forms.FormStartPosition.Manual;
+            TopMost = true;
         }
 
         private Timer timer;
@@ -48,7 +48,7 @@ namespace ShadowsocksR.View
         private void QRCodeSplashForm_Load(object sender, EventArgs e)
         {
             SetStyle(ControlStyles.SupportsTransparentBackColor, true);
-            this.BackColor = Color.Transparent;
+            BackColor = Color.Transparent;
             flashStep = 0;
             x = 0;
             y = 0;
@@ -84,8 +84,8 @@ namespace ShadowsocksR.View
                 percent = 1 - Math.Pow((1 - percent), 4);
                 x = (int)(TargetRect.X * percent);
                 y = (int)(TargetRect.Y * percent);
-                w = (int)(TargetRect.Width * percent + this.Size.Width * (1 - percent));
-                h = (int)(TargetRect.Height * percent + this.Size.Height * (1 - percent));
+                w = (int)(TargetRect.Width * percent + Size.Width * (1 - percent));
+                h = (int)(TargetRect.Height * percent + Size.Height * (1 - percent));
                 //codeRectView.Location = new Point(x, y);
                 //codeRectView.Size = new Size(w, h);
                 pen.Color = Color.FromArgb((int)(255 * percent), Color.Red);
@@ -139,7 +139,7 @@ namespace ShadowsocksR.View
                     pen.Dispose();
                     brush.Dispose();
                     bitmap.Dispose();
-                    this.Close();
+                    Close();
                 }
                 flashStep++;
             }

@@ -96,7 +96,7 @@ namespace ShadowsocksR.Controller
             {
                 Kill();
                 string polipoConfig = Resources.privoxy_conf;
-                _runningPort = this.GetFreePort();
+                _runningPort = GetFreePort();
                 polipoConfig = polipoConfig.Replace("__SOCKS_PORT__", configuration.localPort.ToString());
                 polipoConfig = polipoConfig.Replace("__PRIVOXY_BIND_PORT__", _runningPort.ToString());
                 polipoConfig = polipoConfig.Replace("__PRIVOXY_BIND_IP__", "127.0.0.1");

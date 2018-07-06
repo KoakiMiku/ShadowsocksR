@@ -47,57 +47,57 @@ namespace ShadowsocksR.View
             this.controller = controller;
             try
             {
-                this.Icon = Icon.FromHandle((new Bitmap("icon.png")).GetHicon());
+                Icon = Icon.FromHandle((new Bitmap("icon.png")).GetHicon());
                 title_perfix = System.Windows.Forms.Application.StartupPath;
                 if (title_perfix.Length > 20)
                     title_perfix = title_perfix.Substring(0, 20);
             }
             catch
             {
-                this.Icon = Icon.FromHandle(Resources.ssw128.GetHicon());
+                Icon = Icon.FromHandle(Resources.ssw128.GetHicon());
             }
-            this.Font = System.Drawing.SystemFonts.MessageBoxFont;
+            Font = SystemFonts.MessageBoxFont;
             InitializeComponent();
 
-            this.Width = 810;
+            Width = 810;
             int dpi_mul = Util.Utils.GetDpiMul();
 
             Configuration config = controller.GetCurrentConfiguration();
             if (config.configs.Count < 8)
             {
-                this.Height = 300 * dpi_mul / 4;
+                Height = 300 * dpi_mul / 4;
             }
             else if (config.configs.Count < 20)
             {
-                this.Height = (300 + (config.configs.Count - 8) * 16) * dpi_mul / 4;
+                Height = (300 + (config.configs.Count - 8) * 16) * dpi_mul / 4;
             }
             else
             {
-                this.Height = 500 * dpi_mul / 4;
+                Height = 500 * dpi_mul / 4;
             }
             UpdateTexts();
             UpdateLog();
 
-            this.Menu = new MainMenu(new MenuItem[] {
+            Menu = new MainMenu(new MenuItem[] {
                 CreateMenuGroup("&Control", new MenuItem[] {
-                    CreateMenuItem("&Disconnect direct connections", new EventHandler(this.DisconnectForward_Click)),
-                    CreateMenuItem("Disconnect &All", new EventHandler(this.Disconnect_Click)),
+                    CreateMenuItem("&Disconnect direct connections", new EventHandler(DisconnectForward_Click)),
+                    CreateMenuItem("Disconnect &All", new EventHandler(Disconnect_Click)),
                     new MenuItem("-"),
-                    CreateMenuItem("Clear &MaxSpeed", new EventHandler(this.ClearMaxSpeed_Click)),
-                    clearItem = CreateMenuItem("&Clear", new EventHandler(this.ClearItem_Click)),
+                    CreateMenuItem("Clear &MaxSpeed", new EventHandler(ClearMaxSpeed_Click)),
+                    clearItem = CreateMenuItem("&Clear", new EventHandler(ClearItem_Click)),
                     new MenuItem("-"),
-                    CreateMenuItem("Clear &Selected Total", new EventHandler(this.ClearSelectedTotal_Click)),
-                    CreateMenuItem("Clear &Total", new EventHandler(this.ClearTotal_Click)),
+                    CreateMenuItem("Clear &Selected Total", new EventHandler(ClearSelectedTotal_Click)),
+                    CreateMenuItem("Clear &Total", new EventHandler(ClearTotal_Click)),
                 }),
                 CreateMenuGroup("Port &out", new MenuItem[] {
-                    CreateMenuItem("Copy current link", new EventHandler(this.copyLinkItem_Click)),
-                    CreateMenuItem("Copy current group links", new EventHandler(this.copyGroupLinkItem_Click)),
-                    CreateMenuItem("Copy all enable links", new EventHandler(this.copyEnableLinksItem_Click)),
-                    CreateMenuItem("Copy all links", new EventHandler(this.copyLinksItem_Click)),
+                    CreateMenuItem("Copy current link", new EventHandler(copyLinkItem_Click)),
+                    CreateMenuItem("Copy current group links", new EventHandler(copyGroupLinkItem_Click)),
+                    CreateMenuItem("Copy all enable links", new EventHandler(copyEnableLinksItem_Click)),
+                    CreateMenuItem("Copy all links", new EventHandler(copyLinksItem_Click)),
                 }),
                 CreateMenuGroup("&Window", new MenuItem[] {
-                    CreateMenuItem("Auto &size", new EventHandler(this.autosizeItem_Click)),
-                    this.topmostItem = CreateMenuItem("Always On &Top", new EventHandler(this.topmostItem_Click)),
+                    CreateMenuItem("Auto &size", new EventHandler(autosizeItem_Click)),
+                    topmostItem = CreateMenuItem("Always On &Top", new EventHandler(topmostItem_Click)),
                 }),
             });
             controller.ConfigChanged += controller_ConfigChanged;
@@ -116,7 +116,7 @@ namespace ShadowsocksR.View
                     continue;
                 width += ServerDataGrid.Columns[i].Width;
             }
-            this.Width = width + SystemInformation.VerticalScrollBarWidth + (this.Width - this.ClientSize.Width) + 1;
+            Width = width + SystemInformation.VerticalScrollBarWidth + (Width - ClientSize.Width) + 1;
             ServerDataGrid.AutoResizeColumnHeadersHeight();
         }
         private MenuItem CreateMenuGroup(string text, MenuItem[] items)
@@ -131,11 +131,9 @@ namespace ShadowsocksR.View
 
         private void UpdateTitle()
         {
-            this.Text = title_perfix + I18N.GetString("ServerLog") + "("
+            Text = title_perfix + I18N.GetString("ServerLog") + "("
                 + (controller.GetCurrentConfiguration().shareOverLan ? "any" : "local") + ":" + controller.GetCurrentConfiguration().localPort.ToString()
-                + "(" + Model.Server.GetForwardServerRef().GetConnections().Count.ToString()+ ")"
-                + " " + I18N.GetString("Version") + UpdateChecker.FullVersion
-                + ")";
+                + "(" + Model.Server.GetForwardServerRef().GetConnections().Count.ToString() + ")";
         }
         private void UpdateTexts()
         {
@@ -269,7 +267,7 @@ namespace ShadowsocksR.View
         {
             if (workerThread == null)
             {
-                workerThread = new Thread(this.UpdateLogThread);
+                workerThread = new Thread(UpdateLogThread);
                 workerThread.Start();
             }
             else
@@ -680,7 +678,7 @@ namespace ShadowsocksR.View
                     continue;
                 width += ServerDataGrid.Columns[i].Width;
             }
-            this.Width = width + SystemInformation.VerticalScrollBarWidth + (this.Width - this.ClientSize.Width) + 1;
+            Width = width + SystemInformation.VerticalScrollBarWidth + (Width - ClientSize.Width) + 1;
             ServerDataGrid.AutoResizeColumnHeadersHeight();
         }
 
@@ -759,7 +757,7 @@ namespace ShadowsocksR.View
         private void topmostItem_Click(object sender, EventArgs e)
         {
             topmostItem.Checked = !topmostItem.Checked;
-            this.TopMost = topmostItem.Checked;
+            TopMost = topmostItem.Checked;
         }
 
         private void DisconnectForward_Click(object sender, EventArgs e)
@@ -825,7 +823,7 @@ namespace ShadowsocksR.View
                 updatePause -= 1;
                 return;
             }
-            if (this.WindowState == FormWindowState.Minimized)
+            if (WindowState == FormWindowState.Minimized)
             {
                 if (++pendingUpdate < 40)
                 {
@@ -1138,8 +1136,8 @@ namespace ShadowsocksR.View
                     continue;
                 width += ServerDataGrid.Columns[i].Width;
             }
-            width += SystemInformation.VerticalScrollBarWidth + (this.Width - this.ClientSize.Width) + 1;
-            ServerDataGrid.Columns[2].Width += this.Width - width;
+            width += SystemInformation.VerticalScrollBarWidth + (Width - ClientSize.Width) + 1;
+            ServerDataGrid.Columns[2].Width += Width - width;
         }
 
         private void ServerDataGrid_ColumnWidthChanged(object sender, DataGridViewColumnEventArgs e)
@@ -1151,7 +1149,7 @@ namespace ShadowsocksR.View
                     continue;
                 width += ServerDataGrid.Columns[i].Width;
             }
-            this.Width = width + SystemInformation.VerticalScrollBarWidth + (this.Width - this.ClientSize.Width) + 1;
+            Width = width + SystemInformation.VerticalScrollBarWidth + (Width - ClientSize.Width) + 1;
             ServerDataGrid.AutoResizeColumnHeadersHeight();
         }
     }

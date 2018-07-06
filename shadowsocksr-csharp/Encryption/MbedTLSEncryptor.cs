@@ -102,7 +102,7 @@ namespace ShadowsocksR.Encryption
             // C# could be multi-threaded
             if (_disposed)
             {
-                throw new ObjectDisposedException(this.ToString());
+                throw new ObjectDisposedException(ToString());
             }
             if (MbedTLS.cipher_update(isCipher ? _encryptCtx : _decryptCtx,
                 buf, length, outbuf, ref length) != 0 )

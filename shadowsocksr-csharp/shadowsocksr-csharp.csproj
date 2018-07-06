@@ -104,7 +104,6 @@
     <Compile Include="Controller\ProxySocket.cs" />
     <Compile Include="Controller\Socks5Forwarder.cs" />
     <Compile Include="Controller\SpeedTest.cs" />
-    <Compile Include="Controller\UpdateChecker.cs" />
     <Compile Include="Controller\UpdateFreeNode.cs" />
     <Compile Include="Encryption\EncryptorBase.cs" />
     <Compile Include="Encryption\EncryptorFactory.cs" />

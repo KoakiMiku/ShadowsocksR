@@ -26,13 +26,13 @@ namespace ShadowsocksR.Controller
 
         public PACServer()
         {
-            this.WatchPacFile();
-            this.WatchUserRuleFile();
+            WatchPacFile();
+            WatchUserRuleFile();
         }
 
         public void UpdateConfiguration(Configuration config)
         {
-            this._config = config;
+            _config = config;
         }
 
         public bool Handle(byte[] firstPacket, int length, Socket socket)
@@ -283,13 +283,13 @@ Connection: Close
             //}
             if (socksType == 5)
             {
-                return "SOCKS5 " + localEndPoint.Address + ":" + this._config.localPort + ";";
+                return "SOCKS5 " + localEndPoint.Address + ":" + _config.localPort + ";";
             }
             else if (socksType == 4)
             {
-                return "SOCKS " + localEndPoint.Address + ":" + this._config.localPort + ";";
+                return "SOCKS " + localEndPoint.Address + ":" + _config.localPort + ";";
             }
-            return "PROXY " + localEndPoint.Address + ":" + this._config.localPort + ";";
+            return "PROXY " + localEndPoint.Address + ":" + _config.localPort + ";";
         }
     }
 }

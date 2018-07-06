@@ -241,7 +241,7 @@ namespace ShadowsocksR.Model
                 List<TransLog> transLog;
                 lock (this)
                 {
-                    if (this.upTransLog == null)
+                    if (upTransLog == null)
                         return 0;
                     transLog = new List<TransLog>();
                     for (int i = 0; i < upTransLog.Count; ++i)

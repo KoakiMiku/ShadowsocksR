@@ -14,7 +14,6 @@ namespace ShadowsocksR.View
     public partial class ConfigForm : Form
     {
         private ShadowsocksController controller;
-        private UpdateChecker updateChecker;
 
         // this is a copy of configuration that we are working on
         private Configuration _modifiedConfiguration;
@@ -25,9 +24,9 @@ namespace ShadowsocksR.View
 
         private string _SelectedID = null;
 
-        public ConfigForm(ShadowsocksController controller, UpdateChecker updateChecker, int focusIndex)
+        public ConfigForm(ShadowsocksController controller, int focusIndex)
         {
-            this.Font = System.Drawing.SystemFonts.MessageBoxFont;
+            Font = SystemFonts.MessageBoxFont;
             InitializeComponent();
             ServersListBox.Font = CreateFont();
 
@@ -36,11 +35,8 @@ namespace ShadowsocksR.View
             NumUDPPort.Minimum = IPEndPoint.MinPort;
             NumUDPPort.Maximum = IPEndPoint.MaxPort;
 
-            this.Icon = Icon.FromHandle(Resources.ssw128.GetHicon());
+            Icon = Icon.FromHandle(Resources.ssw128.GetHicon());
             this.controller = controller;
-            this.updateChecker = updateChecker;
-            if (updateChecker.LatestVersionURL == null)
-                LinkUpdate.Visible = false;
 
             foreach (string name in EncryptorFactory.GetEncryptor())
             {
@@ -120,27 +116,24 @@ namespace ShadowsocksR.View
         {
             try
             {
-                return new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                return new Font("Consolas", 9F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
             }
             catch
             {
                 try
                 {
-                    return new System.Drawing.Font("新宋体", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    return new Font("微软雅黑", 9F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
                 }
                 catch
                 {
-                    return new System.Drawing.Font(System.Drawing.FontFamily.GenericMonospace, 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+                    return new Font(FontFamily.GenericMonospace, 9F, FontStyle.Regular, GraphicsUnit.Point, ((byte)(0)));
                 }
             }
         }
 
         private void UpdateTexts()
         {
-            this.Text = I18N.GetString("Edit Servers") + "("
-                + (controller.GetCurrentConfiguration().shareOverLan ? "any" : "local") + ":" + controller.GetCurrentConfiguration().localPort.ToString()
-                + I18N.GetString(" Version") + UpdateChecker.FullVersion
-                + ")";
+            Text = I18N.GetString("Edit Servers") + "(" + (controller.GetCurrentConfiguration().shareOverLan ? "any" : "local") + ":" + controller.GetCurrentConfiguration().localPort.ToString() + ")";
 
             AddButton.Text = I18N.GetString("&Add");
             DeleteButton.Text = I18N.GetString("&Delete");
@@ -177,8 +170,6 @@ namespace ShadowsocksR.View
 
             OKButton.Text = I18N.GetString("OK");
             MyCancelButton.Text = I18N.GetString("Cancel");
-            LinkUpdate.MaximumSize = new Size(ServersListBox.Width, ServersListBox.Height);
-            LinkUpdate.Text = String.Format(I18N.GetString("New version {0} {1} available"), UpdateChecker.Name, updateChecker.LatestVersionNumber);
         }
 
         private void controller_ConfigChanged(object sender, EventArgs e)
@@ -188,8 +179,8 @@ namespace ShadowsocksR.View
 
         private void ShowWindow()
         {
-            this.Opacity = 1;
-            this.Show();
+            Opacity = 1;
+            Show();
             IPTextBox.Focus();
         }
 
@@ -271,7 +262,7 @@ namespace ShadowsocksR.View
             if (TextLink.Focused)
             {
                 string qrText = ssconfig;
-                QRCode code = ZXing.QrCode.Internal.Encoder.encode(qrText, ErrorCorrectionLevel.M);
+                QRCode code = Encoder.encode(qrText, ErrorCorrectionLevel.M);
                 ByteMatrix m = code.Matrix;
                 int blockSize = Math.Max(width / (m.Width + 2), 1);
                 Bitmap drawArea = new Bitmap(((m.Width + 2) * blockSize), ((m.Height + 2) * blockSize));
@@ -473,7 +464,7 @@ namespace ShadowsocksR.View
             {
                 return;
             }
-            Server server = _oldSelectedIndex >=0 && _oldSelectedIndex < _modifiedConfiguration.configs.Count
+            Server server = _oldSelectedIndex >= 0 && _oldSelectedIndex < _modifiedConfiguration.configs.Count
                 ? Configuration.CopyServer(_modifiedConfiguration.configs[_oldSelectedIndex])
                 : Configuration.GetDefaultServer();
             _modifiedConfiguration.configs.Insert(_oldSelectedIndex < 0 ? 0 : _oldSelectedIndex + 1, server);
@@ -481,6 +472,13 @@ namespace ShadowsocksR.View
             _SelectedID = server.id;
             ServersListBox.SelectedIndex = _oldSelectedIndex + 1;
             _oldSelectedIndex = ServersListBox.SelectedIndex;
+
+            if (ServersListBox.Items.Count != 0)
+            {
+                DeleteButton.Enabled = true;
+                UpButton.Enabled = true;
+                DownButton.Enabled = true;
+            }
         }
 
         private void DeleteButton_Click(object sender, EventArgs e)
@@ -518,6 +516,13 @@ namespace ShadowsocksR.View
             SetServerListSelectedIndex(_oldSelectedIndex);
             LoadSelectedServer();
             UpdateServersListBoxTopIndex();
+
+            if (ServersListBox.Items.Count == 0)
+            {
+                DeleteButton.Enabled = false;
+                UpButton.Enabled = false;
+                DownButton.Enabled = false;
+            }
         }
 
         private void OKButton_Click(object sender, EventArgs e)
@@ -543,12 +548,12 @@ namespace ShadowsocksR.View
                 }
             }
             controller.SaveServersConfig(_modifiedConfiguration);
-            this.Close();
+            Close();
         }
 
         private void CancelButton_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void ConfigForm_Shown(object sender, EventArgs e)
@@ -679,11 +684,6 @@ namespace ShadowsocksR.View
             {
                 ((TextBox)sender).SelectAll();
             }
-        }
-
-        private void LinkUpdate_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
-        {
-            System.Diagnostics.Process.Start(updateChecker.LatestVersionURL);
         }
 
         private void PasswordLabel_CheckedChanged(object sender, EventArgs e)

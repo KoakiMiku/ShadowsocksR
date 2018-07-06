@@ -95,13 +95,13 @@ namespace OpenDNS
                 if (_ResourceRecords.Count == 0 && _Answers.Count > 0 && _Authorities.Count > 0 && _AdditionalRecords.Count > 0)
                 {
                     foreach (ResourceRecord rr in Answers)
-                        this._ResourceRecords.Add(rr);
+                        _ResourceRecords.Add(rr);
 
                     foreach (ResourceRecord rr in Authorities)
-                        this._ResourceRecords.Add(rr);
+                        _ResourceRecords.Add(rr);
 
                     foreach (ResourceRecord rr in AdditionalRecords)
-                        this._ResourceRecords.Add(rr);
+                        _ResourceRecords.Add(rr);
                 }
 
                 return _ResourceRecords;
@@ -110,17 +110,17 @@ namespace OpenDNS
 
         public DnsResponse(int ID, bool AA, bool TC, bool RD, bool RA, int RC)
         {
-            this._QueryID = ID;
-            this._AuthorativeAnswer = AA;
-            this._IsTruncated = TC;
-            this._RecursionDesired = RD;
-            this._RecursionAvailable = RA;
-            this._ResponseCode = (ResponseCodes)RC;
+            _QueryID = ID;
+            _AuthorativeAnswer = AA;
+            _IsTruncated = TC;
+            _RecursionDesired = RD;
+            _RecursionAvailable = RA;
+            _ResponseCode = (ResponseCodes)RC;
 
-            this._ResourceRecords = new ResourceRecordCollection();
-            this._Answers = new ResourceRecordCollection();
-            this._Authorities = new ResourceRecordCollection();
-            this._AdditionalRecords = new ResourceRecordCollection();
+            _ResourceRecords = new ResourceRecordCollection();
+            _Answers = new ResourceRecordCollection();
+            _Authorities = new ResourceRecordCollection();
+            _AdditionalRecords = new ResourceRecordCollection();
         }
     }
 }

@@ -191,13 +191,13 @@ namespace ShadowsocksR.Controller
         {
             get
             {
-                return this.state;
+                return state;
             }
             set
             {
                 lock (this)
                 {
-                    this.state = value;
+                    state = value;
                 }
             }
         }
@@ -490,7 +490,7 @@ namespace ShadowsocksR.Controller
                 cfg.autoSwitchOff = false;
             }
             ResetTimeout(cfg.TTL);
-            if (this.State == ConnectState.READY)
+            if (State == ConnectState.READY)
             {
                 State = ConnectState.HANDSHAKE;
                 remoteHeaderSendBuffer = firstPacket;
@@ -564,7 +564,7 @@ namespace ShadowsocksR.Controller
             // Connect to the remote endpoint.
             if (cfg.socks5RemotePort == 0 && connectionUDP != null && !server.udp_over_tcp)
             {
-                ConnectState _state = this.State;
+                ConnectState _state = State;
                 if (_state == ConnectState.CONNECTING)
                 {
                     StartPipe();
@@ -600,11 +600,11 @@ namespace ShadowsocksR.Controller
                 return false;
             if (cfg.reconnectTimesRemain > 0)
             {
-                if (this.State == ConnectState.CONNECTING)
+                if (State == ConnectState.CONNECTING)
                 {
                     return ReConnect();
                 }
-                else if (this.State == ConnectState.CONNECTED && lastErrCode == 8)
+                else if (State == ConnectState.CONNECTED && lastErrCode == 8)
                 {
                     if (connectionSendBufferList != null)
                     {
@@ -730,16 +730,16 @@ namespace ShadowsocksR.Controller
                 bool reconnect = TryReconnect();
                 //lock (this)
                 {
-                    if (this.State != ConnectState.END)
+                    if (State != ConnectState.END)
                     {
-                        if (this.State != ConnectState.READY && this.State != ConnectState.HANDSHAKE && server != null)
+                        if (State != ConnectState.READY && State != ConnectState.HANDSHAKE && server != null)
                         {
                             if (server.GetConnections().DecRef(this))
                             {
                                 server.ServerSpeedLog().AddDisconnectTimes();
                             }
                         }
-                        this.State = ConnectState.END;
+                        State = ConnectState.END;
                     }
                     getCurrentServer = null;
                     keepCurrentServer = null;
@@ -810,11 +810,11 @@ namespace ShadowsocksR.Controller
                 {
                     cfg.targetHost = GetQueryString();
                     cfg.targetPort = GetQueryPort();
-                    server = this.getCurrentServer(localPort, null, cfg.targetHost, cfg.random, true);
+                    server = getCurrentServer(localPort, null, cfg.targetHost, cfg.random, true);
                 }
                 else
                 {
-                    server = this.getCurrentServer(localPort, null, cfg.targetHost, cfg.random, true, cfg.forceRandom);
+                    server = getCurrentServer(localPort, null, cfg.targetHost, cfg.random, true, cfg.forceRandom);
                 }
             }
             else
@@ -823,11 +823,11 @@ namespace ShadowsocksR.Controller
                 {
                     cfg.targetHost = GetQueryString();
                     cfg.targetPort = GetQueryPort();
-                    server = this.getCurrentServer(localPort, select_server, cfg.targetHost, true, true);
+                    server = getCurrentServer(localPort, select_server, cfg.targetHost, true, true);
                 }
                 else
                 {
-                    server = this.getCurrentServer(localPort, select_server, cfg.targetHost, true, true, cfg.forceRandom);
+                    server = getCurrentServer(localPort, select_server, cfg.targetHost, true, true, cfg.forceRandom);
                 }
             }
             speedTester.server = server.server;
@@ -876,9 +876,9 @@ namespace ShadowsocksR.Controller
             lock (this)
             {
                 server.ServerSpeedLog().AddConnectTimes();
-                if (this.State == ConnectState.HANDSHAKE)
+                if (State == ConnectState.HANDSHAKE)
                 {
-                    this.State = ConnectState.CONNECTING;
+                    State = ConnectState.CONNECTING;
                 }
                 server.GetConnections().AddRef(this);
             }
@@ -975,7 +975,7 @@ namespace ShadowsocksR.Controller
                 }
                 speedTester.EndConnect();
 
-                ConnectState _state = this.State;
+                ConnectState _state = State;
                 if (_state == ConnectState.CONNECTING)
                 {
                     StartPipe();
@@ -1232,7 +1232,7 @@ namespace ShadowsocksR.Controller
                         remoteHeaderSendBuffer = null;
                     }
                 }
-                this.State = ConnectState.CONNECTED;
+                State = ConnectState.CONNECTED;
 
                 if (connection.local_sendback_protocol != null)
                 {

@@ -13,13 +13,13 @@ namespace ShadowsocksR.Controller
 
         public HttpPortForwarder(int targetPort, Configuration config)
         {
-            this._targetPort = targetPort;
-            this._config = config;
+            _targetPort = targetPort;
+            _config = config;
         }
 
         public bool Handle(byte[] firstPacket, int length, Socket socket)
         {
-            new Handler().Start(_config, firstPacket, length, socket, this._targetPort);
+            new Handler().Start(_config, firstPacket, length, socket, _targetPort);
             return true;
         }
 
@@ -46,7 +46,7 @@ namespace ShadowsocksR.Controller
                 _local = socket;
                 _targetPort = targetPort;
                 _config = config;
-                if ((_config.authUser ?? "").Length == 0 || Util.Utils.isMatchSubNet(((IPEndPoint)this._local.RemoteEndPoint).Address, "127.0.0.0/8"))
+                if ((_config.authUser ?? "").Length == 0 || Util.Utils.isMatchSubNet(((IPEndPoint)_local.RemoteEndPoint).Address, "127.0.0.0/8"))
                 {
                     Connect();
                 }
@@ -301,7 +301,7 @@ namespace ShadowsocksR.Controller
                 try
                 {
                     _remote.EndSend(ar);
-                    _local.BeginReceive(this.connetionRecvBuffer, 0, RecvSize, 0,
+                    _local.BeginReceive(connetionRecvBuffer, 0, RecvSize, 0,
                         new AsyncCallback(PipeConnectionReceiveCallback), null);
                 }
                 catch (Exception e)
@@ -320,7 +320,7 @@ namespace ShadowsocksR.Controller
                 try
                 {
                     _local.EndSend(ar);
-                    _remote.BeginReceive(this.remoteRecvBuffer, 0, RecvSize, 0,
+                    _remote.BeginReceive(remoteRecvBuffer, 0, RecvSize, 0,
                         new AsyncCallback(PipeRemoteReceiveCallback), null);
                 }
                 catch (Exception e)

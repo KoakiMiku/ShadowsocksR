@@ -33,7 +33,7 @@ namespace ShadowsocksR.Model
             public ServerIndex(int i, Server s)
             {
                 index = i;
-                this.server = s;
+                server = s;
             }
         };
         private int lowerBound(List<double> data, double target)

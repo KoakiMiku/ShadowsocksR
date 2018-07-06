@@ -17,7 +17,7 @@ namespace ShadowsocksR.View
         public PortSettingsForm(ShadowsocksController controller)
         {
             InitializeComponent();
-            this.Icon = Icon.FromHandle(Resources.ssw128.GetHicon());
+            Icon = Icon.FromHandle(Resources.ssw128.GetHicon());
             this.controller = controller;
             controller.ConfigChanged += controller_ConfigChanged;
 
@@ -38,7 +38,7 @@ namespace ShadowsocksR.View
 
         private void UpdateTexts()
         {
-            this.Text = I18N.GetString("Port Settings");
+            Text = I18N.GetString("Port Settings");
             groupBox1.Text = I18N.GetString("Map Setting");
             labelType.Text = I18N.GetString("Type");
             labelID.Text = I18N.GetString("Server ID");
@@ -74,12 +74,12 @@ namespace ShadowsocksR.View
         {
             SaveSelectedServer();
             controller.SaveServersPortMap(_modifiedConfiguration);
-            this.Close();
+            Close();
         }
 
         private void CancelButton_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void LoadConfiguration(Configuration configuration)

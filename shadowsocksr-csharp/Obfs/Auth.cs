@@ -61,7 +61,7 @@ namespace ShadowsocksR.Obfs
             int rand_len = LinearRandomInt(250) + 1;
             int data_offset = rand_len + 4 + 2;
             outlength = data_offset + datalength + 12 + 10;
-            AuthData authData = (AuthData)this.Server.data;
+            AuthData authData = (AuthData)Server.data;
             lock (authData)
             {
                 if (authData.connectionID > 0xFF000000)
@@ -258,7 +258,7 @@ namespace ShadowsocksR.Obfs
             int rand_len = (datalength > 400 ? LinearRandomInt(128) : LinearRandomInt(1024)) + 1;
             int data_offset = rand_len + 4 + 2;
             outlength = data_offset + datalength + 12 + 10;
-            AuthData authData = (AuthData)this.Server.data;
+            AuthData authData = (AuthData)Server.data;
             {
                 byte[] rnd_data = new byte[rand_len];
                 random.NextBytes(rnd_data);
@@ -490,7 +490,7 @@ namespace ShadowsocksR.Obfs
             int rand_len = (datalength > 400 ? LinearRandomInt(128) : LinearRandomInt(1024)) + 1;
             int data_offset = rand_len + 4 + 2;
             outlength = data_offset + datalength + 12 + 10;
-            AuthData authData = (AuthData)this.Server.data;
+            AuthData authData = (AuthData)Server.data;
             {
                 byte[] rnd_data = new byte[rand_len];
                 random.NextBytes(rnd_data);
@@ -891,7 +891,7 @@ namespace ShadowsocksR.Obfs
             const int authhead_len = 7 + 4 + 16 + 4;
             const int overhead = authhead_len + 4;
             byte[] encrypt = new byte[24];
-            AuthDataAes128 authData = this.Server.data as AuthDataAes128;
+            AuthDataAes128 authData = Server.data as AuthDataAes128;
 
             lock (authData)
             {

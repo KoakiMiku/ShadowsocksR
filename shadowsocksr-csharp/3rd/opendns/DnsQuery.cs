@@ -93,7 +93,7 @@ namespace OpenDNS
                 }
             }
 
-            return (this.Response != null);
+            return (Response != null);
         }
 
         /// <summary>
@@ -178,7 +178,7 @@ namespace OpenDNS
             Question[1] = (byte)(QueryID & byte.MaxValue);
             Question[2] = (byte)1; //Set OpCode to Regular Query
                                    //Set bool bit for recursion desired 
-            Question[2] = (byte)((this.RecursionDesired) ? (Question[2] | 1) : (Question[2] & 254));
+            Question[2] = (byte)((RecursionDesired) ? (Question[2] | 1) : (Question[2] & 254));
             //Set Recursion Available (Filler)
             Question[3] = (byte)0;
             //Set Question Count 
@@ -188,7 +188,7 @@ namespace OpenDNS
             ///Fill Question Section
 
             //Set Domain Name to Query
-            string[] tokens = this.Domain.Split(new char[] { '.' });
+            string[] tokens = Domain.Split(new char[] { '.' });
             string label;
 
             int Cursor = 12;
@@ -242,7 +242,7 @@ namespace OpenDNS
             int AdditionalCount = ((data[10] & byte.MaxValue) << 8) | (data[11] & byte.MaxValue);
 
             //Create Response Object
-            this._Response = new DnsResponse(ID, AA, TC, RD, RA, RC);
+            _Response = new DnsResponse(ID, AA, TC, RD, RA, RC);
 
             //FINISHED HEADER
 

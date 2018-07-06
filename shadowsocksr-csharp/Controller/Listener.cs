@@ -28,7 +28,7 @@ namespace ShadowsocksR.Controller
 
         public Listener(IList<Service> services)
         {
-            this._services = services;
+            _services = services;
             _stop = false;
         }
 
@@ -63,7 +63,7 @@ namespace ShadowsocksR.Controller
         {
             try
             {
-                if (this._shareOverLAN != config.shareOverLan
+                if (_shareOverLAN != config.shareOverLan
                     || _authUser != config.authUser
                     || _authPass != config.authPass
                     || _socket == null
@@ -79,10 +79,10 @@ namespace ShadowsocksR.Controller
 
         public void Start(Configuration config, int port)
         {
-            this._config = config;
-            this._shareOverLAN = config.shareOverLan;
-            this._authUser = config.authUser;
-            this._authPass = config.authPass;
+            _config = config;
+            _shareOverLAN = config.shareOverLan;
+            _authUser = config.authUser;
+            _authPass = config.authPass;
             _stop = false;
 
             int localPort = port == 0 ? _config.localPort : port;

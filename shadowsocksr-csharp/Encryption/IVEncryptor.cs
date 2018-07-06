@@ -251,7 +251,7 @@ namespace ShadowsocksR.Encryption
         {
             if (_disposed)
             {
-                throw new ObjectDisposedException(this.ToString());
+                throw new ObjectDisposedException(ToString());
             }
             Array.Copy(buf, outbuf, length);
         }

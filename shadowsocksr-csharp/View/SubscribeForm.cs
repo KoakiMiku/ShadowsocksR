@@ -16,10 +16,10 @@ namespace ShadowsocksR.View
 
         public SubscribeForm(ShadowsocksController controller)
         {
-            this.Font = System.Drawing.SystemFonts.MessageBoxFont;
+            Font = SystemFonts.MessageBoxFont;
             InitializeComponent();
 
-            this.Icon = Icon.FromHandle(Resources.ssw128.GetHicon());
+            Icon = Icon.FromHandle(Resources.ssw128.GetHicon());
             this.controller = controller;
 
             UpdateTexts();
@@ -30,7 +30,7 @@ namespace ShadowsocksR.View
 
         private void UpdateTexts()
         {
-            this.Text = I18N.GetString("Subscribe Settings");
+            Text = I18N.GetString("Subscribe Settings");
             label1.Text = I18N.GetString("URL");
             label2.Text = I18N.GetString("Group name");
             checkBoxAutoUpdate.Text = I18N.GetString("Auto update");
@@ -79,7 +79,7 @@ namespace ShadowsocksR.View
 
         private void buttonCancel_Click(object sender, EventArgs e)
         {
-            this.Close();
+            Close();
         }
 
         private void buttonOK_Click(object sender, EventArgs e)
@@ -91,7 +91,7 @@ namespace ShadowsocksR.View
                 return;
             }
             controller.SaveServersConfig(_modifiedConfiguration);
-            this.Close();
+            Close();
         }
 
         private void textBoxURL_TextChanged(object sender, EventArgs e)
