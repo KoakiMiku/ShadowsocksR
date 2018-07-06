@@ -9,7 +9,6 @@ namespace ShadowsocksR.Controller
 {
     public enum ProxyMode
     {
-        NoModify,
         Direct,
         Pac,
         Global,
@@ -276,7 +275,7 @@ namespace ShadowsocksR.Controller
             {
                 polipoRunner.Stop();
             }
-            if (_config.sysProxyMode != (int)ProxyMode.NoModify && _config.sysProxyMode != (int)ProxyMode.Direct)
+            if (_config.sysProxyMode != (int)ProxyMode.Direct)
             {
                 SystemProxy.Update(_config, true);
             }
@@ -315,14 +314,6 @@ namespace ShadowsocksR.Controller
             if (gfwListUpdater != null)
             {
                 gfwListUpdater.UpdatePACFromGFWList(_config);
-            }
-        }
-
-        public void UpdatePACFromOnlinePac(string url)
-        {
-            if (gfwListUpdater != null)
-            {
-                gfwListUpdater.UpdatePACFromGFWList(_config, url);
             }
         }
 
@@ -464,9 +455,7 @@ namespace ShadowsocksR.Controller
                     ReportError(e);
                 }
             }
-
             ConfigChanged?.Invoke(this, new EventArgs());
-
             UpdateSystemProxy();
             Util.Utils.ReleaseMemory();
         }
@@ -481,10 +470,7 @@ namespace ShadowsocksR.Controller
 
         private void UpdateSystemProxy()
         {
-            if (_config.sysProxyMode != (int)ProxyMode.NoModify)
-            {
-                SystemProxy.Update(_config, false);
-            }
+            SystemProxy.Update(_config, false);
         }
 
         private void pacServer_PACFileChanged(object sender, EventArgs e)

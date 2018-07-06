@@ -67,8 +67,8 @@ namespace ShadowsocksR.Properties {
         ///
         ///# Menu items
         ///
-        ///Mode=系统代理模式
-        ///No modify system proxy=保持当前状态不修改
+        ///Mode=代理模式
+        ///No modify system proxy=不修改当前状态
         ///Disable system proxy=直连模式
         ///PAC=PAC 模式
         ///Global=全局模式
@@ -77,14 +77,14 @@ namespace ShadowsocksR.Properties {
         ///Bypass LAN &amp;&amp; China=绕过局域网和大陆
         ///Bypass LAN &amp;&amp; not China=绕过局域网和非大陆
         ///User custom=用户自定义
-        ///Disable bypass=全局
+        ///Disable bypass=全局代理
         ///Servers=服务器
-        ///Edit servers...=编辑服务器...
-        ///Import servers from file...=从文件导入服务器...
+        ///Edit servers...=编辑服务器
+        ///Import servers from file...=从文件导入服务器
         ///Servers Subscribe=服务器订阅
-        ///Subscribe setting...=SSR服务器订阅设置...
-        ///Update subscribe SSR node=更新SSR服务器订阅
-        ///Update subscr [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///Subscribe setting...=服务器订阅设置
+        ///Update subscribe SSR node=更新服务器订阅
+        ///Update subscribe SSR node(bypa [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string cn {
             get {
@@ -195,6 +195,34 @@ namespace ShadowsocksR.Properties {
             get {
                 object obj = ResourceManager.GetObject("ss24", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 var direct = &quot;__DIRECT__&quot;;
+        ///if (direct == &quot;__DIR&quot; + &quot;ECT__&quot;) direct = &quot;DIRECT;&quot;;
+        ///
+        ///var wall_proxy = function(){ return &quot;__PROXY__&quot;; };
+        ///var wall_v6_proxy = function(){ return &quot;__PROXY__&quot;; };
+        ///
+        ///var nowall_proxy = function(){ return direct; };
+        ///var ip_proxy = function(){ return nowall_proxy(); };
+        ///var ipv6_proxy = function(){ return nowall_proxy(); };
+        ///
+        ///var rules = __RULES__;
+        ///
+        ///function createDict()
+        ///{
+        ///	var result = {};
+        ///	result.__proto__ = null;
+        ///	return result;
+        ///}
+        ///
+        ///function getOwnPropertyDescriptor(o [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        /// </summary>
+        internal static string ssr_gfw {
+            get {
+                return ResourceManager.GetString("ssr_gfw", resourceCulture);
             }
         }
         

@@ -200,11 +200,15 @@
       <DependentUpon>SubscribeForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Data\libsscrypto.dll.gz" />
+    <None Include="Data\libsscrypto64.dll.gz" />
     <None Include="Data\mgwz.dll.gz" />
     <None Include="Data\privoxy.exe.gz" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Data\ssr_gfw.txt" />
+    <Content Include="Data\zh-tw.txt" />
     <Content Include="shadowsocksr.ico" />
+    <None Include="Data\proxy.pac.txt.gz" />
     <None Include="packages.config" />
     <None Include="Resources\ss20.png" />
     <None Include="Resources\ss16.png" />

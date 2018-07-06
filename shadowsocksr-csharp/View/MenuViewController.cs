@@ -118,7 +118,7 @@ namespace ShadowsocksR.View
                 dpi = (int)graphics.DpiX;
             }
             Configuration config = controller.GetCurrentConfiguration();
-            bool enabled = config.sysProxyMode != (int)ProxyMode.NoModify && config.sysProxyMode != (int)ProxyMode.Direct;
+            bool enabled = config.sysProxyMode != (int)ProxyMode.Direct;
             bool global = config.sysProxyMode == (int)ProxyMode.Global;
 
             try
@@ -224,8 +224,6 @@ namespace ShadowsocksR.View
                     enableItem = CreateMenuItem("Disable system proxy", new EventHandler(EnableItem_Click)),
                     PACModeItem = CreateMenuItem("PAC", new EventHandler(PACModeItem_Click)),
                     globalModeItem = CreateMenuItem("Global", new EventHandler(GlobalModeItem_Click)),
-                    new MenuItem("-"),
-                    noModifyItem = CreateMenuItem("No modify system proxy", new EventHandler(NoModifyItem_Click))
                 }),
                 CreateMenuGroup("PAC ", new MenuItem[] {
                     CreateMenuItem("Update local PAC from GFWList", new EventHandler(UpdatePACFromGFWListItem_Click)),
@@ -286,8 +284,7 @@ namespace ShadowsocksR.View
         void controller_FileReadyToOpen(object sender, ShadowsocksController.PathEventArgs e)
         {
             string argument = @"/select, " + e.Path;
-
-            System.Diagnostics.Process.Start("explorer.exe", argument);
+            Process.Start("explorer.exe", argument);
         }
 
         void ShowBalloonTip(string title, string content, ToolTipIcon icon, int timeout)
@@ -540,7 +537,6 @@ namespace ShadowsocksR.View
 
         private void UpdateSysProxyMode(Configuration config)
         {
-            noModifyItem.Checked = config.sysProxyMode == (int)ProxyMode.NoModify;
             enableItem.Checked = config.sysProxyMode == (int)ProxyMode.Direct;
             PACModeItem.Checked = config.sysProxyMode == (int)ProxyMode.Pac;
             globalModeItem.Checked = config.sysProxyMode == (int)ProxyMode.Global;
@@ -858,11 +854,6 @@ namespace ShadowsocksR.View
             {
                 ShowServerLogForm();
             }
-        }
-
-        private void NoModifyItem_Click(object sender, EventArgs e)
-        {
-            controller.ToggleMode(ProxyMode.NoModify);
         }
 
         private void EnableItem_Click(object sender, EventArgs e)

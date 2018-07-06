@@ -504,10 +504,6 @@ namespace ShadowsocksR.Controller
         public static void Update(Configuration config, bool forceDisable)
         {
             int sysProxyMode = config.sysProxyMode;
-            if (sysProxyMode == (int)ProxyMode.NoModify)
-            {
-                return;
-            }
             if (forceDisable)
             {
                 sysProxyMode = (int)ProxyMode.Direct;

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using ShadowsocksR.Model;
+using ShadowsocksR.Properties;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,17 +13,11 @@ namespace ShadowsocksR.Controller
     {
         private const string GFWLIST_URL = "https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt";
 
-        private const string GFWLIST_BACKUP_URL = "https://raw.githubusercontent.com/breakwa11/breakwa11.github.io/master/ssr/gfwlist.txt";
-
-        private const string GFWLIST_TEMPLATE_URL = "https://raw.githubusercontent.com/breakwa11/breakwa11.github.io/master/ssr/ss_gfw.pac";
-
         private static string PAC_FILE = PACServer.PAC_FILE;
 
         private static string USER_RULE_FILE = PACServer.USER_RULE_FILE;
 
-        private static string gfwlist_template = null;
-
-        private Configuration lastConfig;
+        private static string gfwlist_template = Resources.ssr_gfw;
 
         public int update_type;
 
@@ -37,31 +32,6 @@ namespace ShadowsocksR.Controller
             public ResultEventArgs(bool success)
             {
                 Success = success;
-            }
-        }
-
-        private void http_DownloadGFWTemplateCompleted(object sender, DownloadStringCompletedEventArgs e)
-        {
-            try
-            {
-                string result = e.Result;
-                if (result.IndexOf("__RULES__") > 0 && result.IndexOf("FindProxyForURL") > 0)
-                {
-                    gfwlist_template = result;
-                    if (lastConfig != null)
-                    {
-                        UpdatePACFromGFWList(lastConfig);
-                    }
-                    lastConfig = null;
-                }
-                else
-                {
-                    Error(this, new ErrorEventArgs(new Exception("Download ERROR")));
-                }
-            }
-            catch (Exception ex)
-            {
-                Error?.Invoke(this, new ErrorEventArgs(ex));
             }
         }
 
@@ -86,7 +56,7 @@ namespace ShadowsocksR.Controller
                     }
                 }
                 string abpContent = gfwlist_template;
-                abpContent = abpContent.Replace("__RULES__", JsonConvert.SerializeObject(lines));
+                abpContent = abpContent.Replace("__RULES__", JsonConvert.SerializeObject(lines, Formatting.Indented));
                 if (File.Exists(PAC_FILE))
                 {
                     string original = File.ReadAllText(PAC_FILE, Encoding.UTF8);
@@ -106,26 +76,7 @@ namespace ShadowsocksR.Controller
             }
             catch (Exception ex)
             {
-                if (Error != null)
-                {
-                    WebClient http = sender as WebClient;
-                    if (http.BaseAddress.StartsWith(GFWLIST_URL))
-                    {
-                        http.BaseAddress = GFWLIST_BACKUP_URL;
-                        http.DownloadStringAsync(new Uri(GFWLIST_BACKUP_URL + "?rnd=" + Util.Utils.RandUInt32().ToString()));
-                    }
-                    else
-                    {
-                        if (e.Error != null)
-                        {
-                            Error(this, new ErrorEventArgs(e.Error));
-                        }
-                        else
-                        {
-                            Error(this, new ErrorEventArgs(ex));
-                        }
-                    }
-                }
+                Error?.Invoke(this, new ErrorEventArgs(ex));
             }
         }
 
@@ -160,45 +111,26 @@ namespace ShadowsocksR.Controller
 
         public void UpdatePACFromGFWList(Configuration config)
         {
-            if (gfwlist_template == null)
-            {
-                lastConfig = config;
-                WebClient http = new WebClient();
-                WebProxy proxy = new WebProxy(IPAddress.Loopback.ToString(), config.localPort);
-                if (!string.IsNullOrEmpty(config.authPass))
-                {
-                    proxy.Credentials = new NetworkCredential(config.authUser, config.authPass);
-                }
-                http.Proxy = proxy;
-                http.DownloadStringCompleted += http_DownloadGFWTemplateCompleted;
-                http.DownloadStringAsync(new Uri(GFWLIST_TEMPLATE_URL + "?rnd=" + Util.Utils.RandUInt32().ToString()));
-            }
-            else
+            try
             {
                 WebClient http = new WebClient();
-                WebProxy proxy = new WebProxy(IPAddress.Loopback.ToString(), config.localPort);
-                if (!string.IsNullOrEmpty(config.authPass))
+                if (config.sysProxyMode != (int)ProxyMode.Direct)
                 {
-                    proxy.Credentials = new NetworkCredential(config.authUser, config.authPass);
+                    WebProxy proxy = new WebProxy(IPAddress.Loopback.ToString(), config.localPort);
+                    if (!string.IsNullOrEmpty(config.authPass))
+                    {
+                        proxy.Credentials = new NetworkCredential(config.authUser, config.authPass);
+                    }
+                    http.Proxy = proxy;
                 }
-                http.Proxy = proxy;
                 http.BaseAddress = GFWLIST_URL;
                 http.DownloadStringCompleted += http_DownloadStringCompleted;
                 http.DownloadStringAsync(new Uri(GFWLIST_URL + "?rnd=" + Util.Utils.RandUInt32().ToString()));
             }
-        }
-
-        public void UpdatePACFromGFWList(Configuration config, string url)
-        {
-            WebClient http = new WebClient();
-            WebProxy proxy = new WebProxy(IPAddress.Loopback.ToString(), config.localPort);
-            if (!string.IsNullOrEmpty(config.authPass))
+            catch (Exception ex)
             {
-                proxy.Credentials = new NetworkCredential(config.authUser, config.authPass);
+                Error?.Invoke(this, new ErrorEventArgs(ex));
             }
-            http.Proxy = proxy;
-            http.DownloadStringCompleted += http_DownloadPACCompleted;
-            http.DownloadStringAsync(new Uri(url + "?rnd=" + Util.Utils.RandUInt32().ToString()));
         }
 
         public List<string> ParseResult(string response)
