@@ -20,8 +20,6 @@ namespace ShadowsocksR.Controller
 
         private static string USER_RULE_FILE = PACServer.USER_RULE_FILE;
 
-        private static string USER_ABP_FILE = PACServer.USER_ABP_FILE;
-
         private static string gfwlist_template = null;
 
         private Configuration lastConfig;
@@ -91,14 +89,6 @@ namespace ShadowsocksR.Controller
                     }
                 }
                 string abpContent = gfwlist_template;
-                if (File.Exists(USER_ABP_FILE))
-                {
-                    abpContent = File.ReadAllText(USER_ABP_FILE, Encoding.UTF8);
-                }
-                else
-                {
-                    abpContent = gfwlist_template;
-                }
                 abpContent = abpContent.Replace("__RULES__", JsonConvert.SerializeObject(lines));
                 if (File.Exists(PAC_FILE))
                 {

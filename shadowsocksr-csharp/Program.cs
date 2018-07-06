@@ -42,14 +42,6 @@ namespace Shadowsocks
                 {
                     if (try_times >= 5)
                         return;
-                    using (InputPassword dlg = new InputPassword())
-                    {
-                        if (dlg.ShowDialog() == DialogResult.OK)
-                            Configuration.SetPassword(dlg.password);
-                        else
-                            return;
-                    }
-                    try_times += 1;
                 }
                 _controller = new ShadowsocksController();
                 HostMap.Instance().LoadHostFile();

@@ -9,8 +9,7 @@ namespace ShadowsocksR.Controller
 {
     public class ProtocolException : Exception
     {
-        public ProtocolException(string info)
-            : base(info)
+        public ProtocolException(string info) : base(info)
         {
 
         }
@@ -529,8 +528,6 @@ namespace ShadowsocksR.Controller
             handler.connection = new ProxySocketTunLocal(_connection);
             handler.connectionUDP = _connectionUDP;
             handler.cfg.reconnectTimesRemain = _config.reconnectTimes;
-            handler.cfg.random = _config.random;
-            handler.cfg.forceRandom = _config.random;
             handler.setServerTransferTotal(_transfer);
             if (_config.proxyEnable)
             {

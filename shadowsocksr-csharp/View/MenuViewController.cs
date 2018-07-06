@@ -47,7 +47,6 @@ namespace ShadowsocksR.View
         private ConfigForm configForm;
         private SettingsForm settingsForm;
         private ServerLogForm serverLogForm;
-        private PortSettingsForm portMapForm;
         private SubscribeForm subScribeForm;
         private LogForm logForm;
         private string _urlToOpen;
@@ -74,7 +73,6 @@ namespace ShadowsocksR.View
             _notifyIcon.Visible = true;
             _notifyIcon.ContextMenu = contextMenu1;
             _notifyIcon.MouseClick += notifyIcon1_Click;
-            //_notifyIcon.MouseDoubleClick += notifyIcon1_DoubleClick;
 
             updateFreeNodeChecker = new UpdateFreeNode();
             updateFreeNodeChecker.NewFreeNodeFound += updateFreeNodeChecker_NewFreeNodeFound;
@@ -124,7 +122,6 @@ namespace ShadowsocksR.View
             Configuration config = controller.GetCurrentConfiguration();
             bool enabled = config.sysProxyMode != (int)ProxyMode.NoModify && config.sysProxyMode != (int)ProxyMode.Direct;
             bool global = config.sysProxyMode == (int)ProxyMode.Global;
-            bool random = config.random;
 
             try
             {
@@ -150,19 +147,29 @@ namespace ShadowsocksR.View
                 {
                     icon = Resources.ss24;
                 }
-                double mul_a = 1.0, mul_r = 1.0, mul_g = 1.0, mul_b = 1.0;
+
+                double mul_a = 1.0;
+                double mul_r = 1.0;
+                double mul_g = 1.0;
+                double mul_b = 1.0;
+
                 if (!enabled)
                 {
-                    mul_g = 0.4;
+                    mul_r = 1.0;
+                    mul_g = 1.0;
+                    mul_b = 1.0;
                 }
                 else if (!global)
                 {
-                    mul_b = 0.4;
-                    mul_g = 0.8;
+                    mul_r = 0.0;
+                    mul_g = 1.0;
+                    mul_b = 1.0;
                 }
-                if (!random)
+                else
                 {
-                    mul_r = 0.4;
+                    mul_r = 1.0;
+                    mul_g = 0.0;
+                    mul_b = 0.5;
                 }
 
                 using (Bitmap iconCopy = new Bitmap(icon))
@@ -248,19 +255,13 @@ namespace ShadowsocksR.View
                     CreateMenuItem("Update subscribe SSR node", new EventHandler(CheckNodeUpdate_Click)),
                     CreateMenuItem("Update subscribe SSR node(bypass proxy)", new EventHandler(CheckNodeUpdateBypassProxy_Click)),
                 }),
-                SelectRandomItem = CreateMenuItem("Load balance", new EventHandler(SelectRandomItem_Click)),
                 CreateMenuItem("Global settings...", new EventHandler(Setting_Click)),
-                CreateMenuItem("Port settings...", new EventHandler(ShowPortMapItem_Click)),
                 new MenuItem("-"),
                 CreateMenuItem("Scan QRCode from screen...", new EventHandler(ScanQRCodeItem_Click)),
                 CreateMenuItem("Import SSR links from clipboard...", new EventHandler(CopyAddress_Click)),
                 new MenuItem("-"),
-                CreateMenuGroup("Help", new MenuItem[] {
-                    CreateMenuItem("Show logs...", new EventHandler(ShowLogItem_Click)),
-                    new MenuItem("-"),
-                    CreateMenuItem("Gen custom QRCode...", new EventHandler(showURLFromQRCode)),
-                    CreateMenuItem("Reset password...", new EventHandler(ResetPasswordItem_Click)),
-                }),
+                CreateMenuItem("Show logs...", new EventHandler(ShowLogItem_Click)),
+                new MenuItem("-"),
                 CreateMenuItem("Quit", new EventHandler(Quit_Click))
             });
         }
@@ -560,10 +561,7 @@ namespace ShadowsocksR.View
             Configuration config = controller.GetCurrentConfiguration();
             UpdateServersMenu();
             UpdateSysProxyMode(config);
-
             UpdateProxyRule(config);
-
-            SelectRandomItem.Checked = config.random;
             sameHostForSameTargetItem.Checked = config.sameHostForSameTarget;
         }
 
@@ -681,27 +679,6 @@ namespace ShadowsocksR.View
             }
         }
 
-        private void ShowPortMapForm()
-        {
-            if (portMapForm != null)
-            {
-                portMapForm.Activate();
-                portMapForm.Update();
-                if (portMapForm.WindowState == FormWindowState.Minimized)
-                {
-                    portMapForm.WindowState = FormWindowState.Normal;
-                }
-            }
-            else
-            {
-                portMapForm = new PortSettingsForm(controller);
-                portMapForm.Show();
-                portMapForm.Activate();
-                portMapForm.BringToFront();
-                portMapForm.FormClosed += portMapForm_FormClosed;
-            }
-        }
-
         private void ShowServerLogForm()
         {
             if (serverLogForm != null)
@@ -783,12 +760,6 @@ namespace ShadowsocksR.View
             Util.Utils.ReleaseMemory();
         }
 
-        void portMapForm_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            portMapForm = null;
-            Util.Utils.ReleaseMemory();
-        }
-
         void globalLogForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             logForm = null;
@@ -862,13 +833,6 @@ namespace ShadowsocksR.View
             Application.Exit();
         }
 
-        private void ResetPasswordItem_Click(object sender, EventArgs e)
-        {
-            ResetPassword dlg = new ResetPassword();
-            dlg.Show();
-            dlg.Activate();
-        }
-
         [DllImport("user32.dll")]
         private static extern short GetAsyncKeyState(System.Windows.Forms.Keys vKey);
 
@@ -886,10 +850,6 @@ namespace ShadowsocksR.View
                 else if (SCA_key == 1)
                 {
                     ShowSettingForm();
-                }
-                else if (SCA_key == 4)
-                {
-                    ShowPortMapForm();
                 }
                 else
                 {
@@ -945,12 +905,6 @@ namespace ShadowsocksR.View
         private void RuleBypassDisableItem_Click(object sender, EventArgs e)
         {
             controller.ToggleRuleMode((int)ProxyRuleMode.Disable);
-        }
-
-        private void SelectRandomItem_Click(object sender, EventArgs e)
-        {
-            SelectRandomItem.Checked = !SelectRandomItem.Checked;
-            controller.ToggleSelectRandom(SelectRandomItem.Checked);
         }
 
         private void SelectSameHostForSameTargetItem_Click(object sender, EventArgs e)
@@ -1028,11 +982,6 @@ namespace ShadowsocksR.View
         private void ShowLogItem_Click(object sender, EventArgs e)
         {
             ShowGlobalLogForm();
-        }
-
-        private void ShowPortMapItem_Click(object sender, EventArgs e)
-        {
-            ShowPortMapForm();
         }
 
         private void ShowServerLogItem_Click(object sender, EventArgs e)
@@ -1270,10 +1219,6 @@ namespace ShadowsocksR.View
                             else if (!ss_only)
                             {
                                 _urlToOpen = url;
-                                //if (url.StartsWith("http://") || url.StartsWith("https://"))
-                                //    splash.FormClosed += openURLFromQRCode;
-                                //else
-                                splash.FormClosed += showURLFromQRCode;
                             }
                             else
                             {
@@ -1315,24 +1260,6 @@ namespace ShadowsocksR.View
         void openURLFromQRCode(object sender, FormClosedEventArgs e)
         {
             Process.Start(_urlToOpen);
-        }
-
-        void showURLFromQRCode()
-        {
-            ShowTextForm dlg = new ShowTextForm("QRCode", _urlToOpen);
-            dlg.Show();
-            dlg.Activate();
-            dlg.BringToFront();
-        }
-
-        void showURLFromQRCode(object sender, FormClosedEventArgs e)
-        {
-            showURLFromQRCode();
-        }
-
-        void showURLFromQRCode(object sender, System.EventArgs e)
-        {
-            showURLFromQRCode();
         }
     }
 }

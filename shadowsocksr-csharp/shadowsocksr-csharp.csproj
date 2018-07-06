@@ -65,15 +65,12 @@
   <PropertyGroup />
   <PropertyGroup />
   <ItemGroup>
-    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.XML" />
     <Reference Include="zxing, Version=0.16.4.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
       <HintPath>..\packages\ZXing.Net.0.16.4\lib\net47\zxing.dll</HintPath>
     </Reference>
@@ -153,12 +150,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controller\ShadowsocksController.cs" />
     <Compile Include="Controller\SystemProxy.cs" />
-    <Compile Include="View\InputPassword.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="View\InputPassword.Designer.cs">
-      <DependentUpon>InputPassword.cs</DependentUpon>
-    </Compile>
     <Compile Include="View\LogForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -166,20 +157,8 @@
       <DependentUpon>LogForm.cs</DependentUpon>
     </Compile>
     <Compile Include="View\MenuViewController.cs" />
-    <Compile Include="View\PortSettingsForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="View\PortSettingsForm.Designer.cs">
-      <DependentUpon>PortSettingsForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="View\QRCodeSplashForm.cs">
       <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="View\ResetPassword.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="View\ResetPassword.Designer.cs">
-      <DependentUpon>ResetPassword.cs</DependentUpon>
     </Compile>
     <Compile Include="View\ServerLogForm.cs">
       <SubType>Form</SubType>
@@ -192,12 +171,6 @@
     </Compile>
     <Compile Include="View\SettingsForm.Designer.cs">
       <DependentUpon>SettingsForm.cs</DependentUpon>
-    </Compile>
-    <Compile Include="View\ShowTextForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="View\ShowTextForm.designer.cs">
-      <DependentUpon>ShowTextForm.cs</DependentUpon>
     </Compile>
     <Compile Include="View\SubscribeForm.cs">
       <SubType>Form</SubType>
@@ -214,26 +187,14 @@
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <EmbeddedResource Include="View\InputPassword.resx">
-      <DependentUpon>InputPassword.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="View\LogForm.resx">
       <DependentUpon>LogForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\PortSettingsForm.resx">
-      <DependentUpon>PortSettingsForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\ResetPassword.resx">
-      <DependentUpon>ResetPassword.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\ServerLogForm.resx">
       <DependentUpon>ServerLogForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\SettingsForm.resx">
       <DependentUpon>SettingsForm.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\ShowTextForm.resx">
-      <DependentUpon>ShowTextForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\SubscribeForm.resx">
       <DependentUpon>SubscribeForm.cs</DependentUpon>

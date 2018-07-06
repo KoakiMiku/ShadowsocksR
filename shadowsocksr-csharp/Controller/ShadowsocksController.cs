@@ -255,12 +255,6 @@ namespace ShadowsocksR.Controller
             }
         }
 
-        public void ToggleSelectRandom(bool enabled)
-        {
-            _config.random = enabled;
-            SaveConfig(_config);
-        }
-
         public void ToggleSameHostForSameTargetRandom(bool enabled)
         {
             _config.sameHostForSameTarget = enabled;

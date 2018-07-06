@@ -71,17 +71,11 @@ namespace ShadowsocksR.Model
         public string Group;
     }
 
-    public class GlobalConfiguration
-    {
-        public static string config_password = "";
-    }
-
     [Serializable]
     public class Configuration
     {
         public List<Server> configs;
         public int index;
-        public bool random;
         public int sysProxyMode;
         public bool shareOverLan;
         public int localPort;
@@ -127,18 +121,6 @@ namespace ShadowsocksR.Model
         private Dictionary<int, PortMapConfigCache> portMapCache = new Dictionary<int, PortMapConfigCache>();
 
         private static string CONFIG_FILE = "gui-config.json";
-
-        public static void SetPassword(string password)
-        {
-            GlobalConfiguration.config_password = password;
-        }
-
-        public static bool SetPasswordTry(string old_password, string password)
-        {
-            if (old_password != GlobalConfiguration.config_password)
-                return false;
-            return true;
-        }
 
         public bool KeepCurrentServer(int localPort, string targetAddr, string id)
         {
@@ -217,7 +199,7 @@ namespace ShadowsocksR.Model
                             if (selServer != null)
                                 return selServer.group == server.group;
                             return false;
-                        } , true);
+                        }, true);
                     }
                     else
                     {
@@ -383,7 +365,6 @@ namespace ShadowsocksR.Model
             dnsServer = "";
 
             randomAlgorithm = (int)ServerSelectStrategy.SelectAlgorithm.LowException;
-            random = true;
             sysProxyMode = (int)ProxyMode.Global;
             proxyRuleMode = (int)ProxyRuleMode.BypassLanAndChina;
 
@@ -403,7 +384,6 @@ namespace ShadowsocksR.Model
         {
             configs = config.configs;
             index = config.index;
-            random = config.random;
             sysProxyMode = config.sysProxyMode;
             shareOverLan = config.shareOverLan;
             localPort = config.localPort;
@@ -527,15 +507,6 @@ namespace ShadowsocksR.Model
                 using (StreamWriter sw = new StreamWriter(File.Open(CONFIG_FILE, FileMode.Create)))
                 {
                     string jsonString = JsonConvert.SerializeObject(config);
-                    if (GlobalConfiguration.config_password.Length > 0)
-                    {
-                        IEncryptor encryptor = EncryptorFactory.GetEncryptor("aes-256-cfb", GlobalConfiguration.config_password);
-                        byte[] cfg_data = UTF8Encoding.UTF8.GetBytes(jsonString);
-                        byte[] cfg_encrypt = new byte[cfg_data.Length + 128];
-                        int data_len;
-                        encryptor.Encrypt(cfg_data, cfg_data.Length, cfg_encrypt, out data_len);
-                        jsonString = System.Convert.ToBase64String(cfg_encrypt, 0, data_len);
-                    }
                     sw.Write(jsonString);
                     sw.Flush();
                 }
@@ -548,22 +519,6 @@ namespace ShadowsocksR.Model
 
         public static Configuration Load(string config_str)
         {
-            try
-            {
-                if (GlobalConfiguration.config_password.Length > 0)
-                {
-                    byte[] cfg_encrypt = System.Convert.FromBase64String(config_str);
-                    IEncryptor encryptor = EncryptorFactory.GetEncryptor("aes-256-cfb", GlobalConfiguration.config_password);
-                    byte[] cfg_data = new byte[cfg_encrypt.Length];
-                    int data_len;
-                    encryptor.Decrypt(cfg_encrypt, cfg_encrypt.Length, cfg_data, out data_len);
-                    config_str = UTF8Encoding.UTF8.GetString(cfg_data, 0, data_len);
-                }
-            }
-            catch
-            {
-
-            }
             try
             {
                 Configuration config = JsonConvert.DeserializeObject<Configuration>(config_str);
@@ -646,17 +601,11 @@ namespace ShadowsocksR.Model
 
         void AddUpload(long bytes)
         {
-            //lock (this)
-            {
-                totalUploadBytes += bytes;
-            }
+            totalUploadBytes += bytes;
         }
         void AddDownload(long bytes)
         {
-            //lock (this)
-            {
-                totalDownloadBytes += bytes;
-            }
+            totalDownloadBytes += bytes;
         }
     }
 
@@ -675,22 +624,6 @@ namespace ShadowsocksR.Model
             {
                 string config_str = File.ReadAllText(LOG_FILE);
                 ServerTransferTotal config = new ServerTransferTotal();
-                try
-                {
-                    if (GlobalConfiguration.config_password.Length > 0)
-                    {
-                        byte[] cfg_encrypt = System.Convert.FromBase64String(config_str);
-                        IEncryptor encryptor = EncryptorFactory.GetEncryptor("aes-256-cfb", GlobalConfiguration.config_password);
-                        byte[] cfg_data = new byte[cfg_encrypt.Length];
-                        int data_len;
-                        encryptor.Decrypt(cfg_encrypt, cfg_encrypt.Length, cfg_data, out data_len);
-                        config_str = UTF8Encoding.UTF8.GetString(cfg_data, 0, data_len);
-                    }
-                }
-                catch
-                {
-
-                }
                 config.servers = JsonConvert.DeserializeObject<Dictionary<string, object>>(config_str);
                 config.Init();
                 return config;
@@ -720,15 +653,6 @@ namespace ShadowsocksR.Model
                 using (StreamWriter sw = new StreamWriter(File.Open(LOG_FILE, FileMode.Create)))
                 {
                     string jsonString = JsonConvert.SerializeObject(config.servers);
-                    if (GlobalConfiguration.config_password.Length > 0)
-                    {
-                        IEncryptor encryptor = EncryptorFactory.GetEncryptor("aes-256-cfb", GlobalConfiguration.config_password);
-                        byte[] cfg_data = Encoding.UTF8.GetBytes(jsonString);
-                        byte[] cfg_encrypt = new byte[cfg_data.Length + 128];
-                        int data_len;
-                        encryptor.Encrypt(cfg_data, cfg_data.Length, cfg_encrypt, out data_len);
-                        jsonString = Convert.ToBase64String(cfg_encrypt, 0, data_len);
-                    }
                     sw.Write(jsonString);
                     sw.Flush();
                 }
@@ -762,7 +686,7 @@ namespace ShadowsocksR.Model
             if (--saveCounter <= 0)
             {
                 saveCounter = 256;
-                if ((DateTime.Now - saveTime).TotalMinutes > 10 )
+                if ((DateTime.Now - saveTime).TotalMinutes > 10)
                 {
                     lock (servers)
                     {
@@ -772,6 +696,7 @@ namespace ShadowsocksR.Model
                 }
             }
         }
+
         public void AddDownload(string server, Int64 size)
         {
             lock (servers)
@@ -783,7 +708,7 @@ namespace ShadowsocksR.Model
             if (--saveCounter <= 0)
             {
                 saveCounter = 256;
-                if ((DateTime.Now - saveTime).TotalMinutes > 10 )
+                if ((DateTime.Now - saveTime).TotalMinutes > 10)
                 {
                     lock (servers)
                     {
