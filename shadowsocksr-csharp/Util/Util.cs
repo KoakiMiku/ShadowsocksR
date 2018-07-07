@@ -18,15 +18,7 @@ namespace ShadowsocksR.Util
     {
         private delegate IPHostEntry GetHostEntryHandler(string ip);
 
-        private static LRUCache<string, IPAddress> dnsBuffer = new LRUCache<string, IPAddress>();
-
-        public static LRUCache<string, IPAddress> DnsBuffer
-        {
-            get
-            {
-                return dnsBuffer;
-            }
-        }
+        public static LRUCache<string, IPAddress> DnsBuffer { get; } = new LRUCache<string, IPAddress>();
 
         static Process current_process = Process.GetCurrentProcess();
 
@@ -319,7 +311,7 @@ namespace ShadowsocksR.Util
             {
                 if (!string.IsNullOrEmpty(dns_servers))
                 {
-                    OpenDNS.Types[] types;
+                    Types[] types;
                     if (IPv6_first)
                         types = new Types[] { Types.AAAA, Types.A };
                     else
@@ -379,8 +371,10 @@ namespace ShadowsocksR.Util
                     }
                     for (int query_i = 0; query_i < types.Length; ++query_i)
                     {
-                        DnsQuery dns = new DnsQuery(host, types[query_i]);
-                        dns.RecursionDesired = true;
+                        DnsQuery dns = new DnsQuery(host, types[query_i])
+                        {
+                            RecursionDesired = true
+                        };
                         foreach (IPEndPoint server in dns_server)
                         {
                             dns.Servers.Add(server);
@@ -394,35 +388,33 @@ namespace ShadowsocksR.Util
                                 {
                                     if (((ResourceRecord)dns.Response.Answers[i]).Type != types[query_i])
                                         continue;
-                                    return ((OpenDNS.Address)dns.Response.Answers[i]).IP;
+                                    return ((Address)dns.Response.Answers[i]).IP;
                                 }
                             }
                         }
                     }
                 }
+                try
                 {
-                    try
+                    GetHostEntryHandler callback = new GetHostEntryHandler(Dns.GetHostEntry);
+                    IAsyncResult result = callback.BeginInvoke(host, null, null);
+                    if (result.AsyncWaitHandle.WaitOne(10000, true))
                     {
-                        GetHostEntryHandler callback = new GetHostEntryHandler(Dns.GetHostEntry);
-                        IAsyncResult result = callback.BeginInvoke(host, null, null);
-                        if (result.AsyncWaitHandle.WaitOne(10000, true))
+                        IPHostEntry ipHostEntry = callback.EndInvoke(result);
+                        foreach (IPAddress ad in ipHostEntry.AddressList)
                         {
-                            IPHostEntry ipHostEntry = callback.EndInvoke(result);
-                            foreach (IPAddress ad in ipHostEntry.AddressList)
-                            {
-                                if (ad.AddressFamily == AddressFamily.InterNetwork)
-                                    return ad;
-                            }
-                            foreach (IPAddress ad in ipHostEntry.AddressList)
-                            {
+                            if (ad.AddressFamily == AddressFamily.InterNetwork)
                                 return ad;
-                            }
+                        }
+                        foreach (IPAddress ad in ipHostEntry.AddressList)
+                        {
+                            return ad;
                         }
                     }
-                    catch
-                    {
+                }
+                catch
+                {
 
-                    }
                 }
             }
             return ret_ipAddress;
@@ -436,10 +428,12 @@ namespace ShadowsocksR.Util
         public static int RunAsAdmin(string Arguments)
         {
             Process process = null;
-            ProcessStartInfo processInfo = new ProcessStartInfo();
-            processInfo.Verb = "runas";
-            processInfo.FileName = Application.ExecutablePath;
-            processInfo.Arguments = Arguments;
+            ProcessStartInfo processInfo = new ProcessStartInfo
+            {
+                Verb = "runas",
+                FileName = Application.ExecutablePath,
+                Arguments = Arguments
+            };
             try
             {
                 process = Process.Start(processInfo);

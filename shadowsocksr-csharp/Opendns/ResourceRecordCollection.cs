@@ -9,17 +9,15 @@
  * Note: Based on DnsLite by Jaimon Mathew
  * */
 
-using System;
 using System.Collections;
-using System.Text;
 
 namespace OpenDNS
 {
-	/// <summary>
-	/// The Collection Class inherits from ArrayList.  It has its own implemenation 
-	/// of Sort based on the sortable fields.
-	/// </summary>
-	public class ResourceRecordCollection : ArrayList
+    /// <summary>
+    /// The Collection Class inherits from ArrayList.  It has its own implemenation 
+    /// of Sort based on the sortable fields.
+    /// </summary>
+    public class ResourceRecordCollection : ArrayList
 	{
 		public enum SortFields
 		{

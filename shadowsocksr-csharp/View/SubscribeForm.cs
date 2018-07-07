@@ -161,14 +161,18 @@ namespace ShadowsocksR.View
             int select_index = _modifiedConfiguration.serverSubscribes.Count;
             if (_old_select_index >= 0 && _old_select_index < _modifiedConfiguration.serverSubscribes.Count)
             {
-                var serverSubscribe = new ServerSubscribe();
-                serverSubscribe.URL = textBoxURL.Text;
+                var serverSubscribe = new ServerSubscribe
+                {
+                    URL = textBoxURL.Text
+                };
                 _modifiedConfiguration.serverSubscribes.Insert(select_index, serverSubscribe);
             }
             else
             {
-                var serverSubscribe = new ServerSubscribe();
-                serverSubscribe.URL = textBoxURL.Text;
+                var serverSubscribe = new ServerSubscribe
+                {
+                    URL = textBoxURL.Text
+                };
                 _modifiedConfiguration.serverSubscribes.Add(serverSubscribe);
             }
             UpdateList();

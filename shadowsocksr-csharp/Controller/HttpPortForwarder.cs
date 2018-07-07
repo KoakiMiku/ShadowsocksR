@@ -168,8 +168,10 @@ namespace ShadowsocksR.Controller
                     IPEndPoint remoteEP = new IPEndPoint(ipAddress, _targetPort);
 
                     _remote = new Socket(ipAddress.AddressFamily,
-                        SocketType.Stream, ProtocolType.Tcp);
-                    _remote.NoDelay = true;
+                        SocketType.Stream, ProtocolType.Tcp)
+                    {
+                        NoDelay = true
+                    };
 
                     // Connect to the remote endpoint.
                     _remote.BeginConnect(remoteEP,

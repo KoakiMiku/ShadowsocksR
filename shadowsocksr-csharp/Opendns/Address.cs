@@ -9,15 +9,14 @@
  * Note: Based on DnsLite by Jaimon Mathew
  * */
 
-using System;
 using System.Net;
 
 namespace OpenDNS
 {
-	/// <summary>
-	/// Address Resource Record
-	/// </summary>
-	public class Address : ResourceRecord
+    /// <summary>
+    /// Address Resource Record
+    /// </summary>
+    public class Address : ResourceRecord
 	{
 		public string ResourceAddress; 
 		private IPAddress _IP; 

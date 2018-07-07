@@ -1,10 +1,8 @@
 ﻿using Newtonsoft.Json;
 using ShadowsocksR.Controller;
-using ShadowsocksR.Encryption;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace ShadowsocksR.Model
 {
@@ -221,10 +219,12 @@ namespace ShadowsocksR.Model
                     if (index == -1) return GetErrorServer();
                     if (targetAddr != null)
                     {
-                        UriVisitTime visit = new UriVisitTime();
-                        visit.uri = targetAddr;
-                        visit.index = index;
-                        visit.visitTime = DateTime.Now;
+                        UriVisitTime visit = new UriVisitTime
+                        {
+                            uri = targetAddr,
+                            index = index,
+                            visitTime = DateTime.Now
+                        };
                         if (uri2time.ContainsKey(targetAddr))
                         {
                             time2uri.Remove(uri2time[targetAddr]);
@@ -256,10 +256,12 @@ namespace ShadowsocksR.Model
 
                         if (targetAddr != null)
                         {
-                            UriVisitTime visit = new UriVisitTime();
-                            visit.uri = targetAddr;
-                            visit.index = selIndex;
-                            visit.visitTime = DateTime.Now;
+                            UriVisitTime visit = new UriVisitTime
+                            {
+                                uri = targetAddr,
+                                index = selIndex,
+                                visitTime = DateTime.Now
+                            };
                             if (uri2time.ContainsKey(targetAddr))
                             {
                                 time2uri.Remove(uri2time[targetAddr]);
@@ -359,19 +361,12 @@ namespace ShadowsocksR.Model
             dnsServer = "";
 
             randomAlgorithm = (int)ServerSelectStrategy.SelectAlgorithm.LowException;
-            sysProxyMode = (int)ProxyMode.Global;
+            sysProxyMode = (int)ProxyMode.Direct;
             proxyRuleMode = (int)ProxyRuleMode.BypassLanAndChina;
+            nodeFeedAutoUpdate = false;
 
-            nodeFeedAutoUpdate = true;
-
-            serverSubscribes = new List<ServerSubscribe>()
-            {
-            };
-
-            configs = new List<Server>()
-            {
-                GetDefaultServer()
-            };
+            serverSubscribes = new List<ServerSubscribe>();
+            configs = new List<Server>();
         }
 
         public void CopyFrom(Configuration config)
@@ -498,7 +493,7 @@ namespace ShadowsocksR.Model
             {
                 using (StreamWriter sw = new StreamWriter(File.Open(CONFIG_FILE, FileMode.Create)))
                 {
-                    string jsonString = JsonConvert.SerializeObject(config);
+                    string jsonString = JsonConvert.SerializeObject(config, Formatting.Indented);
                     sw.Write(jsonString);
                     sw.Flush();
                 }
@@ -537,26 +532,30 @@ namespace ShadowsocksR.Model
 
         public static Server CopyServer(Server server)
         {
-            Server s = new Server();
-            s.server = server.server;
-            s.server_port = server.server_port;
-            s.method = server.method;
-            s.protocol = server.protocol;
-            s.protocolparam = server.protocolparam ?? "";
-            s.obfs = server.obfs;
-            s.obfsparam = server.obfsparam ?? "";
-            s.password = server.password;
-            s.remarks = server.remarks;
-            s.group = server.group;
-            s.udp_over_tcp = server.udp_over_tcp;
-            s.server_udp_port = server.server_udp_port;
+            Server s = new Server
+            {
+                server = server.server,
+                server_port = server.server_port,
+                method = server.method,
+                protocol = server.protocol,
+                protocolparam = server.protocolparam ?? "",
+                obfs = server.obfs,
+                obfsparam = server.obfsparam ?? "",
+                password = server.password,
+                remarks = server.remarks,
+                group = server.group,
+                udp_over_tcp = server.udp_over_tcp,
+                server_udp_port = server.server_udp_port
+            };
             return s;
         }
 
         public static Server GetErrorServer()
         {
-            Server server = new Server();
-            server.server = "invalid";
+            Server server = new Server
+            {
+                server = "invalid"
+            };
             return server;
         }
 
@@ -606,7 +605,7 @@ namespace ShadowsocksR.Model
     {
         private static string LOG_FILE = "transfer_log.json";
 
-        public Dictionary<string, object> servers = new Dictionary<string, object>();
+        public Dictionary<string, ServerTrans> servers = new Dictionary<string, ServerTrans>();
         private int saveCounter;
         private DateTime saveTime;
 
@@ -615,8 +614,10 @@ namespace ShadowsocksR.Model
             try
             {
                 string config_str = File.ReadAllText(LOG_FILE);
-                ServerTransferTotal config = new ServerTransferTotal();
-                config.servers = JsonConvert.DeserializeObject<Dictionary<string, object>>(config_str);
+                ServerTransferTotal config = new ServerTransferTotal
+                {
+                    servers = JsonConvert.DeserializeObject<Dictionary<string, ServerTrans>>(config_str)
+                };
                 config.Init();
                 return config;
             }
@@ -635,7 +636,7 @@ namespace ShadowsocksR.Model
             saveCounter = 256;
             saveTime = DateTime.Now;
             if (servers == null)
-                servers = new Dictionary<string, object>();
+                servers = new Dictionary<string, ServerTrans>();
         }
 
         public static void Save(ServerTransferTotal config)
@@ -644,7 +645,7 @@ namespace ShadowsocksR.Model
             {
                 using (StreamWriter sw = new StreamWriter(File.Open(LOG_FILE, FileMode.Create)))
                 {
-                    string jsonString = JsonConvert.SerializeObject(config.servers);
+                    string jsonString = JsonConvert.SerializeObject(config.servers, Formatting.Indented);
                     sw.Write(jsonString);
                     sw.Flush();
                 }
@@ -661,8 +662,8 @@ namespace ShadowsocksR.Model
             {
                 if (servers.ContainsKey(server))
                 {
-                    ((ServerTrans)servers[server]).totalUploadBytes = 0;
-                    ((ServerTrans)servers[server]).totalDownloadBytes = 0;
+                    servers[server].totalUploadBytes = 0;
+                    servers[server].totalDownloadBytes = 0;
                 }
             }
         }
@@ -673,7 +674,7 @@ namespace ShadowsocksR.Model
             {
                 if (!servers.ContainsKey(server))
                     servers.Add(server, new ServerTrans());
-                ((ServerTrans)servers[server]).totalUploadBytes += size;
+                servers[server].totalUploadBytes += size;
             }
             if (--saveCounter <= 0)
             {
@@ -695,7 +696,7 @@ namespace ShadowsocksR.Model
             {
                 if (!servers.ContainsKey(server))
                     servers.Add(server, new ServerTrans());
-                ((ServerTrans)servers[server]).totalDownloadBytes += size;
+                servers[server].totalDownloadBytes += size;
             }
             if (--saveCounter <= 0)
             {

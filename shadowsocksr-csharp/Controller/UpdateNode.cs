@@ -69,7 +69,6 @@ namespace ShadowsocksR.Controller
         Configuration _config;
         List<ServerSubscribe> _serverSubscribes;
         UpdateNode _updater;
-        string _URL;
         bool _use_proxy;
 
         public void CreateTask(Configuration config, UpdateNode updater, int index, bool use_proxy)
@@ -105,19 +104,13 @@ namespace ShadowsocksR.Controller
             }
             else
             {
-                _URL = _serverSubscribes[0].URL;
-                _updater.CheckUpdate(_config, _URL, _use_proxy);
+                URL = _serverSubscribes[0].URL;
+                _updater.CheckUpdate(_config, URL, _use_proxy);
                 _serverSubscribes.RemoveAt(0);
                 return true;
             }
         }
 
-        public string URL
-        {
-            get
-            {
-                return _URL;
-            }
-        }
+        public string URL { get; set; }
     }
 }

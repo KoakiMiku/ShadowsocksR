@@ -443,13 +443,15 @@ namespace ShadowsocksR.Controller
         {
             Logging.Debug("Reconnect " + cfg.targetHost + ":" + cfg.targetPort.ToString() + " " + connection.GetSocket().Handle.ToString());
             {
-                Handler handler = new Handler();
-                handler.getCurrentServer = getCurrentServer;
-                handler.keepCurrentServer = keepCurrentServer;
-                handler.select_server = select_server;
-                handler.connection = connection;
-                handler.connectionUDP = connectionUDP;
-                handler.cfg = cfg;
+                Handler handler = new Handler
+                {
+                    getCurrentServer = getCurrentServer,
+                    keepCurrentServer = keepCurrentServer,
+                    select_server = select_server,
+                    connection = connection,
+                    connectionUDP = connectionUDP,
+                    cfg = cfg
+                };
                 handler.cfg.reconnectTimesRemain = cfg.reconnectTimesRemain - 1;
                 handler.cfg.reconnectTimes = cfg.reconnectTimes + 1;
 
@@ -1006,7 +1008,7 @@ namespace ShadowsocksR.Controller
                 connectionUDPIdle = false;
                 const int BufferSize = 65536;
                 IPEndPoint sender = new IPEndPoint(connectionUDP.AddressFamily == AddressFamily.InterNetworkV6 ? IPAddress.IPv6Any : IPAddress.Any, 0);
-                EndPoint tempEP = (EndPoint)sender;
+                EndPoint tempEP = sender;
                 byte[] buffer = new byte[BufferSize];
                 connectionUDP.BeginReceiveFrom(buffer, 0, BufferSize, SocketFlags.None, ref tempEP,
                     new AsyncCallback(PipeConnectionUDPReceiveCallback), buffer);
@@ -1063,7 +1065,7 @@ namespace ShadowsocksR.Controller
                 remoteUDPIdle = false;
                 const int BufferSize = 65536;
                 IPEndPoint sender = new IPEndPoint(remoteUDP.AddressFamily == AddressFamily.InterNetworkV6 ? IPAddress.IPv6Any : IPAddress.Any, 0);
-                EndPoint tempEP = (EndPoint)sender;
+                EndPoint tempEP = sender;
                 remoteUDP.BeginReceiveFrom(new byte[BufferSize], BufferSize, SocketFlags.None, ref tempEP,
                     new AsyncCallback(PipeRemoteUDPReceiveCallback), null);
             }
@@ -1474,7 +1476,7 @@ namespace ShadowsocksR.Controller
                     return;
                 }
                 IPEndPoint sender = new IPEndPoint(remoteUDP.AddressFamily == AddressFamily.InterNetworkV6 ? IPAddress.IPv6Any : IPAddress.Any, 0);
-                EndPoint tempEP = (EndPoint)sender;
+                EndPoint tempEP = sender;
 
                 int bytesRead = endRemoteUDPRecv(ar, ref tempEP);
 
@@ -1659,7 +1661,7 @@ namespace ShadowsocksR.Controller
                     return;
                 }
                 IPEndPoint sender = new IPEndPoint(connectionUDP.AddressFamily == AddressFamily.InterNetworkV6 ? IPAddress.IPv6Any : IPAddress.Any, 0);
-                EndPoint tempEP = (EndPoint)sender;
+                EndPoint tempEP = sender;
 
                 int bytesRead = endConnectionUDPRecv(ar, ref tempEP);
 

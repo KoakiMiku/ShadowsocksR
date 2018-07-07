@@ -28,7 +28,7 @@ namespace ShadowsocksR.Model
 
     public class Connections
     {
-        private System.Collections.Generic.Dictionary<IHandler, Int32> sockets = new Dictionary<IHandler, int>();
+        private Dictionary<IHandler, int> sockets = new Dictionary<IHandler, int>();
         public bool AddRef(IHandler socket)
         {
             lock (this)
@@ -277,21 +277,23 @@ namespace ShadowsocksR.Model
 
         public Server Clone()
         {
-            Server ret = new Server();
-            ret.server = server;
-            ret.server_port = server_port;
-            ret.password = password;
-            ret.method = method;
-            ret.protocol = protocol;
-            ret.obfs = obfs;
-            ret.obfsparam = obfsparam ?? "";
-            ret.remarks_base64 = remarks_base64;
-            ret.group = group;
-            ret.enable = enable;
-            ret.udp_over_tcp = udp_over_tcp;
-            ret.id = id;
-            ret.protocoldata = protocoldata;
-            ret.obfsdata = obfsdata;
+            Server ret = new Server
+            {
+                server = server,
+                server_port = server_port,
+                password = password,
+                method = method,
+                protocol = protocol,
+                obfs = obfs,
+                obfsparam = obfsparam ?? "",
+                remarks_base64 = remarks_base64,
+                group = group,
+                enable = enable,
+                udp_over_tcp = udp_over_tcp,
+                id = id,
+                protocoldata = protocoldata,
+                obfsdata = obfsdata
+            };
             return ret;
         }
 

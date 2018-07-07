@@ -9,15 +9,13 @@
  * Note: Based on DnsLite by Jaimon Mathew
  * */
 
-using System;
-using System.Text;
 
 namespace OpenDNS
 {
-	/// <summary>
-	/// MailExchange Resource Record
-	/// </summary>
-	public class MX : ResourceRecord
+    /// <summary>
+    /// MailExchange Resource Record
+    /// </summary>
+    public class MX : ResourceRecord
 	{
 		public int Preference;
 		public string Exchange;

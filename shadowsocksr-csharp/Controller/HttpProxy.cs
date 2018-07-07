@@ -112,7 +112,7 @@ namespace ShadowsocksR.Controller
                     remoteHeaderSendBuffer = new byte[2 + host.Length + 2];
                     remoteHeaderSendBuffer[0] = 3;
                     remoteHeaderSendBuffer[1] = (byte)host.Length;
-                    System.Text.Encoding.UTF8.GetBytes(host).CopyTo(remoteHeaderSendBuffer, 2);
+                    Encoding.UTF8.GetBytes(host).CopyTo(remoteHeaderSendBuffer, 2);
                 }
                 else
                 {
@@ -214,7 +214,7 @@ namespace ShadowsocksR.Controller
             {
                 return 1;
             }
-            string data = System.Text.Encoding.UTF8.GetString(httpRequestBuffer, 0, pos + 4);
+            string data = Encoding.UTF8.GetString(httpRequestBuffer, 0, pos + 4);
             {
                 byte[] nextbuffer = new byte[httpRequestBuffer.Length - (pos + 4)];
                 Array.Copy(httpRequestBuffer, pos + 4, nextbuffer, 0, nextbuffer.Length);
@@ -248,7 +248,7 @@ namespace ShadowsocksR.Controller
                 }
                 string httpRequest = HeaderDictToString(header_dict);
                 int len = remoteHeaderSendBuffer.Length;
-                byte[] httpData = System.Text.Encoding.UTF8.GetBytes(httpRequest);
+                byte[] httpData = Encoding.UTF8.GetBytes(httpRequest);
                 Array.Resize(ref remoteHeaderSendBuffer, len + httpData.Length);
                 httpData.CopyTo(remoteHeaderSendBuffer, len);
                 httpProxy = true;

@@ -63,7 +63,7 @@ namespace ShadowsocksR.Controller
             {
                 if (_transfer.servers.ContainsKey(server.server))
                 {
-                    ServerSpeedLog log = new ServerSpeedLog(((ServerTrans)_transfer.servers[server.server]).totalUploadBytes, ((ServerTrans)_transfer.servers[server.server]).totalDownloadBytes);
+                    ServerSpeedLog log = new ServerSpeedLog(_transfer.servers[server.server].totalUploadBytes, _transfer.servers[server.server].totalDownloadBytes);
                     server.SetServerSpeedLog(log);
                 }
             }

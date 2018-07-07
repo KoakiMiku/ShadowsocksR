@@ -9,16 +9,15 @@
  * Note: Based on DnsLite by Jaimon Mathew
  * */
 
-using System;
 using System.Text;
 
 namespace OpenDNS
 {
-	/// <summary>
-	/// Base Resource Record class for objects returned in 
-	/// answers, authorities and additional record DNS responses. 
-	/// </summary>
-	public class ResourceRecord
+    /// <summary>
+    /// Base Resource Record class for objects returned in 
+    /// answers, authorities and additional record DNS responses. 
+    /// </summary>
+    public class ResourceRecord
 	{
 		public string Name; 
 		public Types Type; 

@@ -11,7 +11,6 @@
 
 using System;
 using System.Net;
-using System.IO;
 using System.Text;
 using System.Net.Sockets;
 using System.Collections;
@@ -39,14 +38,8 @@ namespace OpenDNS
         public ArrayList Servers;
         public bool RecursionDesired;
 
-        //Internal Read-Only
-        private DnsResponse _Response;
-
         //Public Properties
-        public DnsResponse Response
-        {
-            get { return _Response; }
-        }
+        public DnsResponse Response { get; set; }
 
         /// <summary>
         /// Default Constructor with QueryType: A 
@@ -176,14 +169,14 @@ namespace OpenDNS
             //SetID
             Question[0] = (byte)(QueryID >> 8);
             Question[1] = (byte)(QueryID & byte.MaxValue);
-            Question[2] = (byte)1; //Set OpCode to Regular Query
-                                   //Set bool bit for recursion desired 
+            Question[2] = 1; //Set OpCode to Regular Query
+                             //Set bool bit for recursion desired 
             Question[2] = (byte)((RecursionDesired) ? (Question[2] | 1) : (Question[2] & 254));
             //Set Recursion Available (Filler)
-            Question[3] = (byte)0;
+            Question[3] = 0;
             //Set Question Count 
-            Question[4] = (byte)0;
-            Question[5] = (byte)1;
+            Question[4] = 0;
+            Question[5] = 1;
 
             ///Fill Question Section
 
@@ -208,12 +201,12 @@ namespace OpenDNS
                 }
             }
             //End Domain Marker
-            Question[Cursor++] = (byte)0;
+            Question[Cursor++] = 0;
             //Set Query type
-            Question[Cursor++] = (byte)0;
+            Question[Cursor++] = 0;
             Question[Cursor++] = (byte)QueryType;
             //Set Query class
-            Question[Cursor++] = (byte)0;
+            Question[Cursor++] = 0;
             Question[Cursor++] = (byte)QueryClass;
 
             return Question;
@@ -242,7 +235,7 @@ namespace OpenDNS
             int AdditionalCount = ((data[10] & byte.MaxValue) << 8) | (data[11] & byte.MaxValue);
 
             //Create Response Object
-            _Response = new DnsResponse(ID, AA, TC, RD, RA, RC);
+            Response = new DnsResponse(ID, AA, TC, RD, RA, RC);
 
             //FINISHED HEADER
 
@@ -264,13 +257,13 @@ namespace OpenDNS
             }
 
             for (int i = 0; i < AnswerCount; ++i)
-                GetResourceRecord(i, _Response.Answers);
+                GetResourceRecord(i, Response.Answers);
 
             for (int i = 0; i < AuthorityCount; ++i)
-                GetResourceRecord(i, _Response.Authorities);
+                GetResourceRecord(i, Response.Authorities);
 
             for (int i = 0; i < AdditionalCount; ++i)
-                GetResourceRecord(i, _Response.AdditionalRecords);
+                GetResourceRecord(i, Response.AdditionalRecords);
 
         }
 
@@ -303,7 +296,7 @@ namespace OpenDNS
                         byte[] bs = new byte[] { (byte)(data[position++] & byte.MaxValue), (byte)(data[position++] & byte.MaxValue), (byte)(data[position++] & byte.MaxValue), (byte)(data[position++] & byte.MaxValue) };
                         string ResourceAddress = String.Concat(new object[] { bs[0], ".", bs[1], ".", bs[2], ".", bs[3] });
 
-                        OpenDNS.Address rrA = new Address(ResourceName, ResourceType, ResourceClass, TTL_Seconds, ResourceAddress);
+                        Address rrA = new Address(ResourceName, ResourceType, ResourceClass, TTL_Seconds, ResourceAddress);
                         Container.Add(rrA);
                         break;
                     }
@@ -323,7 +316,7 @@ namespace OpenDNS
                             Convert.ToString(bs[6], 16), ":",
                             Convert.ToString(bs[7], 16)});
 
-                        OpenDNS.Address rrA = new Address(ResourceName, ResourceType, ResourceClass, TTL_Seconds, ResourceAddress);
+                        Address rrA = new Address(ResourceName, ResourceType, ResourceClass, TTL_Seconds, ResourceAddress);
                         Container.Add(rrA);
                         break;
                     }

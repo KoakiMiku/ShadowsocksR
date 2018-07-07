@@ -213,16 +213,15 @@ namespace ShadowsocksR.Controller
                             _ServerSpeedLogList[i] = config.configs[i].ServerSpeedLog().Translate();
                             servers[config.configs[i].id] = _ServerSpeedLogList[i];
                         }
-                        string content = JsonConvert.SerializeObject(servers);
-
+                        string content = JsonConvert.SerializeObject(servers, Formatting.Indented);
                         string text = String.Format(@"HTTP/1.1 200 OK
 Server: ShadowsocksR
 Content-Type: text/plain
 Content-Length: {0}
 Connection: Close
 
-", System.Text.Encoding.UTF8.GetBytes(content).Length) + content;
-                        byte[] response = System.Text.Encoding.UTF8.GetBytes(text);
+", Encoding.UTF8.GetBytes(content).Length) + content;
+                        byte[] response = Encoding.UTF8.GetBytes(text);
                         _local.BeginSend(response, 0, response.Length, 0, new AsyncCallback(SendCallback), _local);
                         return "";
                     }
@@ -242,8 +241,8 @@ Content-Type: text/plain
 Content-Length: {1}
 Connection: Close
 
-", ret_code, System.Text.Encoding.UTF8.GetBytes(content).Length) + content;
-                            byte[] response = System.Text.Encoding.UTF8.GetBytes(text);
+", ret_code, Encoding.UTF8.GetBytes(content).Length) + content;
+                            byte[] response = Encoding.UTF8.GetBytes(text);
                             _local.BeginSend(response, 0, response.Length, 0, new AsyncCallback(SendCallback), _local);
                             return "";
                         }
@@ -251,7 +250,7 @@ Connection: Close
                         {
                             Dictionary<string, string> token = _config.token;
                             _config.token = new Dictionary<string, string>();
-                            string content = JsonConvert.SerializeObject(_config);
+                            string content = JsonConvert.SerializeObject(_config, Formatting.Indented);
                             _config.token = token;
 
                             string text = String.Format(@"HTTP/1.1 200 OK
@@ -260,8 +259,8 @@ Content-Type: text/plain
 Content-Length: {0}
 Connection: Close
 
-", System.Text.Encoding.UTF8.GetBytes(content).Length) + content;
-                            byte[] response = System.Text.Encoding.UTF8.GetBytes(text);
+", Encoding.UTF8.GetBytes(content).Length) + content;
+                            byte[] response = Encoding.UTF8.GetBytes(text);
                             _local.BeginSend(response, 0, response.Length, 0, new AsyncCallback(SendCallback), _local);
                             return "";
                         }
@@ -269,7 +268,7 @@ Connection: Close
                 }
             }
             {
-                byte[] response = System.Text.Encoding.UTF8.GetBytes("");
+                byte[] response = Encoding.UTF8.GetBytes("");
                 _local.BeginSend(response, 0, response.Length, 0, new AsyncCallback(SendCallback), _local);
             }
             return "";

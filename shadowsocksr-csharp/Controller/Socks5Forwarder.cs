@@ -221,8 +221,10 @@ namespace ShadowsocksR.Controller
                 _IPRange = IPRange;
                 _firstPacket = firstPacket;
                 _firstPacketLength = length;
-                _local = new ProxySocketTunLocal(socket);
-                _local.local_sendback_protocol = local_sendback_protocol;
+                _local = new ProxySocketTunLocal(socket)
+                {
+                    local_sendback_protocol = local_sendback_protocol
+                };
                 _config = config;
                 _local_proxy = proxy;
                 Connect();

@@ -9,7 +9,6 @@
  * Note: Based on DnsLite by Jaimon Mathew
  * */
 
-using System;
 
 namespace OpenDNS
 {

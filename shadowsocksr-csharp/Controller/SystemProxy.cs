@@ -241,10 +241,12 @@ namespace ShadowsocksR.Controller
             }
 
             // Initialize a INTERNET_PER_CONN_OPTION_LIST instance.
-            INTERNET_PER_CONN_OPTION_LIST optionList = new INTERNET_PER_CONN_OPTION_LIST();
+            INTERNET_PER_CONN_OPTION_LIST optionList = new INTERNET_PER_CONN_OPTION_LIST
+            {
 
-            // Point to the allocated memory.
-            optionList.pOptions = buffer;
+                // Point to the allocated memory.
+                pOptions = buffer
+            };
 
             // Return the unmanaged size of an object in bytes.
             optionList.Size = Marshal.SizeOf(optionList);

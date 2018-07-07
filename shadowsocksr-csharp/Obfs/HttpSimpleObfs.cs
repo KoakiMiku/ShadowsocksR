@@ -554,23 +554,23 @@ namespace ShadowsocksR.Obfs
 
                 ssl_buf.AddRange(ext_buf);
                 // client version
-                ssl_buf.Insert(0, (byte)3); // version
-                ssl_buf.Insert(0, (byte)3);
+                ssl_buf.Insert(0, 3); // version
+                ssl_buf.Insert(0, 3);
                 // length
                 ssl_buf.Insert(0, (byte)(ssl_buf.Count % 256));
                 ssl_buf.Insert(0, (byte)((ssl_buf.Count - 1) / 256));
-                ssl_buf.Insert(0, (byte)0);
-                ssl_buf.Insert(0, (byte)1); // client hello
+                ssl_buf.Insert(0, 0);
+                ssl_buf.Insert(0, 1); // client hello
                 // length
                 ssl_buf.Insert(0, (byte)(ssl_buf.Count % 256));
                 ssl_buf.Insert(0, (byte)((ssl_buf.Count - 1) / 256));
                 //
-                ssl_buf.Insert(0, (byte)0x1); // version
-                ssl_buf.Insert(0, (byte)0x3);
-                ssl_buf.Insert(0, (byte)0x16);
+                ssl_buf.Insert(0, 0x1); // version
+                ssl_buf.Insert(0, 0x3);
+                ssl_buf.Insert(0, 0x16);
                 for (int i = 0; i < ssl_buf.Count; ++i)
                 {
-                    outdata[i] = (byte)ssl_buf[i];
+                    outdata[i] = ssl_buf[i];
                 }
                 outlength = ssl_buf.Count;
 

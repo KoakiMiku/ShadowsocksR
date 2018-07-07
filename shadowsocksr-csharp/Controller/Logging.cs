@@ -42,8 +42,10 @@ namespace ShadowsocksR.Controller
                 LogFileName = "shadowsocks_" + new_date + ".log";
                 LogFile = Path.Combine(curpath, LogFileName);
                 _logFileStream = new FileStream(LogFile, FileMode.Append);
-                _logStreamWriter = new StreamWriterWithTimestamp(_logFileStream);
-                _logStreamWriter.AutoFlush = true;
+                _logStreamWriter = new StreamWriterWithTimestamp(_logFileStream)
+                {
+                    AutoFlush = true
+                };
                 Console.SetOut(_logStreamWriter);
                 Console.SetError(_logStreamWriter);
                 date = new_date;

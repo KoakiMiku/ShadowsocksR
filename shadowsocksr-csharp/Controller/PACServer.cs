@@ -192,8 +192,8 @@ Content-Type: application/x-ns-proxy-autoconfig
 Content-Length: {0}
 Connection: Close
 
-", System.Text.Encoding.UTF8.GetBytes(pac).Length) + pac;
-                byte[] response = System.Text.Encoding.UTF8.GetBytes(text);
+", Encoding.UTF8.GetBytes(pac).Length) + pac;
+                byte[] response = Encoding.UTF8.GetBytes(text);
                 socket.BeginSend(response, 0, response.Length, 0, new AsyncCallback(SendCallback), socket);
             }
             catch (Exception e)
@@ -222,9 +222,11 @@ Connection: Close
             {
                 PACFileWatcher.Dispose();
             }
-            PACFileWatcher = new FileSystemWatcher(Directory.GetCurrentDirectory());
-            PACFileWatcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.DirectoryName;
-            PACFileWatcher.Filter = PAC_FILE;
+            PACFileWatcher = new FileSystemWatcher(Directory.GetCurrentDirectory())
+            {
+                NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.DirectoryName,
+                Filter = PAC_FILE
+            };
             PACFileWatcher.Changed += Watcher_Changed;
             PACFileWatcher.Created += Watcher_Changed;
             PACFileWatcher.Deleted += Watcher_Changed;
@@ -238,9 +240,11 @@ Connection: Close
             {
                 UserRuleFileWatcher.Dispose();
             }
-            UserRuleFileWatcher = new FileSystemWatcher(Directory.GetCurrentDirectory());
-            UserRuleFileWatcher.NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.DirectoryName;
-            UserRuleFileWatcher.Filter = USER_RULE_FILE;
+            UserRuleFileWatcher = new FileSystemWatcher(Directory.GetCurrentDirectory())
+            {
+                NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.DirectoryName,
+                Filter = USER_RULE_FILE
+            };
             UserRuleFileWatcher.Changed += UserRuleFileWatcher_Changed;
             UserRuleFileWatcher.Created += UserRuleFileWatcher_Changed;
             UserRuleFileWatcher.Deleted += UserRuleFileWatcher_Changed;

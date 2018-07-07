@@ -458,7 +458,7 @@ namespace ShadowsocksR.Controller
                 else if (err == 2)
                 {
                     string dataSend = httpProxyState.Http407();
-                    byte[] httpData = System.Text.Encoding.UTF8.GetBytes(dataSend);
+                    byte[] httpData = Encoding.UTF8.GetBytes(dataSend);
                     _connection.Send(httpData);
                     if (HttpHandshakeRecv())
                         break;
@@ -477,7 +477,7 @@ namespace ShadowsocksR.Controller
                 else if (err == 500)
                 {
                     string dataSend = httpProxyState.Http500();
-                    byte[] httpData = System.Text.Encoding.UTF8.GetBytes(dataSend);
+                    byte[] httpData = Encoding.UTF8.GetBytes(dataSend);
                     _connection.Send(httpData);
                     if (HttpHandshakeRecv())
                         break;
@@ -521,12 +521,13 @@ namespace ShadowsocksR.Controller
             Handler.KeepCurrentServer keepCurrentServer = delegate (int localPort, string targetURI, string id) { _config.KeepCurrentServer(localPort, targetURI, id); };
 
             int local_port = ((IPEndPoint)_connection.LocalEndPoint).Port;
-            Handler handler = new Handler();
-
-            handler.getCurrentServer = getCurrentServer;
-            handler.keepCurrentServer = keepCurrentServer;
-            handler.connection = new ProxySocketTunLocal(_connection);
-            handler.connectionUDP = _connectionUDP;
+            Handler handler = new Handler
+            {
+                getCurrentServer = getCurrentServer,
+                keepCurrentServer = keepCurrentServer,
+                connection = new ProxySocketTunLocal(_connection),
+                connectionUDP = _connectionUDP
+            };
             handler.cfg.reconnectTimesRemain = _config.reconnectTimes;
             handler.setServerTransferTotal(_transfer);
             if (_config.proxyEnable)
@@ -559,7 +560,7 @@ namespace ShadowsocksR.Controller
                     }
                     if (cfg.type == PortMapType.Forward) // tunnel
                     {
-                        byte[] addr = System.Text.Encoding.UTF8.GetBytes(cfg.server_addr);
+                        byte[] addr = Encoding.UTF8.GetBytes(cfg.server_addr);
                         byte[] newFirstPacket = new byte[_firstPacketLength + addr.Length + 4];
                         newFirstPacket[0] = 3;
                         newFirstPacket[1] = (byte)addr.Length;

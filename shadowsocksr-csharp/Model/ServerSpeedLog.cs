@@ -455,9 +455,11 @@ namespace ShadowsocksR.Model
                             if (begin_index <= last_index - 4)
                             {
                                 begin_index++;
-                                TransLog t = new TransLog(transLog[begin_index].firstsize, transLog[begin_index].recvTime);
-                                t.endTime = transLog[last_index].endTime;
-                                t.size = 0;
+                                TransLog t = new TransLog(transLog[begin_index].firstsize, transLog[begin_index].recvTime)
+                                {
+                                    endTime = transLog[last_index].endTime,
+                                    size = 0
+                                };
                                 for (int i = begin_index; i <= last_index; ++i)
                                 {
                                     t.size += transLog[i].size;

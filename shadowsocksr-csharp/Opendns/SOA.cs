@@ -9,15 +9,13 @@
  * Note: Based on DnsLite by Jaimon Mathew
  * */
 
-using System;
-using System.Text;
 
 namespace OpenDNS
 {
-	/// <summary>
-	/// Start of Authority Resource Record
-	/// </summary>
-	public class SOA : ResourceRecord
+    /// <summary>
+    /// Start of Authority Resource Record
+    /// </summary>
+    public class SOA : ResourceRecord
 	{
 		public string Server;
 		public string Email;

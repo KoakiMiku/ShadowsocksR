@@ -124,10 +124,12 @@ namespace ShadowsocksR.Controller
 
         public IAsyncResult BeginReceive(byte[] buffer, int size, SocketFlags flags, AsyncCallback callback, object state)
         {
-            CallbackState st = new CallbackState();
-            st.buffer = buffer;
-            st.size = size;
-            st.state = state;
+            CallbackState st = new CallbackState
+            {
+                buffer = buffer,
+                size = size,
+                state = state
+            };
             return _socket.BeginReceive(buffer, 0, size, flags, callback, st);
         }
 
@@ -165,9 +167,11 @@ namespace ShadowsocksR.Controller
 
         public int BeginSend(byte[] buffer, int size, SocketFlags flags, AsyncCallback callback, object state)
         {
-            CallbackState st = new CallbackState();
-            st.size = size;
-            st.state = state;
+            CallbackState st = new CallbackState
+            {
+                size = size,
+                state = state
+            };
 
             _socket.BeginSend(buffer, 0, size, 0, callback, st);
             return size;
@@ -180,10 +184,12 @@ namespace ShadowsocksR.Controller
 
         public IAsyncResult BeginReceiveFrom(byte[] buffer, int size, SocketFlags flags, ref EndPoint ep, AsyncCallback callback, object state)
         {
-            CallbackState st = new CallbackState();
-            st.buffer = buffer;
-            st.size = size;
-            st.state = state;
+            CallbackState st = new CallbackState
+            {
+                buffer = buffer,
+                size = size,
+                state = state
+            };
             return _socket.BeginReceiveFrom(buffer, 0, size, flags, ref ep, callback, st);
         }
 
@@ -363,8 +369,8 @@ namespace ShadowsocksR.Controller
                     }
                 }
 
-                dataSock5Send.Add((byte)(0));
-                dataSock5Send.Add((byte)(0));
+                dataSock5Send.Add(0);
+                dataSock5Send.Add(0);
 
                 _socket.Send(dataSock5Send.ToArray(), dataSock5Send.Count, SocketFlags.None);
                 iRecCount = _socket.Receive(bySock5Receive, bySock5Receive.Length, SocketFlags.None);
@@ -454,13 +460,13 @@ namespace ShadowsocksR.Controller
             if (socks5RemoteUsername.Length > 0)
                 cmd += "Proxy-Authorization: Basic " + authstr + "\r\n";
             cmd += "\r\n";
-            byte[] httpData = System.Text.Encoding.UTF8.GetBytes(cmd);
+            byte[] httpData = Encoding.UTF8.GetBytes(cmd);
             _socket.Send(httpData, httpData.Length, SocketFlags.None);
             byte[] byReceive = new byte[1024];
             int iRecCount = _socket.Receive(byReceive, byReceive.Length, SocketFlags.None);
             if (iRecCount > 13)
             {
-                string data = System.Text.Encoding.UTF8.GetString(byReceive, 0, iRecCount);
+                string data = Encoding.UTF8.GetString(byReceive, 0, iRecCount);
                 string[] data_part = data.Split(' ');
                 if (data_part.Length > 1 && data_part[1] == "200")
                 {
@@ -492,7 +498,7 @@ namespace ShadowsocksR.Controller
             {
                 if (local_sendback_protocol == "http")
                 {
-                    byte[] data = System.Text.Encoding.UTF8.GetBytes("HTTP/1.1 200 Connection Established\r\n\r\n");
+                    byte[] data = Encoding.UTF8.GetBytes("HTTP/1.1 200 Connection Established\r\n\r\n");
                     _socket.Send(data, data.Length, 0);
                 }
                 else if (local_sendback_protocol == "socks5")
@@ -646,7 +652,7 @@ namespace ShadowsocksR.Controller
                 {
                     if (_encryptor != null)
                     {
-                        ((IDisposable)_encryptor).Dispose();
+                        _encryptor.Dispose();
                         _encryptor = null;
                     }
                 }
@@ -745,10 +751,12 @@ namespace ShadowsocksR.Controller
 
         public IAsyncResult BeginReceive(byte[] buffer, int size, SocketFlags flags, AsyncCallback callback, object state)
         {
-            CallbackState st = new CallbackState();
-            st.buffer = buffer;
-            st.size = size;
-            st.state = state;
+            CallbackState st = new CallbackState
+            {
+                buffer = buffer,
+                size = size,
+                state = state
+            };
             return _socket.BeginReceive(buffer, 0, size, flags, callback, st);
         }
 
@@ -831,10 +839,12 @@ namespace ShadowsocksR.Controller
 
         public IAsyncResult BeginReceiveFrom(byte[] buffer, int size, SocketFlags flags, ref EndPoint ep, AsyncCallback callback, object state)
         {
-            CallbackState st = new CallbackState();
-            st.buffer = buffer;
-            st.size = size;
-            st.state = state;
+            CallbackState st = new CallbackState
+            {
+                buffer = buffer,
+                size = size,
+                state = state
+            };
             return _socket.BeginReceiveFrom(buffer, 0, size, flags, ref ep, callback, st);
         }
 
@@ -967,10 +977,12 @@ namespace ShadowsocksR.Controller
 
         public int BeginSendTo(byte[] buffer, int size, SocketFlags flags, AsyncCallback callback, object state)
         {
-            CallbackState st = new CallbackState();
-            st.buffer = buffer;
-            st.size = size;
-            st.state = state;
+            CallbackState st = new CallbackState
+            {
+                buffer = buffer,
+                size = size,
+                state = state
+            };
 
             int bytesToSend;
             byte[] bytesToEncrypt = null;
@@ -1000,7 +1012,7 @@ namespace ShadowsocksR.Controller
                     bytesToEncrypt[0] = 0;
                     bytesToEncrypt[1] = 0;
                     bytesToEncrypt[2] = 0;
-                    bytesToEncrypt[3] = (byte)3;
+                    bytesToEncrypt[3] = 3;
                     bytesToEncrypt[4] = (byte)serverURI.Length;
                     for (int i = 0; i < serverURI.Length; ++i)
                     {
@@ -1228,8 +1240,8 @@ namespace ShadowsocksR.Controller
                     }
                 }
 
-                dataSock5Send.Add((byte)(0));
-                dataSock5Send.Add((byte)(0));
+                dataSock5Send.Add(0);
+                dataSock5Send.Add(0);
 
                 SendAll(dataSock5Send.ToArray(), dataSock5Send.Count, SocketFlags.None);
                 iRecCount = _socket.Receive(bySock5Receive, bySock5Receive.Length, SocketFlags.None);
@@ -1319,13 +1331,13 @@ namespace ShadowsocksR.Controller
             if (socks5RemoteUsername.Length > 0)
                 cmd += "Proxy-Authorization: Basic " + authstr + "\r\n";
             cmd += "\r\n";
-            byte[] httpData = System.Text.Encoding.UTF8.GetBytes(cmd);
+            byte[] httpData = Encoding.UTF8.GetBytes(cmd);
             SendAll(httpData, httpData.Length, SocketFlags.None);
             byte[] byReceive = new byte[1024];
             int iRecCount = _socket.Receive(byReceive, byReceive.Length, SocketFlags.None);
             if (iRecCount > 13)
             {
-                string data = System.Text.Encoding.UTF8.GetString(byReceive, 0, iRecCount);
+                string data = Encoding.UTF8.GetString(byReceive, 0, iRecCount);
                 string[] data_part = data.Split(' ');
                 if (data_part.Length > 1 && data_part[1] == "200")
                 {

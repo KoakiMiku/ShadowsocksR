@@ -87,7 +87,7 @@ namespace ShadowsocksR.Obfs
             outdata[5] = (byte)(outlength);
             outdata[6] = (byte)(rand_len);
 
-            ulong crc32 = Util.CRC32.CalcCRC32(Server.key, (int)Server.key.Length);
+            ulong crc32 = Util.CRC32.CalcCRC32(Server.key, Server.key.Length);
             BitConverter.GetBytes((uint)crc32).CopyTo(outdata, 0);
 
             byte[] key = new byte[Server.iv.Length + Server.key.Length];
@@ -296,7 +296,7 @@ namespace ShadowsocksR.Obfs
             byte[] crcdata = new byte[salt.Length + Server.key.Length];
             salt.CopyTo(crcdata, 0);
             Server.key.CopyTo(crcdata, salt.Length);
-            ulong crc32 = Util.CRC32.CalcCRC32(crcdata, (int)crcdata.Length);
+            ulong crc32 = Util.CRC32.CalcCRC32(crcdata, crcdata.Length);
             BitConverter.GetBytes((uint)crc32).CopyTo(outdata, 0);
 
             byte[] key = new byte[Server.iv.Length + Server.key.Length];
@@ -530,7 +530,7 @@ namespace ShadowsocksR.Obfs
             Server.key.CopyTo(crcdata, salt.Length + 2);
             crcdata[0] = outdata[0];
             crcdata[1] = outdata[1];
-            ulong crc32 = Util.CRC32.CalcCRC32(crcdata, (int)crcdata.Length);
+            ulong crc32 = Util.CRC32.CalcCRC32(crcdata, crcdata.Length);
             BitConverter.GetBytes((uint)crc32).CopyTo(outdata, 2);
 
             byte[] key = new byte[Server.iv.Length + Server.key.Length];

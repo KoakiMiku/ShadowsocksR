@@ -13,7 +13,6 @@ namespace ShadowsocksR.Controller
     {
         private Process _process;
         private static string runningPath;
-        private int _runningPort;
         private static string _subPath = @"temp";
         private static string _exeNameNoExt = @"/ssr_privoxy";
         private static string _exeName = @"/ssr_privoxy.exe";
@@ -39,13 +38,7 @@ namespace ShadowsocksR.Controller
             }
         }
 
-        public int RunningPort
-        {
-            get
-            {
-                return _runningPort;
-            }
-        }
+        public int RunningPort { get; set; }
 
         public bool HasExited()
         {
@@ -96,9 +89,9 @@ namespace ShadowsocksR.Controller
             {
                 Kill();
                 string polipoConfig = Resources.privoxy_conf;
-                _runningPort = GetFreePort();
+                RunningPort = GetFreePort();
                 polipoConfig = polipoConfig.Replace("__SOCKS_PORT__", configuration.localPort.ToString());
-                polipoConfig = polipoConfig.Replace("__PRIVOXY_BIND_PORT__", _runningPort.ToString());
+                polipoConfig = polipoConfig.Replace("__PRIVOXY_BIND_PORT__", RunningPort.ToString());
                 polipoConfig = polipoConfig.Replace("__PRIVOXY_BIND_IP__", "127.0.0.1");
                 polipoConfig = polipoConfig.Replace("__BYPASS_ACTION__", "");
                 FileManager.ByteArrayToFile(runningPath + "/privoxy.conf", System.Text.Encoding.UTF8.GetBytes(polipoConfig));

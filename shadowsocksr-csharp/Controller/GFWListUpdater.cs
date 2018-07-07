@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using ShadowsocksR.Model;
 using ShadowsocksR.Properties;
-using ShadowsocksR.Util;
 using System;
 using System.Collections.Generic;
 using System.IO;
