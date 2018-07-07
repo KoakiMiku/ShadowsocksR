@@ -29,12 +29,15 @@
         private void InitializeComponent()
         {
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.MyCancelButton = new System.Windows.Forms.Button();
             this.OKButton = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.ReconnectLabel = new System.Windows.Forms.Label();
             this.NumReconnect = new System.Windows.Forms.NumericUpDown();
+            this.TTLLabel = new System.Windows.Forms.Label();
+            this.NumTTL = new System.Windows.Forms.NumericUpDown();
             this.labelTimeout = new System.Windows.Forms.Label();
             this.NumTimeout = new System.Windows.Forms.NumericUpDown();
             this.checkAutoStartup = new System.Windows.Forms.CheckBox();
@@ -47,19 +50,16 @@
             this.checkShareOverLan = new System.Windows.Forms.CheckBox();
             this.NumProxyPort = new System.Windows.Forms.NumericUpDown();
             this.ProxyPortLabel = new System.Windows.Forms.Label();
-            this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
-            this.NumTTL = new System.Windows.Forms.NumericUpDown();
-            this.TTLLabel = new System.Windows.Forms.Label();
             this.tableLayoutPanel1.SuspendLayout();
+            this.tableLayoutPanel2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.tableLayoutPanel5.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NumReconnect)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NumTTL)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumTimeout)).BeginInit();
             this.ListenGroup.SuspendLayout();
             this.tableLayoutPanel4.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NumProxyPort)).BeginInit();
-            this.tableLayoutPanel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.NumTTL)).BeginInit();
             this.SuspendLayout();
             // 
             // tableLayoutPanel1
@@ -72,13 +72,55 @@
             this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 1, 1);
             this.tableLayoutPanel1.Controls.Add(this.groupBox1, 1, 0);
             this.tableLayoutPanel1.Controls.Add(this.ListenGroup, 0, 0);
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(15, 16);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(12, 13);
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 2;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(519, 166);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(560, 335);
             this.tableLayoutPanel1.TabIndex = 0;
+            // 
+            // tableLayoutPanel2
+            // 
+            this.tableLayoutPanel2.AutoSize = true;
+            this.tableLayoutPanel2.ColumnCount = 2;
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel2.Controls.Add(this.MyCancelButton, 1, 0);
+            this.tableLayoutPanel2.Controls.Add(this.OKButton, 0, 0);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(316, 138);
+            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
+            this.tableLayoutPanel2.RowCount = 1;
+            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(200, 25);
+            this.tableLayoutPanel2.TabIndex = 2;
+            // 
+            // MyCancelButton
+            // 
+            this.MyCancelButton.AutoSize = true;
+            this.MyCancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.MyCancelButton.Location = new System.Drawing.Point(103, 3);
+            this.MyCancelButton.Margin = new System.Windows.Forms.Padding(3, 3, 0, 0);
+            this.MyCancelButton.Name = "MyCancelButton";
+            this.MyCancelButton.Size = new System.Drawing.Size(97, 22);
+            this.MyCancelButton.TabIndex = 22;
+            this.MyCancelButton.Text = "Cancel";
+            this.MyCancelButton.UseVisualStyleBackColor = true;
+            this.MyCancelButton.Click += new System.EventHandler(this.CancelButton_Click);
+            // 
+            // OKButton
+            // 
+            this.OKButton.AutoSize = true;
+            this.OKButton.DialogResult = System.Windows.Forms.DialogResult.OK;
+            this.OKButton.Location = new System.Drawing.Point(3, 3);
+            this.OKButton.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
+            this.OKButton.Name = "OKButton";
+            this.OKButton.Size = new System.Drawing.Size(94, 22);
+            this.OKButton.TabIndex = 21;
+            this.OKButton.Text = "OK";
+            this.OKButton.UseVisualStyleBackColor = true;
+            this.OKButton.Click += new System.EventHandler(this.OKButton_Click);
             // 
             // groupBox1
             // 
@@ -118,33 +160,6 @@
             this.tableLayoutPanel5.Size = new System.Drawing.Size(186, 109);
             this.tableLayoutPanel5.TabIndex = 3;
             // 
-            // MyCancelButton
-            // 
-            this.MyCancelButton.AutoSize = true;
-            this.MyCancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.MyCancelButton.Location = new System.Drawing.Point(103, 3);
-            this.MyCancelButton.Margin = new System.Windows.Forms.Padding(3, 3, 0, 0);
-            this.MyCancelButton.Name = "MyCancelButton";
-            this.MyCancelButton.Size = new System.Drawing.Size(97, 22);
-            this.MyCancelButton.TabIndex = 22;
-            this.MyCancelButton.Text = "Cancel";
-            this.MyCancelButton.UseVisualStyleBackColor = true;
-            this.MyCancelButton.Click += new System.EventHandler(this.CancelButton_Click);
-            // 
-            // OKButton
-            // 
-            this.OKButton.AutoSize = true;
-            this.OKButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.OKButton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.OKButton.Location = new System.Drawing.Point(3, 3);
-            this.OKButton.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
-            this.OKButton.Name = "OKButton";
-            this.OKButton.Size = new System.Drawing.Size(94, 22);
-            this.OKButton.TabIndex = 21;
-            this.OKButton.Text = "OK";
-            this.OKButton.UseVisualStyleBackColor = true;
-            this.OKButton.Click += new System.EventHandler(this.OKButton_Click);
-            // 
             // ReconnectLabel
             // 
             this.ReconnectLabel.Anchor = System.Windows.Forms.AnchorStyles.Right;
@@ -167,6 +182,29 @@
             this.NumReconnect.Name = "NumReconnect";
             this.NumReconnect.Size = new System.Drawing.Size(109, 21);
             this.NumReconnect.TabIndex = 18;
+            // 
+            // TTLLabel
+            // 
+            this.TTLLabel.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.TTLLabel.AutoSize = true;
+            this.TTLLabel.Location = new System.Drawing.Point(42, 86);
+            this.TTLLabel.Name = "TTLLabel";
+            this.TTLLabel.Size = new System.Drawing.Size(23, 12);
+            this.TTLLabel.TabIndex = 3;
+            this.TTLLabel.Text = "TTL";
+            // 
+            // NumTTL
+            // 
+            this.NumTTL.ImeMode = System.Windows.Forms.ImeMode.Off;
+            this.NumTTL.Location = new System.Drawing.Point(71, 82);
+            this.NumTTL.Maximum = new decimal(new int[] {
+            600,
+            0,
+            0,
+            0});
+            this.NumTTL.Name = "NumTTL";
+            this.NumTTL.Size = new System.Drawing.Size(109, 21);
+            this.NumTTL.TabIndex = 20;
             // 
             // labelTimeout
             // 
@@ -305,47 +343,10 @@
             this.ProxyPortLabel.TabIndex = 3;
             this.ProxyPortLabel.Text = "Port";
             // 
-            // tableLayoutPanel2
-            // 
-            this.tableLayoutPanel2.AutoSize = true;
-            this.tableLayoutPanel2.ColumnCount = 2;
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel2.Controls.Add(this.MyCancelButton, 1, 0);
-            this.tableLayoutPanel2.Controls.Add(this.OKButton, 0, 0);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(316, 138);
-            this.tableLayoutPanel2.Name = "tableLayoutPanel2";
-            this.tableLayoutPanel2.RowCount = 1;
-            this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(200, 25);
-            this.tableLayoutPanel2.TabIndex = 2;
-            // 
-            // NumTTL
-            // 
-            this.NumTTL.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.NumTTL.Location = new System.Drawing.Point(71, 82);
-            this.NumTTL.Maximum = new decimal(new int[] {
-            600,
-            0,
-            0,
-            0});
-            this.NumTTL.Name = "NumTTL";
-            this.NumTTL.Size = new System.Drawing.Size(109, 21);
-            this.NumTTL.TabIndex = 20;
-            // 
-            // TTLLabel
-            // 
-            this.TTLLabel.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.TTLLabel.AutoSize = true;
-            this.TTLLabel.Location = new System.Drawing.Point(42, 86);
-            this.TTLLabel.Name = "TTLLabel";
-            this.TTLLabel.Size = new System.Drawing.Size(23, 12);
-            this.TTLLabel.TabIndex = 3;
-            this.TTLLabel.Text = "TTL";
-            // 
             // SettingsForm
             // 
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoSize = true;
             this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(584, 361);
@@ -360,20 +361,20 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.SettingsForm_FormClosed);
             this.tableLayoutPanel1.ResumeLayout(false);
             this.tableLayoutPanel1.PerformLayout();
+            this.tableLayoutPanel2.ResumeLayout(false);
+            this.tableLayoutPanel2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel5.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NumReconnect)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.NumTTL)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.NumTimeout)).EndInit();
             this.ListenGroup.ResumeLayout(false);
             this.ListenGroup.PerformLayout();
             this.tableLayoutPanel4.ResumeLayout(false);
             this.tableLayoutPanel4.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.NumProxyPort)).EndInit();
-            this.tableLayoutPanel2.ResumeLayout(false);
-            this.tableLayoutPanel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.NumTTL)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

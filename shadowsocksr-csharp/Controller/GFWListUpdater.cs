@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using ShadowsocksR.Model;
 using ShadowsocksR.Properties;
+using ShadowsocksR.Util;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -39,6 +40,8 @@ namespace ShadowsocksR.Controller
         {
             try
             {
+                string tempPath = Path.Combine(System.Windows.Forms.Application.StartupPath, @"temp");
+                File.WriteAllText($"{tempPath}\\gfwlist.txt", e.Result, Encoding.UTF8);
                 List<string> lines = ParseResult(e.Result);
                 if (lines.Count == 0)
                 {
@@ -80,35 +83,6 @@ namespace ShadowsocksR.Controller
             }
         }
 
-        private void http_DownloadPACCompleted(object sender, DownloadStringCompletedEventArgs e)
-        {
-            try
-            {
-                string content = e.Result;
-                if (File.Exists(PAC_FILE))
-                {
-                    string original = File.ReadAllText(PAC_FILE, Encoding.UTF8);
-                    if (original == content)
-                    {
-                        update_type = 1;
-                        UpdateCompleted(this, new ResultEventArgs(false));
-                        return;
-                    }
-                }
-                File.WriteAllText(PAC_FILE, content, Encoding.UTF8);
-                if (UpdateCompleted != null)
-                {
-                    update_type = 1;
-                    UpdateCompleted(this, new ResultEventArgs(true));
-                }
-            }
-            catch (Exception ex)
-            {
-                Error?.Invoke(this, new ErrorEventArgs(ex));
-            }
-
-        }
-
         public void UpdatePACFromGFWList(Configuration config)
         {
             try
@@ -122,6 +96,10 @@ namespace ShadowsocksR.Controller
                         proxy.Credentials = new NetworkCredential(config.authUser, config.authPass);
                     }
                     http.Proxy = proxy;
+                }
+                else
+                {
+                    http.Proxy = null;
                 }
                 http.BaseAddress = GFWLIST_URL;
                 http.DownloadStringCompleted += http_DownloadStringCompleted;

@@ -16,16 +16,7 @@ namespace ShadowsocksR.Encryption
         {
             try
             {
-                //try
-                //{
-                //    dlopen("libcrypto.so", 2);
-                //    return;
-                //}
-                //catch (Exception e)
-                //{
-                //    //Console.WriteLine(e.ToString());
-                //}
-                string runningPath = Path.Combine(System.Windows.Forms.Application.StartupPath, @"temp"); // Path.GetTempPath();
+                string runningPath = Path.Combine(System.Windows.Forms.Application.StartupPath, @"temp");
                 if (!Directory.Exists(runningPath))
                 {
                     Directory.CreateDirectory(runningPath);
@@ -33,15 +24,10 @@ namespace ShadowsocksR.Encryption
                 string dllPath = Path.Combine(runningPath, "libeay32.dll");
                 try
                 {
-                    //FileManager.UncompressFile(dllPath, Resources.libsscrypto_dll);
                     LoadLibrary(dllPath);
                 }
-                catch (IOException)
+                catch
                 {
-                }
-                catch //(Exception e)
-                {
-                    //Console.WriteLine(e.ToString());
                 }
             }
             finally
@@ -130,9 +116,6 @@ namespace ShadowsocksR.Encryption
 
         [DllImport("Kernel32.dll")]
         private static extern IntPtr LoadLibrary(string path);
-
-        //[DllImport("libdl.so")]
-        //private static extern IntPtr dlopen(String fileName, int flags);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public static extern void OpenSSL_add_all_ciphers();

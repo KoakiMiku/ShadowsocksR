@@ -22,8 +22,7 @@ namespace ShadowsocksR.Model
 
         public static System.Net.IPAddress FromString(string ip)
         {
-            System.Net.IPAddress addr = null;
-            TryParse(ip, out addr);
+            TryParse(ip, out System.Net.IPAddress addr);
             return addr;
         }
 

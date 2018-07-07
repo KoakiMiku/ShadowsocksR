@@ -156,8 +156,7 @@ namespace ShadowsocksR.Model
             long sub_min_val = Int64.MaxValue;
             if (_tree[l].range_max > range_min)
             {
-                long out_val;
-                int cnt = FindMinCount(l, range_min, Math.Min(range_max, _tree[l].range_max), out out_val);
+                int cnt = FindMinCount(l, range_min, Math.Min(range_max, _tree[l].range_max), out long out_val);
                 if (out_val < sub_min_val)
                 {
                     sub_min_val = out_val;
@@ -170,8 +169,7 @@ namespace ShadowsocksR.Model
             }
             if (_tree[r].range_min < range_max)
             {
-                long out_val;
-                int cnt = FindMinCount(r, Math.Max(range_min, _tree[r].range_min), range_max, out out_val);
+                int cnt = FindMinCount(r, Math.Max(range_min, _tree[r].range_min), range_max, out long out_val);
                 if (out_val < sub_min_val)
                 {
                     sub_min_val = out_val;
@@ -198,8 +196,7 @@ namespace ShadowsocksR.Model
             {
                 if (_tree[r].range_min < range_max)
                 {
-                    long out_val;
-                    int cnt = FindMinCount(l, range_min, _tree[l].range_max, out out_val);
+                    int cnt = FindMinCount(l, range_min, _tree[l].range_max, out long out_val);
                     if (out_val != val) cnt = 0;
                     if (cnt > nth)
                     {
@@ -270,8 +267,7 @@ namespace ShadowsocksR.Model
 
         public int RandomFindIndex(int range_min, int range_max, Random random)
         {
-            long out_val;
-            int count = FindMinCount(1, range_min, range_max, out out_val);
+            int count = FindMinCount(1, range_min, range_max, out long out_val);
             int nth = random.Next(count);
             int index = FindNthMin(1, range_min, range_max, nth, out_val);
             return index;
@@ -279,8 +275,7 @@ namespace ShadowsocksR.Model
 
         public long GetMin(int range_min, int range_max)
         {
-            long ret;
-            int cnt = FindMinCount(1, range_min, range_max, out ret);
+            int cnt = FindMinCount(1, range_min, range_max, out long ret);
             return ret;
         }
     }

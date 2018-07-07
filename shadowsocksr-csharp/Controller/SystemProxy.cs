@@ -421,7 +421,6 @@ namespace ShadowsocksR.Controller
         /// </returns>
         public static uint GetAllConns(ref string[] allConns)
         {
-            int lpNames = 0;
             int entryNameSize = 0;
             int lpSize = 0;
             uint retval = ERROR_SUCCESS;
@@ -432,7 +431,7 @@ namespace ShadowsocksR.Controller
             // Windows Vista or later:  To determine the required buffer size, call RasEnumEntries
             // with lprasentryname set to NULL. The variable pointed to by lpcb should be set to zero.
             // The function will return the required buffer size in lpcb and an error code of ERROR_BUFFER_TOO_SMALL.
-            retval = RasEnumEntries(null, null, null, ref lpSize, out lpNames);
+            retval = RasEnumEntries(null, null, null, ref lpSize, out int lpNames);
 
             if (retval == ERROR_BUFFER_TOO_SMALL)
             {

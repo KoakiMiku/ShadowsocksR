@@ -16,26 +16,25 @@ Bypass LAN && not China=绕过局域网和非大陆
 User custom=用户自定义
 Disable bypass=全局代理
 Servers=服务器
-Edit servers...=编辑服务器
-Import servers from file...=从文件导入服务器
+Edit servers=编辑服务器
+Import servers from file=从文件导入服务器
 Servers Subscribe=服务器订阅
-Subscribe setting...=服务器订阅设置
+Subscribe setting=服务器订阅设置
 Update subscribe SSR node=更新服务器订阅
 Update subscribe SSR node(bypass proxy)=更新服务器订阅（不代理）
-Global settings...=选项设置
+Global settings=选项设置
 Start on Boot=开机启动
 Allow Clients from LAN=允许来自局域网的连接
-Same host for same address=优先相同节点连接同一地址
 Enable domain white list(http proxy only)=使用域名白名单(仅http代理)
 Update local PAC from GFWList=更新 PAC 为 GFWList
-Edit local PAC file...=编辑 PAC 文件
-Edit user rule for GFWList...=编辑 GFWList 用户规则
-Show QRCode...=显示二维码...
-Scan QRCode from screen...=二维码扫描
-Import SSR links from clipboard...=从剪贴板导入
-Server statistic...=服务器连接统计
-Disconnect current=断开当前所有连接
-Show logs...=显示日志
+Edit local PAC file=编辑 PAC 文件
+Edit user rule for GFWList=编辑 GFWList 用户规则
+Show QRCode=显示二维码
+Scan QRCode from screen=从二维码导入服务器
+Import SSR links from clipboard=从剪贴板导入服务器
+Server statistic=服务器连接统计
+Disconnect current=断开所有连接
+Show logs=显示日志
 Quit=退出
 Edit Servers=编辑服务器
 Global Settings=选项设置
@@ -135,18 +134,6 @@ Error Percent=出错比例
 Continuous=连错
 Version=版本
 
-# Global Log Form
-
-&File=文件(&F)
-Clear &log=清空日志(&L)
-Show in &Explorer=在资源管理器中显示(&E)
-&Close=关闭(&C)
-&View=视图(&V)
-&Font...=字体设置(&F)...
-&Wrap Text=自动换行(&W)
-&Always on top=置于顶层(&A)
-Log Viewer=日志查看器
-
 # PAC Url Form
 
 Edit Online PAC URL=编辑在线 PAC 网址
@@ -159,6 +146,9 @@ Subscribe Settings=订阅设置
 URL=网址
 Group name=组名
 Auto update=自动更新
+Add=添加
+Delete=删除
+Modify=修改
 
 # Messages
 

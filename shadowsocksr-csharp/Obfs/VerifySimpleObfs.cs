@@ -116,8 +116,7 @@ namespace ShadowsocksR.Obfs
 
         public void PackData(byte[] data, int datalength, byte[] outdata, out int outlength)
         {
-            int outlen;
-            byte[] comdata = FileManager.DeflateCompress(data, 0, datalength, out outlen);
+            byte[] comdata = FileManager.DeflateCompress(data, 0, datalength, out int outlen);
             outlength = outlen + 2 + 4;
             outdata[0] = (byte)(outlength >> 8);
             outdata[1] = (byte)(outlength);
@@ -143,8 +142,7 @@ namespace ShadowsocksR.Obfs
             const int unit_len = 32700;
             while (datalength > unit_len)
             {
-                int outlen;
-                PackData(data, unit_len, packdata, out outlen);
+                PackData(data, unit_len, packdata, out int outlen);
                 Util.Utils.SetArrayMinSize2(ref outdata, outlength + outlen);
                 Array.Copy(packdata, 0, outdata, outlength, outlen);
                 outlength += outlen;
@@ -155,8 +153,7 @@ namespace ShadowsocksR.Obfs
             }
             if (datalength > 0)
             {
-                int outlen;
-                PackData(data, datalength, packdata, out outlen);
+                PackData(data, datalength, packdata, out int outlen);
                 Util.Utils.SetArrayMinSize2(ref outdata, outlength + outlen);
                 Array.Copy(packdata, 0, outdata, outlength, outlen);
                 outlength += outlen;
@@ -180,8 +177,7 @@ namespace ShadowsocksR.Obfs
                 if (len > recv_buf_len)
                     break;
 
-                int outlen;
-                byte[] buf = FileManager.DeflateDecompress(recv_buf, 2, len - 6, out outlen);
+                byte[] buf = FileManager.DeflateDecompress(recv_buf, 2, len - 6, out int outlen);
                 if (buf != null)
                 {
                     ulong alder = Util.Adler32.CalcAdler32(buf, outlen);

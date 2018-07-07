@@ -36,6 +36,9 @@ namespace ShadowsocksR.View
             checkBoxAutoUpdate.Text = I18N.GetString("Auto update");
             buttonOK.Text = I18N.GetString("OK");
             buttonCancel.Text = I18N.GetString("Cancel");
+            buttonAdd.Text = I18N.GetString("Add");
+            buttonModify.Text = I18N.GetString("Modify");
+            buttonDel.Text = I18N.GetString("Delete");
         }
 
         private void SubscribeForm_FormClosed(object sender, FormClosedEventArgs e)
@@ -54,11 +57,13 @@ namespace ShadowsocksR.View
             LoadAllSettings();
             if (listServerSubscribe.Items.Count == 0)
             {
-                textBoxURL.Enabled = false;
+                buttonModify.Enabled = false;
+                buttonDel.Enabled = false;
             }
             else
             {
-                textBoxURL.Enabled = true;
+                buttonModify.Enabled = true;
+                buttonDel.Enabled = true;
             }
         }
 
@@ -105,7 +110,7 @@ namespace ShadowsocksR.View
             for (int i = 0; i < _modifiedConfiguration.serverSubscribes.Count; ++i)
             {
                 ServerSubscribe ss = _modifiedConfiguration.serverSubscribes[i];
-                listServerSubscribe.Items.Add((String.IsNullOrEmpty(ss.Group) ? "    " : ss.Group + " - ") + ss.URL);
+                listServerSubscribe.Items.Add((String.IsNullOrEmpty(ss.Group) ? "" : ss.Group + " - ") + ss.URL);
             }
         }
 
@@ -152,21 +157,33 @@ namespace ShadowsocksR.View
 
         private void buttonAdd_Click(object sender, EventArgs e)
         {
-            SaveSelected(_old_select_index);
+            if (string.IsNullOrWhiteSpace(textBoxURL.Text)) return;
             int select_index = _modifiedConfiguration.serverSubscribes.Count;
             if (_old_select_index >= 0 && _old_select_index < _modifiedConfiguration.serverSubscribes.Count)
             {
-                _modifiedConfiguration.serverSubscribes.Insert(select_index, new ServerSubscribe());
+                var serverSubscribe = new ServerSubscribe();
+                serverSubscribe.URL = textBoxURL.Text;
+                _modifiedConfiguration.serverSubscribes.Insert(select_index, serverSubscribe);
             }
             else
             {
-                _modifiedConfiguration.serverSubscribes.Add(new ServerSubscribe());
+                var serverSubscribe = new ServerSubscribe();
+                serverSubscribe.URL = textBoxURL.Text;
+                _modifiedConfiguration.serverSubscribes.Add(serverSubscribe);
             }
             UpdateList();
             UpdateSelected(select_index);
             SetSelectIndex(select_index);
-
-            textBoxURL.Enabled = true;
+            if (listServerSubscribe.Items.Count == 0)
+            {
+                buttonModify.Enabled = false;
+                buttonDel.Enabled = false;
+            }
+            else
+            {
+                buttonModify.Enabled = true;
+                buttonDel.Enabled = true;
+            }
         }
 
         private void buttonDel_Click(object sender, EventArgs e)
@@ -185,8 +202,24 @@ namespace ShadowsocksR.View
             }
             if (listServerSubscribe.Items.Count == 0)
             {
-                textBoxURL.Enabled = false;
+                buttonModify.Enabled = false;
+                buttonDel.Enabled = false;
             }
+            else
+            {
+                buttonModify.Enabled = true;
+                buttonDel.Enabled = true;
+            }
+        }
+
+        private void buttonModify_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(textBoxURL.Text)) return;
+            int select_index = listServerSubscribe.SelectedIndex;
+            SaveSelected(select_index);
+            UpdateList();
+            UpdateSelected(select_index);
+            SetSelectIndex(select_index);
         }
     }
 }

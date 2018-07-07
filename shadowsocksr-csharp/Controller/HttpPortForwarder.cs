@@ -164,8 +164,7 @@ namespace ShadowsocksR.Controller
             {
                 try
                 {
-                    IPAddress ipAddress;
-                    bool parsed = IPAddress.TryParse("127.0.0.1", out ipAddress);
+                    bool parsed = IPAddress.TryParse("127.0.0.1", out IPAddress ipAddress);
                     IPEndPoint remoteEP = new IPEndPoint(ipAddress, _targetPort);
 
                     _remote = new Socket(ipAddress.AddressFamily,

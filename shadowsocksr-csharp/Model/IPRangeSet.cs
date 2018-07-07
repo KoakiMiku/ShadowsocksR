@@ -90,8 +90,7 @@ namespace ShadowsocksR.Model
                                     continue;
                                 if (parts[0] != "apnic" || parts[1] != zone || parts[2] != "ipv4")
                                     continue;
-                                IPAddress addr;
-                                IPAddress.TryParse(parts[3], out addr);
+                                IPAddress.TryParse(parts[3], out IPAddress addr);
                                 uint size = UInt32.Parse(parts[4]);
                                 Insert(addr, size);
 
@@ -132,10 +131,8 @@ namespace ShadowsocksR.Model
                             string[] parts = line.Split(' ');
                             if (parts.Length < 2)
                                 continue;
-
-                            IPAddress addr_beg, addr_end;
-                            IPAddress.TryParse(parts[0], out addr_beg);
-                            IPAddress.TryParse(parts[1], out addr_end);
+                            IPAddress.TryParse(parts[0], out IPAddress addr_beg);
+                            IPAddress.TryParse(parts[1], out IPAddress addr_end);
                             Insert(addr_beg, addr_end);
                         }
                     }
@@ -154,9 +151,8 @@ namespace ShadowsocksR.Model
 
         public void Reverse()
         {
-            IPAddress addr_beg, addr_end;
-            IPAddress.TryParse("240.0.0.0", out addr_beg);
-            IPAddress.TryParse("255.255.255.255", out addr_end);
+            IPAddress.TryParse("240.0.0.0", out IPAddress addr_beg);
+            IPAddress.TryParse("255.255.255.255", out IPAddress addr_end);
             Insert(addr_beg, addr_end);
             for (uint i = 0; i < _set.Length; ++i)
             {

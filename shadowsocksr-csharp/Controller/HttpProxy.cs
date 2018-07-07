@@ -106,8 +106,7 @@ namespace ShadowsocksR.Controller
             }
             else if (host.Length > 0)
             {
-                IPAddress ipAddress;
-                bool parsed = IPAddress.TryParse(host, out ipAddress);
+                bool parsed = IPAddress.TryParse(host, out IPAddress ipAddress);
                 if (!parsed)
                 {
                     remoteHeaderSendBuffer = new byte[2 + host.Length + 2];

@@ -826,11 +826,10 @@ namespace ShadowsocksR.Controller
             ResetTimeout(cfg.TTL);
             if (cfg.fouce_local_dns_query && cfg.targetHost != null)
             {
-                IPAddress ipAddress;
 
                 string host = cfg.targetHost;
 
-                if (!IPAddress.TryParse(host, out ipAddress))
+                if (!IPAddress.TryParse(host, out IPAddress ipAddress))
                 {
                     ipAddress = Utils.DnsBuffer.Get(host);
                     if (ipAddress == null)
@@ -874,7 +873,6 @@ namespace ShadowsocksR.Controller
             }
             try
             {
-                IPAddress ipAddress;
                 string serverHost = server.server;
                 int serverPort = server.server_port;
                 if (cfg.socks5RemotePort > 0)
@@ -882,7 +880,7 @@ namespace ShadowsocksR.Controller
                     serverHost = cfg.socks5RemoteHost;
                     serverPort = cfg.socks5RemotePort;
                 }
-                bool parsed = IPAddress.TryParse(serverHost, out ipAddress);
+                bool parsed = IPAddress.TryParse(serverHost, out IPAddress ipAddress);
                 if (!parsed)
                 {
                     if (server.DnsBuffer().isExpired(serverHost))
@@ -1042,8 +1040,7 @@ namespace ShadowsocksR.Controller
         {
             if (remote != null)
             {
-                bool sendback;
-                int bytesRead = remote.EndReceive(ar, out sendback);
+                int bytesRead = remote.EndReceive(ar, out bool sendback);
 
                 int bytesRecv = remote.GetAsyncResultSize(ar);
                 server.ServerSpeedLog().AddDownloadBytes(bytesRecv, DateTime.Now, speedTester.AddDownloadSize(bytesRecv));
@@ -1387,10 +1384,7 @@ namespace ShadowsocksR.Controller
             {
                 try
                 {
-                    int protocolSize;
-                    bool sendback;
-                    int bytesRecv;
-                    int bytesRead = remote.Receive(recv_buffer, RecvSize, 0, out bytesRecv, out protocolSize, out sendback);
+                    int bytesRead = remote.Receive(recv_buffer, RecvSize, 0, out int bytesRecv, out int protocolSize, out bool sendback);
                     DateTime now = DateTime.Now;
                     if (remote != null && remote.IsClose)
                     {
@@ -1774,8 +1768,7 @@ namespace ShadowsocksR.Controller
         private void LogException(Exception e)
         {
             int err = LogSocketException(e);
-            string remarks;
-            string server_url = getServerUrl(out remarks);
+            string server_url = getServerUrl(out string remarks);
             if (err != 0 && !Logging.LogSocketException(remarks, server_url, e))
                 Logging.LogUsefulException(e);
         }

@@ -5,10 +5,8 @@ using System.Net;
 
 namespace ShadowsocksR.Controller
 {
-    public class UpdateFreeNode
+    public class UpdateNode
     {
-        private const string UpdateURL = "https://raw.githubusercontent.com/breakwa11/breakwa11.github.io/master/free/freenodeplain.txt";
-
         public event EventHandler NewFreeNodeFound;
         public string FreeNodeResult;
 
@@ -35,9 +33,8 @@ namespace ShadowsocksR.Controller
                 {
                     http.Proxy = null;
                 }
-                //UseProxy = !UseProxy;
                 http.DownloadStringCompleted += http_DownloadStringCompleted;
-                http.DownloadStringAsync(new Uri(URL != null ? URL : UpdateURL));
+                http.DownloadStringAsync(new Uri(URL));
             }
             catch (Exception e)
             {
@@ -71,11 +68,11 @@ namespace ShadowsocksR.Controller
     {
         Configuration _config;
         List<ServerSubscribe> _serverSubscribes;
-        UpdateFreeNode _updater;
+        UpdateNode _updater;
         string _URL;
         bool _use_proxy;
 
-        public void CreateTask(Configuration config, UpdateFreeNode updater, int index, bool use_proxy)
+        public void CreateTask(Configuration config, UpdateNode updater, int index, bool use_proxy)
         {
             if (_config == null)
             {

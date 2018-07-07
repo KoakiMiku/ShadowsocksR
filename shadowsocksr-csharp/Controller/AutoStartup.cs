@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Windows.Forms;
 using Microsoft.Win32;
 
 namespace ShadowsocksR.Controller
 {
     class AutoStartup
     {
-        static string Key = "ShadowsocksR_" + Application.StartupPath.GetHashCode();
-        static string RegistryRunPath = (IntPtr.Size == 4 ? @"Software\Microsoft\Windows\CurrentVersion\Run" : @"SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Run");
+        static string Key = "ShadowsocksR";
+        static string RegistryRunPath = @"Software\Microsoft\Windows\CurrentVersion\Run";
 
         public static bool Set(bool enabled)
         {
@@ -15,7 +14,7 @@ namespace ShadowsocksR.Controller
             try
             {
                 string path = Util.Utils.GetExecutablePath();
-                runKey = Registry.LocalMachine.OpenSubKey(RegistryRunPath, true);
+                runKey = Registry.CurrentUser.OpenSubKey(RegistryRunPath, true);
                 if (enabled)
                 {
                     runKey.SetValue(Key, path);
@@ -27,10 +26,9 @@ namespace ShadowsocksR.Controller
                 runKey.Close();
                 return true;
             }
-            catch //(Exception e)
+            catch
             {
-                //Logging.LogUsefulException(e);
-                return Util.Utils.RunAsAdmin("--setautorun") == 0;
+                return false;
             }
             finally
             {
@@ -55,7 +53,7 @@ namespace ShadowsocksR.Controller
             try
             {
                 string path = Util.Utils.GetExecutablePath();
-                runKey = Registry.LocalMachine.OpenSubKey(RegistryRunPath, true);
+                runKey = Registry.CurrentUser.OpenSubKey(RegistryRunPath, true);
                 if (enabled)
                 {
                     runKey.SetValue(Key, path);
@@ -94,7 +92,7 @@ namespace ShadowsocksR.Controller
             try
             {
                 string path = Util.Utils.GetExecutablePath();
-                runKey = Registry.LocalMachine.OpenSubKey(RegistryRunPath, false);
+                runKey = Registry.CurrentUser.OpenSubKey(RegistryRunPath, false);
                 string[] runList = runKey.GetValueNames();
                 runKey.Close();
                 foreach (string item in runList)

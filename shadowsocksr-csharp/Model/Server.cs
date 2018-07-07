@@ -233,8 +233,7 @@ namespace ShadowsocksR.Model
             string server_alter_name = server;
             if (hide)
             {
-                IPAddress ipAddress;
-                bool parsed = IPAddress.TryParse(server, out ipAddress);
+                bool parsed = IPAddress.TryParse(server, out IPAddress ipAddress);
                 if (parsed)
                 {
                     int pos = server.LastIndexOf('.');

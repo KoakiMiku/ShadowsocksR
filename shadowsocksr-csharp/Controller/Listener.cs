@@ -23,7 +23,7 @@ namespace ShadowsocksR.Controller
         Socket _socket_v6;
         bool _stop;
         IList<Service> _services;
-        protected System.Timers.Timer timer;
+        protected Timer timer;
         protected object timerLock = new object();
 
         public Listener(IList<Service> services)
@@ -204,7 +204,7 @@ namespace ShadowsocksR.Controller
                 {
                     if (timer == null)
                     {
-                        timer = new System.Timers.Timer(time * 1000.0);
+                        timer = new Timer(time * 1000.0);
                         timer.Elapsed += (sender, e) => timer_Elapsed(sender, e, socket);
                         timer.Start();
                     }

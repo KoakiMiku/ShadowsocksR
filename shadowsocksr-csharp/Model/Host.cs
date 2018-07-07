@@ -52,8 +52,7 @@ namespace ShadowsocksR.Model
 
         public void AddHost(string host, string addr)
         {
-            IPAddress ip_addr = null;
-            if (IPAddress.TryParse(host, out ip_addr))
+            if (IPAddress.TryParse(host, out IPAddress ip_addr))
             {
                 string[] addr_parts = addr.Split(new char[] { ' ', '\t', }, 2, StringSplitOptions.RemoveEmptyEntries);
                 if (addr_parts.Length >= 2)

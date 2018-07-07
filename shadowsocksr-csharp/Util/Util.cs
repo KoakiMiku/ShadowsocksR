@@ -329,7 +329,6 @@ namespace ShadowsocksR.Util
                     List<IPEndPoint> local_dns_server = new List<IPEndPoint>();
                     foreach (string server_str in _dns_server)
                     {
-                        IPAddress ipAddress = null;
                         string server = server_str.Trim(' ');
                         int index = server.IndexOf(':');
                         string ip = null;
@@ -369,7 +368,7 @@ namespace ShadowsocksR.Util
                                 ip = server;
                             }
                         }
-                        if (ip != null && IPAddress.TryParse(ip, out ipAddress))
+                        if (ip != null && IPAddress.TryParse(ip, out IPAddress ipAddress))
                         {
                             int i_port = 53;
                             if (port != null)

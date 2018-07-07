@@ -277,10 +277,9 @@ namespace ShadowsocksR.Obfs
                 byte[] encrypt_key = user_key;
 
                 Encryption.IEncryptor encryptor = Encryption.EncryptorFactory.GetEncryptor("aes-128-cbc", System.Convert.ToBase64String(encrypt_key) + SALT);
-                int enc_outlen;
 
                 encryptor.SetIV(new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
-                encryptor.Encrypt(encrypt, 16, encrypt_data, out enc_outlen);
+                encryptor.Encrypt(encrypt, 16, encrypt_data, out int enc_outlen);
                 encryptor.Dispose();
                 Array.Copy(encrypt_data, 16, encrypt, 4, 16);
                 uid.CopyTo(encrypt, 0);
@@ -298,8 +297,7 @@ namespace ShadowsocksR.Obfs
             // combine first chunk
             {
                 byte[] pack_outdata = new byte[outdata.Length];
-                int pack_outlength;
-                PackData(data, datalength, pack_outdata, out pack_outlength);
+                PackData(data, datalength, pack_outdata, out int pack_outlength);
                 Array.Copy(pack_outdata, 0, outdata, outlength, pack_outlength);
                 outlength += pack_outlength;
             }
@@ -343,8 +341,7 @@ namespace ShadowsocksR.Obfs
             if (!has_sent_header)
             {
                 int _datalength = Math.Min(1200, datalength);
-                int outlen;
-                PackAuthData(data, _datalength, packdata, out outlen);
+                PackAuthData(data, _datalength, packdata, out int outlen);
                 has_sent_header = true;
                 Util.Utils.SetArrayMinSize2(ref outdata, outlength + outlen);
                 Array.Copy(packdata, 0, outdata, outlength, outlen);
@@ -378,8 +375,7 @@ namespace ShadowsocksR.Obfs
             }
             while (datalength > unit_len)
             {
-                int outlen;
-                PackData(data, unit_len, packdata, out outlen);
+                PackData(data, unit_len, packdata, out int outlen);
                 Util.Utils.SetArrayMinSize2(ref outdata, outlength + outlen);
                 Array.Copy(packdata, 0, outdata, outlength, outlen);
                 outlength += outlen;
@@ -390,10 +386,9 @@ namespace ShadowsocksR.Obfs
             }
             if (datalength > 0 || ogn_datalength == -1)
             {
-                int outlen;
                 if (ogn_datalength == -1)
                     datalength = 0;
-                PackData(data, datalength, packdata, out outlen);
+                PackData(data, datalength, packdata, out int outlen);
                 Util.Utils.SetArrayMinSize2(ref outdata, outlength + outlen);
                 Array.Copy(packdata, 0, outdata, outlength, outlen);
                 outlength += outlen;

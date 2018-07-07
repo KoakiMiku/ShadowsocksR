@@ -271,9 +271,8 @@ namespace ShadowsocksR.Controller
                 dataSock5Send.Add(1);
                 dataSock5Send.Add(0);
 
-                IPAddress ipAdd;
                 //bool ForceRemoteDnsResolve = false;
-                bool parsed = IPAddress.TryParse(strRemoteHost, out ipAdd);
+                bool parsed = IPAddress.TryParse(strRemoteHost, out IPAddress ipAdd);
                 //if (!parsed && !ForceRemoteDnsResolve)
                 //{
                 //    if (server.DnsTargetBuffer().isExpired(strRemoteHost))
@@ -420,9 +419,8 @@ namespace ShadowsocksR.Controller
         {
             _proxy = true;
 
-            IPAddress ipAdd;
             //bool ForceRemoteDnsResolve = true;
-            bool parsed = IPAddress.TryParse(strRemoteHost, out ipAdd);
+            bool parsed = IPAddress.TryParse(strRemoteHost, out IPAddress ipAdd);
             //if (!parsed && !ForceRemoteDnsResolve)
             //{
             //    if (server.DnsTargetBuffer().isExpired(strRemoteHost))
@@ -722,15 +720,13 @@ namespace ShadowsocksR.Controller
                 lock (_decryptionLock)
                 {
                     int bytesToSend = 0;
-                    int obfsRecvSize;
-                    byte[] remoteRecvObfsBuffer = _obfs.ClientDecode(recv_buffer, bytesRead, out obfsRecvSize, out sendback);
+                    byte[] remoteRecvObfsBuffer = _obfs.ClientDecode(recv_buffer, bytesRead, out int obfsRecvSize, out sendback);
                     if (obfsRecvSize > 0)
                     {
                         Util.Utils.SetArrayMinSize(ref ReceiveDecryptBuffer, obfsRecvSize);
                         _encryptor.Decrypt(remoteRecvObfsBuffer, obfsRecvSize, ReceiveDecryptBuffer, out bytesToSend);
-                        int outlength;
                         protocolSize = bytesToSend;
-                        byte[] buffer = _protocol.ClientPostDecrypt(ReceiveDecryptBuffer, bytesToSend, out outlength);
+                        byte[] buffer = _protocol.ClientPostDecrypt(ReceiveDecryptBuffer, bytesToSend, out int outlength);
                         TcpMSS = _protocol.GetTcpMSS();
                         //if (recv_buffer.Length < outlength) //ASSERT
                         Array.Copy(buffer, 0, recv_buffer, 0, outlength);
@@ -768,15 +764,13 @@ namespace ShadowsocksR.Controller
                 lock (_decryptionLock)
                 {
                     int bytesToSend = 0;
-                    int obfsRecvSize;
-                    byte[] remoteRecvObfsBuffer = _obfs.ClientDecode(st.buffer, bytesRead, out obfsRecvSize, out sendback);
+                    byte[] remoteRecvObfsBuffer = _obfs.ClientDecode(st.buffer, bytesRead, out int obfsRecvSize, out sendback);
                     if (obfsRecvSize > 0)
                     {
                         Util.Utils.SetArrayMinSize(ref ReceiveDecryptBuffer, obfsRecvSize);
                         _encryptor.Decrypt(remoteRecvObfsBuffer, obfsRecvSize, ReceiveDecryptBuffer, out bytesToSend);
-                        int outlength;
                         st.protocol_size = bytesToSend;
-                        byte[] buffer = _protocol.ClientPostDecrypt(ReceiveDecryptBuffer, bytesToSend, out outlength);
+                        byte[] buffer = _protocol.ClientPostDecrypt(ReceiveDecryptBuffer, bytesToSend, out int outlength);
                         TcpMSS = _protocol.GetTcpMSS();
                         if (st.buffer.Length < outlength)
                         {
@@ -813,7 +807,6 @@ namespace ShadowsocksR.Controller
 
             lock (_encryptionLock)
             {
-                int outlength;
                 //if (!header_sent)
                 //{
                 //    header_sent = true;
@@ -826,7 +819,7 @@ namespace ShadowsocksR.Controller
                 //        buffer[0] = 2;
                 //    }
                 //}
-                byte[] bytesToEncrypt = _protocol.ClientPreEncrypt(buffer, size, out outlength);
+                byte[] bytesToEncrypt = _protocol.ClientPreEncrypt(buffer, size, out int outlength);
                 if (bytesToEncrypt == null)
                     return 0;
                 Util.Utils.SetArrayMinSize(ref SendEncryptBuffer, outlength + 32);
@@ -991,17 +984,15 @@ namespace ShadowsocksR.Controller
             {
                 _encryptor.ResetEncrypt();
                 _protocol.SetServerInfoIV(_encryptor.getIV());
-                int obfsSendSize;
-                byte[] obfsBuffer = _protocol.ClientUdpPreEncrypt(bytesToEncrypt, length, out obfsSendSize);
+                byte[] obfsBuffer = _protocol.ClientUdpPreEncrypt(bytesToEncrypt, length, out int obfsSendSize);
                 _encryptor.Encrypt(obfsBuffer, obfsSendSize, connetionSendBuffer, out bytesToSend);
             }
 
             if (_proxy)
             {
-                IPAddress ipAddress;
                 string serverURI = _proxy_server;
                 int serverPort = _proxy_udp_port;
-                bool parsed = IPAddress.TryParse(serverURI, out ipAddress);
+                bool parsed = IPAddress.TryParse(serverURI, out IPAddress ipAddress);
                 if (!parsed)
                 {
                     bytesToEncrypt = new byte[bytes_beg + 1 + 1 + serverURI.Length + 2 + bytesToSend];
@@ -1145,9 +1136,8 @@ namespace ShadowsocksR.Controller
                 dataSock5Send.Add(1);
                 dataSock5Send.Add(0);
 
-                IPAddress ipAdd;
                 //bool ForceRemoteDnsResolve = false;
-                bool parsed = IPAddress.TryParse(strRemoteHost, out ipAdd);
+                bool parsed = IPAddress.TryParse(strRemoteHost, out IPAddress ipAdd);
                 //if (!parsed && !ForceRemoteDnsResolve)
                 //{
                 //    if (server.DnsTargetBuffer().isExpired(strRemoteHost))
@@ -1294,9 +1284,8 @@ namespace ShadowsocksR.Controller
         {
             _proxy = true;
 
-            IPAddress ipAdd;
             //bool ForceRemoteDnsResolve = true;
-            bool parsed = IPAddress.TryParse(strRemoteHost, out ipAdd);
+            bool parsed = IPAddress.TryParse(strRemoteHost, out IPAddress ipAdd);
             //if (!parsed && !ForceRemoteDnsResolve)
             //{
             //    if (server.DnsTargetBuffer().isExpired(strRemoteHost))

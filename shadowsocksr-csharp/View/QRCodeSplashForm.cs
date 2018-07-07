@@ -15,18 +15,18 @@ namespace ShadowsocksR.View
         public QRCodeSplashForm()
         {
             Load += QRCodeSplashForm_Load;
-            AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
-            BackColor = System.Drawing.Color.White;
-            ClientSize = new System.Drawing.Size(1, 1);
+            AutoScaleMode = AutoScaleMode.None;
+            BackColor = Color.White;
+            ClientSize = new Size(1, 1);
             ControlBox = false;
-            FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            FormBorderStyle = FormBorderStyle.None;
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "QRCodeSplashForm";
             ShowIcon = false;
             ShowInTaskbar = false;
-            SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-            StartPosition = System.Windows.Forms.FormStartPosition.Manual;
+            SizeGripStyle = SizeGripStyle.Hide;
+            StartPosition = FormStartPosition.Manual;
             TopMost = true;
         }
 
@@ -77,7 +77,7 @@ namespace ShadowsocksR.View
 
         void timer_Tick(object sender, EventArgs e)
         {
-            double percent = (double)sw.ElapsedMilliseconds / 1000.0 / (double)ANIMATION_TIME;
+            double percent = sw.ElapsedMilliseconds / 1000.0 / ANIMATION_TIME;
             if (percent < 1)
             {
                 // ease out

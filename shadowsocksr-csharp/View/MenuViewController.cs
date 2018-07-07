@@ -22,13 +22,12 @@ namespace ShadowsocksR.View
         // and it should just do anything related to the config form
 
         private ShadowsocksController controller;
-        private UpdateFreeNode updateFreeNodeChecker;
+        private UpdateNode updateFreeNodeChecker;
         private UpdateSubscribeManager updateSubscribeManager;
 
         private NotifyIcon _notifyIcon;
         private ContextMenu contextMenu1;
 
-        private MenuItem noModifyItem;
         private MenuItem enableItem;
         private MenuItem PACModeItem;
         private MenuItem globalModeItem;
@@ -46,7 +45,6 @@ namespace ShadowsocksR.View
         private SettingsForm settingsForm;
         private ServerLogForm serverLogForm;
         private SubscribeForm subScribeForm;
-        private LogForm logForm;
         private string _urlToOpen;
         private System.Timers.Timer timerDelayCheckUpdate;
 
@@ -72,7 +70,7 @@ namespace ShadowsocksR.View
             _notifyIcon.ContextMenu = contextMenu1;
             _notifyIcon.MouseClick += notifyIcon1_Click;
 
-            updateFreeNodeChecker = new UpdateFreeNode();
+            updateFreeNodeChecker = new UpdateNode();
             updateFreeNodeChecker.NewFreeNodeFound += updateFreeNodeChecker_NewFreeNodeFound;
 
             updateSubscribeManager = new UpdateSubscribeManager();
@@ -227,8 +225,8 @@ namespace ShadowsocksR.View
                 }),
                 CreateMenuGroup("PAC ", new MenuItem[] {
                     CreateMenuItem("Update local PAC from GFWList", new EventHandler(UpdatePACFromGFWListItem_Click)),
-                    CreateMenuItem("Edit local PAC file...", new EventHandler(EditPACFileItem_Click)),
-                    CreateMenuItem("Edit user rule for GFWList...", new EventHandler(EditUserRuleFileForGFWListItem_Click)),
+                    CreateMenuItem("Edit local PAC file", new EventHandler(EditPACFileItem_Click)),
+                    CreateMenuItem("Edit user rule for GFWList", new EventHandler(EditUserRuleFileForGFWListItem_Click)),
                 }),
                 CreateMenuGroup("Proxy rule", new MenuItem[] {
                     ruleBypassLan = CreateMenuItem("Bypass LAN", new EventHandler(RuleBypassLanItem_Click)),
@@ -241,23 +239,20 @@ namespace ShadowsocksR.View
                 new MenuItem("-"),
                 ServersItem = CreateMenuGroup("Servers", new MenuItem[] {
                     SeperatorItem = new MenuItem("-"),
-                    CreateMenuItem("Edit servers...", new EventHandler(Config_Click)),
-                    CreateMenuItem("Import servers from file...", new EventHandler(Import_Click)),
-                    new MenuItem("-"),
-                    CreateMenuItem("Server statistic...", new EventHandler(ShowServerLogItem_Click)),
+                    CreateMenuItem("Edit servers", new EventHandler(Config_Click)),
+                    CreateMenuItem("Server statistic", new EventHandler(ShowServerLogItem_Click)),
                     CreateMenuItem("Disconnect current", new EventHandler(DisconnectCurrent_Click)),
+                    new MenuItem("-"),
+                    CreateMenuItem("Import SSR links from clipboard", new EventHandler(CopyAddress_Click)),
+                    CreateMenuItem("Scan QRCode from screen", new EventHandler(ScanQRCodeItem_Click)),
+                    CreateMenuItem("Import servers from file", new EventHandler(Import_Click)),
                 }),
                 CreateMenuGroup("Servers Subscribe", new MenuItem[] {
-                    CreateMenuItem("Subscribe setting...", new EventHandler(SubscribeSetting_Click)),
+                    CreateMenuItem("Subscribe setting", new EventHandler(SubscribeSetting_Click)),
                     CreateMenuItem("Update subscribe SSR node", new EventHandler(CheckNodeUpdate_Click)),
                     CreateMenuItem("Update subscribe SSR node(bypass proxy)", new EventHandler(CheckNodeUpdateBypassProxy_Click)),
                 }),
-                CreateMenuItem("Global settings...", new EventHandler(Setting_Click)),
-                new MenuItem("-"),
-                CreateMenuItem("Scan QRCode from screen...", new EventHandler(ScanQRCodeItem_Click)),
-                CreateMenuItem("Import SSR links from clipboard...", new EventHandler(CopyAddress_Click)),
-                new MenuItem("-"),
-                CreateMenuItem("Show logs...", new EventHandler(ShowLogItem_Click)),
+                CreateMenuItem("Global settings", new EventHandler(Setting_Click)),
                 new MenuItem("-"),
                 CreateMenuItem("Quit", new EventHandler(Quit_Click))
             });
@@ -523,15 +518,10 @@ namespace ShadowsocksR.View
                 ShowBalloonTip(I18N.GetString("Error"),
                     I18N.GetString("Update subscribe SSR node failure"), ToolTipIcon.Info, 10000);
             }
-            if (updateSubscribeManager.Next())
-            {
-
-            }
         }
 
         void notifyIcon1_BalloonTipClicked(object sender, EventArgs e)
         {
-            //System.Diagnostics.Process.Start(updateChecker.LatestVersionURL);
             _notifyIcon.BalloonTipClicked -= notifyIcon1_BalloonTipClicked;
         }
 
@@ -694,27 +684,6 @@ namespace ShadowsocksR.View
             }
         }
 
-        private void ShowGlobalLogForm()
-        {
-            if (logForm != null)
-            {
-                logForm.Activate();
-                logForm.Update();
-                if (logForm.WindowState == FormWindowState.Minimized)
-                {
-                    logForm.WindowState = FormWindowState.Normal;
-                }
-            }
-            else
-            {
-                logForm = new LogForm(controller);
-                logForm.Show();
-                logForm.Activate();
-                logForm.BringToFront();
-                logForm.FormClosed += globalLogForm_FormClosed;
-            }
-        }
-
         private void ShowSubscribeSettingForm()
         {
             if (subScribeForm != null)
@@ -751,12 +720,6 @@ namespace ShadowsocksR.View
         void serverLogForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             serverLogForm = null;
-            Util.Utils.ReleaseMemory();
-        }
-
-        void globalLogForm_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            logForm = null;
             Util.Utils.ReleaseMemory();
         }
 
@@ -925,11 +888,6 @@ namespace ShadowsocksR.View
         private void CheckNodeUpdateBypassProxy_Click(object sender, EventArgs e)
         {
             updateSubscribeManager.CreateTask(controller.GetCurrentConfiguration(), updateFreeNodeChecker, -1, false);
-        }
-
-        private void ShowLogItem_Click(object sender, EventArgs e)
-        {
-            ShowGlobalLogForm();
         }
 
         private void ShowServerLogItem_Click(object sender, EventArgs e)
@@ -1149,14 +1107,10 @@ namespace ShadowsocksR.View
                     bool decode_fail = false;
                     for (int i = 0; i < 100; i++)
                     {
-                        double stretch;
-                        Rectangle cropRect = GetScanRect(fullImage.Width, fullImage.Height, i, out stretch);
+                        Rectangle cropRect = GetScanRect(fullImage.Width, fullImage.Height, i, out double stretch);
                         if (cropRect.Width == 0)
                             break;
-
-                        string url;
-                        Rectangle rect;
-                        if (stretch == 1 ? ScanQRCode(screen, fullImage, cropRect, out url, out rect) : ScanQRCodeStretch(screen, fullImage, cropRect, stretch, out url, out rect))
+                        if (stretch == 1 ? ScanQRCode(screen, fullImage, cropRect, out string url, out Rectangle rect) : ScanQRCodeStretch(screen, fullImage, cropRect, stretch, out url, out rect))
                         {
                             var success = controller.AddServerBySSURL(url);
                             QRCodeSplashForm splash = new QRCodeSplashForm();

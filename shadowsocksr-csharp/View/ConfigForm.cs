@@ -76,23 +76,6 @@ namespace ShadowsocksR.View
             DownButton.Width = DownButton.Width * dpi_mul / 4;
             DownButton.Height = DownButton.Height * dpi_mul / 4;
 
-            //IPTextBox.Width = IPTextBox.Width * dpi_mul / 4;
-            //ServerPortNumericUpDown.Width = ServerPortNumericUpDown.Width * dpi_mul / 4;
-            //PasswordTextBox.Width = PasswordTextBox.Width * dpi_mul / 4;
-            //EncryptionSelect.Width = EncryptionSelect.Width * dpi_mul / 4;
-            //TCPProtocolComboBox.Width = TCPProtocolComboBox.Width * dpi_mul / 4;
-            //ObfsCombo.Width = ObfsCombo.Width * dpi_mul / 4;
-            //TextObfsParam.Width = TextObfsParam.Width * dpi_mul / 4;
-            //RemarksTextBox.Width = RemarksTextBox.Width * dpi_mul / 4;
-            //TextGroup.Width = TextGroup.Width * dpi_mul / 4;
-            //TextLink.Width = TextLink.Width * dpi_mul / 4;
-            //TextUDPPort.Width = TextUDPPort.Width * dpi_mul / 4;
-
-            //int font_height = 9;
-            //EncryptionSelect.Height = EncryptionSelect.Height - font_height + font_height * dpi_mul / 4;
-            //TCPProtocolComboBox.Height = TCPProtocolComboBox.Height - font_height + font_height * dpi_mul / 4;
-            //ObfsCombo.Height = ObfsCombo.Height - font_height + font_height * dpi_mul / 4;
-
             //OKButton.Width = OKButton.Width * dpi_mul / 4;
             OKButton.Height = OKButton.Height * dpi_mul / 4;
             //MyCancelButton.Width = MyCancelButton.Width * dpi_mul / 4;
