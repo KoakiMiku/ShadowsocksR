@@ -711,10 +711,9 @@
             // 
             // MyCancelButton
             // 
-            this.MyCancelButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.MyCancelButton.AutoSize = true;
             this.MyCancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.MyCancelButton.Location = new System.Drawing.Point(212, 3);
+            this.MyCancelButton.Location = new System.Drawing.Point(186, 3);
             this.MyCancelButton.Margin = new System.Windows.Forms.Padding(3, 3, 0, 0);
             this.MyCancelButton.Name = "MyCancelButton";
             this.MyCancelButton.Size = new System.Drawing.Size(155, 33);
@@ -725,10 +724,10 @@
             // 
             // OKButton
             // 
+            this.OKButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.OKButton.AutoSize = true;
             this.OKButton.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this.OKButton.Dock = System.Windows.Forms.DockStyle.Left;
-            this.OKButton.Location = new System.Drawing.Point(3, 3);
+            this.OKButton.Location = new System.Drawing.Point(25, 3);
             this.OKButton.Margin = new System.Windows.Forms.Padding(3, 3, 3, 0);
             this.OKButton.Name = "OKButton";
             this.OKButton.Size = new System.Drawing.Size(155, 33);

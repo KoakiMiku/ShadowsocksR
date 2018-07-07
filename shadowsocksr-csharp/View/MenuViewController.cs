@@ -41,6 +41,7 @@ namespace ShadowsocksR.View
 
         private MenuItem SeperatorItem;
         private MenuItem ServersItem;
+        private MenuItem sameHostForSameTargetItem;
         private ConfigForm configForm;
         private SettingsForm settingsForm;
         private ServerLogForm serverLogForm;
@@ -239,6 +240,8 @@ namespace ShadowsocksR.View
                 new MenuItem("-"),
                 ServersItem = CreateMenuGroup("Servers", new MenuItem[] {
                     SeperatorItem = new MenuItem("-"),
+                    sameHostForSameTargetItem = CreateMenuItem("Same host for same address", new EventHandler(SelectSameHostForSameTargetItem_Click)),
+                    new MenuItem("-"),
                     CreateMenuItem("Edit servers", new EventHandler(Config_Click)),
                     CreateMenuItem("Server statistic", new EventHandler(ShowServerLogItem_Click)),
                     CreateMenuItem("Disconnect current", new EventHandler(DisconnectCurrent_Click)),
@@ -547,6 +550,7 @@ namespace ShadowsocksR.View
             UpdateServersMenu();
             UpdateSysProxyMode(config);
             UpdateProxyRule(config);
+            sameHostForSameTargetItem.Checked = config.sameHostForSameTarget;
         }
 
         private void UpdateServersMenu()
@@ -746,7 +750,7 @@ namespace ShadowsocksR.View
         {
             using (OpenFileDialog dlg = new OpenFileDialog())
             {
-                dlg.InitialDirectory = System.Windows.Forms.Application.StartupPath;
+                dlg.InitialDirectory = Application.StartupPath;
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
                     string name = dlg.FileName;
@@ -859,6 +863,12 @@ namespace ShadowsocksR.View
         private void RuleBypassDisableItem_Click(object sender, EventArgs e)
         {
             controller.ToggleRuleMode((int)ProxyRuleMode.Disable);
+        }
+
+        private void SelectSameHostForSameTargetItem_Click(object sender, EventArgs e)
+        {
+            sameHostForSameTargetItem.Checked = !sameHostForSameTargetItem.Checked;
+            controller.ToggleSameHostForSameTargetRandom(sameHostForSameTargetItem.Checked);
         }
 
         private void EditPACFileItem_Click(object sender, EventArgs e)

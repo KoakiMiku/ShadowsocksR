@@ -299,16 +299,16 @@ namespace ShadowsocksR.Model
 
         public Server()
         {
-            server = "server host";
-            server_port = 8388;
+            server = "server";
+            server_port = 8000;
             method = "aes-256-cfb";
             protocol = "origin";
             protocolparam = "";
             obfs = "plain";
             obfsparam = "";
-            password = "0";
+            password = "password";
             remarks_base64 = "";
-            group = "FreeSSR-public";
+            group = "group";
             udp_over_tcp = false;
             enable = true;
             byte[] id = new byte[16];

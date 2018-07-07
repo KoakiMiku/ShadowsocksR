@@ -25,6 +25,7 @@ Update subscribe SSR node(bypass proxy)=更新伺服器訂閱（不代理）
 Global settings=選項設置
 Start on Boot=開機啟動
 Allow Clients from LAN=允許來自區域網路的連接
+Same host for same address=優先連接同一位址
 Enable domain white list(http proxy only)=使用域名白名單(僅http代理)
 Update local PAC from GFWList=更新 PAC 為 GFWList
 Edit local PAC file=編輯 PAC 文件
@@ -48,7 +49,7 @@ Down=下移
 
 New server=未配置的伺服器
 
-Server=伺服器(截圖打碼)
+Server=伺服器
 Server IP=伺服器 IP
 Server Port=伺服器連接埠
 UDP Port=UDP連接埠

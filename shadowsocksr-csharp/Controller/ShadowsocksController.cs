@@ -191,13 +191,6 @@ namespace ShadowsocksR.Controller
             SelectServerIndex(_config.index);
         }
 
-        public void SaveServersPortMap(Configuration config)
-        {
-            _config.portMap = config.portMap;
-            SelectServerIndex(_config.index);
-            _config.FlushPortMapCache();
-        }
-
         public bool AddServerBySSURL(string ssURL, string force_group = null, bool toLast = false)
         {
             if (ssURL.StartsWith("ss://", StringComparison.OrdinalIgnoreCase) || ssURL.StartsWith("ssr://", StringComparison.OrdinalIgnoreCase))
@@ -243,6 +236,12 @@ namespace ShadowsocksR.Controller
             _config.proxyRuleMode = mode;
             SaveConfig(_config);
             ToggleRuleModeChanged?.Invoke(this, new EventArgs());
+        }
+
+        public void ToggleSameHostForSameTargetRandom(bool enabled)
+        {
+            _config.sameHostForSameTarget = enabled;
+            SaveConfig(_config);
         }
 
         public void SelectServerIndex(int index)
@@ -460,13 +459,11 @@ namespace ShadowsocksR.Controller
             Util.Utils.ReleaseMemory();
         }
 
-
         protected void SaveConfig(Configuration newConfig)
         {
             Configuration.Save(newConfig);
             Reload();
         }
-
 
         private void UpdateSystemProxy()
         {

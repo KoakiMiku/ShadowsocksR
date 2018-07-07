@@ -48,7 +48,7 @@ namespace ShadowsocksR.View
             try
             {
                 Icon = Icon.FromHandle((new Bitmap("icon.png")).GetHicon());
-                title_perfix = System.Windows.Forms.Application.StartupPath;
+                title_perfix = Application.StartupPath;
                 if (title_perfix.Length > 20)
                     title_perfix = title_perfix.Substring(0, 20);
             }

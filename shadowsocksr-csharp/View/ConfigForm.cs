@@ -81,9 +81,6 @@ namespace ShadowsocksR.View
             //MyCancelButton.Width = MyCancelButton.Width * dpi_mul / 4;
             MyCancelButton.Height = MyCancelButton.Height * dpi_mul / 4;
 
-            DrawLogo(350 * dpi_mul / 4);
-            //DrawLogo(350);
-
             ShowWindow();
 
             if (focusIndex >= 0 && focusIndex < _modifiedConfiguration.configs.Count)
@@ -224,20 +221,6 @@ namespace ShadowsocksR.View
             return -1; // ERROR
         }
 
-        private void DrawLogo(int width)
-        {
-            Bitmap drawArea = new Bitmap(width, width);
-            using (Graphics g = Graphics.FromImage(drawArea))
-            {
-                g.Clear(Color.White);
-                Bitmap ngnl = Resources.ngnl;
-                g.DrawImage(ngnl, new Rectangle(0, 0, width, width));
-                if (!_modifiedConfiguration.isHideTips)
-                    g.DrawString("Click the 'Link' text box", new Font("Arial", 14), new SolidBrush(Color.Black), new RectangleF(0, 0, 300, 300));
-            }
-            PictureQRcode.Image = drawArea;
-        }
-
         private void GenQR(string ssconfig)
         {
             int dpi_mul = Util.Utils.GetDpiMul();
@@ -277,8 +260,7 @@ namespace ShadowsocksR.View
             }
             else
             {
-                //PictureQRcode.Visible = false;
-                DrawLogo(PictureQRcode.Width);
+                PictureQRcode.Visible = false;
             }
         }
 
@@ -311,12 +293,7 @@ namespace ShadowsocksR.View
                 //CheckObfsUDP.Checked = server.obfs_udp;
                 _SelectedID = server.id;
 
-                ServerGroupBox.Visible = true;
-
-                if (TCPProtocolComboBox.Text == "origin"
-                    && obfs_text == "plain"
-                    && !CheckUDPoverUDP.Checked
-                    )
+                if (TCPProtocolComboBox.Text == "origin" && obfs_text == "plain" && !CheckUDPoverUDP.Checked)
                 {
                     checkAdvSetting.Checked = false;
                 }
@@ -335,16 +312,10 @@ namespace ShadowsocksR.View
                     checkAdvSetting.Checked = true;
                 }
 
-                //PasswordLabel.Checked = false;
-                //IPLabel.Checked = false;
                 Update_SSR_controls_Visable();
                 UpdateObfsTextbox();
                 TextLink.SelectAll();
                 GenQR(TextLink.Text);
-            }
-            else
-            {
-                ServerGroupBox.Visible = false;
             }
         }
 
@@ -361,7 +332,7 @@ namespace ShadowsocksR.View
                     }
                     else
                     {
-                        ServersListBox.Items.Add("      " + server.HiddenName());
+                        ServersListBox.Items.Add(server.HiddenName());
                     }
                 }
             }
@@ -375,7 +346,7 @@ namespace ShadowsocksR.View
                     }
                     else
                     {
-                        ServersListBox.Items[i] = "      " + _modifiedConfiguration.configs[i].HiddenName();
+                        ServersListBox.Items[i] = _modifiedConfiguration.configs[i].HiddenName();
                     }
                 }
             }
@@ -398,6 +369,12 @@ namespace ShadowsocksR.View
             SetServerListSelectedIndex(_modifiedConfiguration.index);
             _allowSave = true;
             LoadSelectedServer();
+            if (ServersListBox.Items.Count == 0)
+            {
+                DeleteButton.Enabled = false;
+                UpButton.Enabled = false;
+                DownButton.Enabled = false;
+            }
         }
 
         private void ServersListBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -494,7 +471,7 @@ namespace ShadowsocksR.View
             {
                 _oldSelectedIndex = 0;
             }
-            //ServersListBox.SelectedIndex = _oldSelectedIndex; // crash!!
+            ServersListBox.SelectedIndex = _oldSelectedIndex;
             LoadConfiguration(_modifiedConfiguration);
             SetServerListSelectedIndex(_oldSelectedIndex);
             LoadSelectedServer();
@@ -663,7 +640,7 @@ namespace ShadowsocksR.View
 
         private void TextBox_MouseUp(object sender, MouseEventArgs e)
         {
-            if (e.Button == System.Windows.Forms.MouseButtons.Left)
+            if (e.Button == MouseButtons.Left)
             {
                 ((TextBox)sender).SelectAll();
             }

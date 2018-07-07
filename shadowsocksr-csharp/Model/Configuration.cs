@@ -97,6 +97,7 @@ namespace ShadowsocksR.Model
         public string authUser;
         public string authPass;
 
+        public bool sameHostForSameTarget;
         public int keepVisitTime;
 
         public bool isHideTips;
@@ -116,7 +117,7 @@ namespace ShadowsocksR.Model
 
         public bool KeepCurrentServer(int localPort, string targetAddr, string id)
         {
-            if (targetAddr != null)
+            if (sameHostForSameTarget && targetAddr != null)
             {
                 lock (serverStrategyMap)
                 {
@@ -168,7 +169,7 @@ namespace ShadowsocksR.Model
                     time2uri.Remove(p.Key);
                     break;
                 }
-                if (!forceRandom && targetAddr != null && uri2time.ContainsKey(targetAddr))
+                if (sameHostForSameTarget && !forceRandom && targetAddr != null && uri2time.ContainsKey(targetAddr))
                 {
                     UriVisitTime visit = uri2time[targetAddr];
                     if (visit.index < configs.Count && configs[visit.index].enable)
@@ -392,6 +393,7 @@ namespace ShadowsocksR.Model
             proxyUserAgent = config.proxyUserAgent;
             authUser = config.authUser;
             authPass = config.authPass;
+            sameHostForSameTarget = config.sameHostForSameTarget;
             keepVisitTime = config.keepVisitTime;
             isHideTips = config.isHideTips;
             nodeFeedAutoUpdate = config.nodeFeedAutoUpdate;
