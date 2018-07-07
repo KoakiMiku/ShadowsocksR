@@ -12,7 +12,6 @@ namespace ShadowsocksR.Controller
     class PACServer : Listener.Service
     {
         public static string PAC_FILE = "pac.txt";
-
         public static string USER_RULE_FILE = "user-rule.txt";
 
         FileSystemWatcher PACFileWatcher;
@@ -44,7 +43,7 @@ namespace ShadowsocksR.Controller
                 string proxy = null;
                 foreach (string line in lines)
                 {
-                    string[] kv = line.Split(new char[]{':'}, 2);
+                    string[] kv = line.Split(new char[] { ':' }, 2);
                     if (kv.Length == 2)
                     {
                         if (kv[0] == "Host")
@@ -122,7 +121,6 @@ namespace ShadowsocksR.Controller
             }
         }
 
-
         public string TouchPACFile()
         {
             if (File.Exists(PAC_FILE))
@@ -131,12 +129,12 @@ namespace ShadowsocksR.Controller
             }
             else
             {
-                FileManager.UncompressFile(PAC_FILE, Resources.proxy_pac_txt);
+                File.WriteAllText(PAC_FILE, Resources.ssr_gfw);
                 return PAC_FILE;
             }
         }
 
-        internal string TouchUserRuleFile()
+        public string TouchUserRuleFile()
         {
             if (File.Exists(USER_RULE_FILE))
             {
@@ -157,7 +155,7 @@ namespace ShadowsocksR.Controller
             }
             else
             {
-                return Utils.UnGzip(Resources.proxy_pac_txt);
+                return Resources.ssr_gfw;
             }
         }
 
@@ -178,12 +176,13 @@ namespace ShadowsocksR.Controller
                 if (_config.pacDirectGoProxy && _config.proxyEnable)
                 {
                     if (_config.proxyType == 0)
-                        pac = pac.Replace("__DIRECT__", "SOCKS5 " + _config.proxyHost + ":" +  _config.proxyPort.ToString() + ";DIRECT;");
+                        pac = pac.Replace("__DIRECT__", "SOCKS5 " + _config.proxyHost + ":" + _config.proxyPort.ToString() + ";DIRECT;");
                     else if (_config.proxyType == 1)
                         pac = pac.Replace("__DIRECT__", "PROXY " + _config.proxyHost + ":" + _config.proxyPort.ToString() + ";DIRECT;");
                 }
                 else
                     pac = pac.Replace("__DIRECT__", "DIRECT;");
+
                 pac = pac.Replace("__PROXY__", proxy + "DIRECT;");
 
                 string text = String.Format(@"HTTP/1.1 200 OK

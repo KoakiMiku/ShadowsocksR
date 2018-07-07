@@ -60,6 +60,8 @@ namespace ShadowsocksR.View
             controller.ConfigChanged += controller_ConfigChanged;
             controller.PACFileReadyToOpen += controller_FileReadyToOpen;
             controller.UserRuleFileReadyToOpen += controller_FileReadyToOpen;
+            controller.ChnIpFileReadyToOpen += controller_FileReadyToOpen;
+            controller.HostFileReadyToOpen += controller_FileReadyToOpen;
             controller.Errored += controller_Errored;
             controller.UpdatePACFromGFWListCompleted += controller_UpdatePACFromGFWListCompleted;
             controller.UpdatePACFromGFWListError += controller_UpdatePACFromGFWListError;
@@ -226,16 +228,19 @@ namespace ShadowsocksR.View
                 }),
                 CreateMenuGroup("PAC ", new MenuItem[] {
                     CreateMenuItem("Update local PAC from GFWList", new EventHandler(UpdatePACFromGFWListItem_Click)),
+                    new MenuItem("-"),
                     CreateMenuItem("Edit local PAC file", new EventHandler(EditPACFileItem_Click)),
                     CreateMenuItem("Edit user rule for GFWList", new EventHandler(EditUserRuleFileForGFWListItem_Click)),
                 }),
                 CreateMenuGroup("Proxy rule", new MenuItem[] {
                     ruleBypassLan = CreateMenuItem("Bypass LAN", new EventHandler(RuleBypassLanItem_Click)),
-                    ruleBypassChina = CreateMenuItem("Bypass LAN && China", new EventHandler(RuleBypassChinaItem_Click)),
-                    ruleBypassNotChina = CreateMenuItem("Bypass LAN && not China", new EventHandler(RuleBypassNotChinaItem_Click)),
+                    ruleBypassChina = CreateMenuItem("Bypass LAN and China", new EventHandler(RuleBypassChinaItem_Click)),
+                    ruleBypassNotChina = CreateMenuItem("Bypass LAN and not China", new EventHandler(RuleBypassNotChinaItem_Click)),
                     ruleUser = CreateMenuItem("User custom", new EventHandler(RuleUserItem_Click)),
-                    new MenuItem("-"),
                     ruleDisableBypass = CreateMenuItem("Disable bypass", new EventHandler(RuleBypassDisableItem_Click)),
+                    new MenuItem("-"),
+                    CreateMenuItem("Edit Host file", new EventHandler(EditHostFileItem_Click)),
+                    CreateMenuItem("Edit China IP file", new EventHandler(EditChnIpFileItem_Click)),
                 }),
                 new MenuItem("-"),
                 ServersItem = CreateMenuGroup("Servers", new MenuItem[] {
@@ -252,9 +257,11 @@ namespace ShadowsocksR.View
                 }),
                 CreateMenuGroup("Servers Subscribe", new MenuItem[] {
                     CreateMenuItem("Subscribe setting", new EventHandler(SubscribeSetting_Click)),
+                    new MenuItem("-"),
                     CreateMenuItem("Update subscribe SSR node", new EventHandler(CheckNodeUpdate_Click)),
                     CreateMenuItem("Update subscribe SSR node(bypass proxy)", new EventHandler(CheckNodeUpdateBypassProxy_Click)),
                 }),
+                new MenuItem("-"),
                 CreateMenuItem("Global settings", new EventHandler(Setting_Click)),
                 new MenuItem("-"),
                 CreateMenuItem("Quit", new EventHandler(Quit_Click))
@@ -884,6 +891,16 @@ namespace ShadowsocksR.View
         private void EditUserRuleFileForGFWListItem_Click(object sender, EventArgs e)
         {
             controller.TouchUserRuleFile();
+        }
+
+        private void EditHostFileItem_Click(object sender, EventArgs e)
+        {
+            controller.TouchHostFile();
+        }
+
+        private void EditChnIpFileItem_Click(object sender, EventArgs e)
+        {
+            controller.TouchChnIpFile();
         }
 
         private void AServerItem_Click(object sender, EventArgs e)

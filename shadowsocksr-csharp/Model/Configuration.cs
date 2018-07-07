@@ -605,7 +605,7 @@ namespace ShadowsocksR.Model
     [Serializable]
     public class ServerTransferTotal
     {
-        private static string LOG_FILE = "transfer_log.json";
+        private static string LOG_FILE = "transfer-log.json";
 
         public Dictionary<string, ServerTrans> servers = new Dictionary<string, ServerTrans>();
         private int saveCounter;

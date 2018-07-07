@@ -26,12 +26,12 @@ namespace ShadowsocksR.Controller
         private PACServer _pacServer;
         private Configuration _config;
         private ServerTransferTotal _transfer;
-        public IPRangeSet _rangeSet;
+        private IPRangeSet _rangeSet;
+        private HostMap _hostMap;
         private HttpProxyRunner polipoRunner;
         private GFWListUpdater gfwListUpdater;
         private bool stopped = false;
         private bool firstRun = true;
-
 
         public class PathEventArgs : EventArgs
         {
@@ -47,6 +47,8 @@ namespace ShadowsocksR.Controller
         // when user clicked Edit PAC, and PAC file has already created
         public event EventHandler<PathEventArgs> PACFileReadyToOpen;
         public event EventHandler<PathEventArgs> UserRuleFileReadyToOpen;
+        public event EventHandler<PathEventArgs> ChnIpFileReadyToOpen;
+        public event EventHandler<PathEventArgs> HostFileReadyToOpen;
 
         public event EventHandler<GFWListUpdater.ResultEventArgs> UpdatePACFromGFWListCompleted;
 
@@ -79,7 +81,7 @@ namespace ShadowsocksR.Controller
             Errored?.Invoke(this, new ErrorEventArgs(e));
         }
 
-        public void ReloadIPRange()
+        private void ReloadIPRange()
         {
             _rangeSet = new IPRangeSet();
             _rangeSet.LoadChn();
@@ -87,6 +89,13 @@ namespace ShadowsocksR.Controller
             {
                 _rangeSet.Reverse();
             }
+        }
+
+        private void ReloadHost()
+        {
+            _hostMap = new HostMap();
+            _hostMap.LoadHostFile();
+            HostMap.Instance().Clear(_hostMap);
         }
 
         // always return copy
@@ -308,6 +317,18 @@ namespace ShadowsocksR.Controller
             UserRuleFileReadyToOpen?.Invoke(this, new PathEventArgs() { Path = userRuleFilename });
         }
 
+        public void TouchChnIpFile()
+        {
+            string chnIpFilename = _rangeSet.TouchChnIpFile();
+            ChnIpFileReadyToOpen?.Invoke(this, new PathEventArgs() { Path = chnIpFilename });
+        }
+
+        public void TouchHostFile()
+        {
+            string hostFilename = _hostMap.TouchHostFile();
+            HostFileReadyToOpen?.Invoke(this, new PathEventArgs() { Path = hostFilename });
+        }
+
         public void UpdatePACFromGFWList()
         {
             if (gfwListUpdater != null)
@@ -329,11 +350,9 @@ namespace ShadowsocksR.Controller
             // some logic in configuration updated the config when saving, we need to read it again
             _config = MergeGetConfiguration(_config);
             _config.FlushPortMapCache();
-            ReloadIPRange();
 
-            HostMap hostMap = new HostMap();
-            hostMap.LoadHostFile();
-            HostMap.Instance().Clear(hostMap);
+            ReloadIPRange();
+            ReloadHost();
 
             if (polipoRunner == null)
             {

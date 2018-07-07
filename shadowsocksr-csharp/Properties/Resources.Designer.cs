@@ -61,6 +61,40 @@ namespace ShadowsocksR.Properties {
         }
         
         /// <summary>
+        ///   查找类似 1.0.1.0 1.0.1.255
+        ///1.0.2.0 1.0.3.255
+        ///1.0.8.0 1.0.15.255
+        ///1.0.32.0 1.0.63.255
+        ///1.1.0.0 1.1.0.255
+        ///1.1.2.0 1.1.3.255
+        ///1.1.4.0 1.1.7.255
+        ///1.1.8.0 1.1.8.255
+        ///1.1.9.0 1.1.9.255
+        ///1.1.10.0 1.1.11.255
+        ///1.1.12.0 1.1.15.255
+        ///1.1.16.0 1.1.31.255
+        ///1.1.32.0 1.1.63.255
+        ///1.2.0.0 1.2.1.255
+        ///1.2.2.0 1.2.2.255
+        ///1.2.4.0 1.2.4.255
+        ///1.2.5.0 1.2.5.255
+        ///1.2.6.0 1.2.7.255
+        ///1.2.8.0 1.2.8.255
+        ///1.2.9.0 1.2.9.255
+        ///1.2.10.0 1.2.11.255
+        ///1.2.12.0 1.2.15.255
+        ///1.2.16.0 1.2.31.255
+        ///1.2.32.0 1.2.63.255
+        ///1.2.64.0 1.2.127.255
+        ///1.3.0.0 1.3.255 [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        /// </summary>
+        internal static string chn_ip {
+            get {
+                return ResourceManager.GetString("chn_ip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 # translation for Simplified Chinese
         ///
         ///Shadowsocks=Shadowsocks
@@ -74,21 +108,52 @@ namespace ShadowsocksR.Properties {
         ///Global=全局模式
         ///Proxy rule=代理规则
         ///Bypass LAN=绕过局域网
-        ///Bypass LAN &amp;&amp; China=绕过局域网和大陆
-        ///Bypass LAN &amp;&amp; not China=绕过局域网和非大陆
+        ///Bypass LAN and China=绕过局域网和大陆
+        ///Bypass LAN and not China=绕过局域网和非大陆
         ///User custom=用户自定义
         ///Disable bypass=全局代理
+        ///Edit Host file=编辑 Host 文件
+        ///Edit China IP file=编辑 大陆 IP 文件
         ///Servers=服务器
-        ///Edit servers...=编辑服务器
-        ///Import servers from file...=从文件导入服务器
+        ///Edit servers=编辑服务器
+        ///Import servers from file=从文件导入服务器
         ///Servers Subscribe=服务器订阅
-        ///Subscribe setting...=服务器订阅设置
-        ///Update subscribe SSR node=更新服务器订阅
-        ///Update subscribe SSR node(bypa [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///Subscribe setting=服务器订阅设置
+        ///Update subscr [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string cn {
             get {
                 return ResourceManager.GetString("cn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 # remote proxy
+        ///.0rz.tw remoteproxy
+        ///.0to255.com remoteproxy
+        ///.1-apple.com.tw remoteproxy
+        ///.10musume.com remoteproxy
+        ///.123rf.com remoteproxy
+        ///.12bet.com remoteproxy
+        ///.12vpn.com remoteproxy
+        ///.141hongkong.com remoteproxy
+        ///.173ng.com remoteproxy
+        ///.1984bbs.com remoteproxy
+        ///.1984bbs.org remoteproxy
+        ///.1bao.org remoteproxy
+        ///.1eew.com remoteproxy
+        ///.1pondo.tv remoteproxy
+        ///.2-hand.info remoteproxy
+        ///.2000fun.com remoteproxy
+        ///.2008xianzhang.info remoteproxy
+        ///.21andy.com remoteproxy
+        ///.24smile.org remoteproxy
+        ///.2shared.com remoteproxy
+        ///.301w [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        /// </summary>
+        internal static string host {
+            get {
+                return ResourceManager.GetString("host", resourceCulture);
             }
         }
         
@@ -154,16 +219,6 @@ namespace ShadowsocksR.Properties {
         internal static byte[] privoxy_exe {
             get {
                 object obj = ResourceManager.GetObject("privoxy_exe", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   查找 System.Byte[] 类型的本地化资源。
-        /// </summary>
-        internal static byte[] proxy_pac_txt {
-            get {
-                object obj = ResourceManager.GetObject("proxy_pac_txt", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -237,6 +292,16 @@ namespace ShadowsocksR.Properties {
         }
         
         /// <summary>
+        ///   查找 System.Byte[] 类型的本地化资源。
+        /// </summary>
+        internal static byte[] templates {
+            get {
+                object obj = ResourceManager.GetObject("templates", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 ! Put user rules line by line in this file.
         ///! See https://adblockplus.org/en/filter-cheatsheet
         /// 的本地化字符串。
@@ -254,24 +319,25 @@ namespace ShadowsocksR.Properties {
         ///
         ///# Menu items
         ///
-        ///Mode=系統代理模式
-        ///No modify system proxy=保持當前狀態不修改
+        ///Mode=代理模式
+        ///No modify system proxy=不修改當前狀態
         ///Disable system proxy=直連模式
         ///PAC=PAC 模式
         ///Global=全局模式
         ///Proxy rule=代理規則
         ///Bypass LAN=繞過區域網路
-        ///Bypass LAN &amp;&amp; China=繞過區域網路和大陸
-        ///Bypass LAN &amp;&amp; not China=繞過區域網路和非大陸
+        ///Bypass LAN and China=繞過區域網路和大陸
+        ///Bypass LAN and not China=繞過區域網路和非大陸
         ///User custom=用戶自定義
-        ///Disable bypass=全局
+        ///Disable bypass=全局代理
+        ///Edit Host file=編輯 Host 文件
+        ///Edit China IP file=編輯 大陸 IP 文件
         ///Servers=伺服器
-        ///Edit servers...=編輯伺服器...
-        ///Import servers from file...=從文件導入伺服器...
+        ///Edit servers=編輯伺服器
+        ///Import servers from file=從文件導入伺服器
         ///Servers Subscribe=伺服器訂閱
-        ///Subscribe setting...=SSR伺服器訂閱設置...
-        ///Update subscribe SSR node=更新SSR伺服器訂閱
-        ///Update subscribe SSR node(bypass [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///Subscribe setting=伺服器訂閱設置
+        ///Update su [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string zh_tw {
             get {

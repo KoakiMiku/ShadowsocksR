@@ -32,14 +32,14 @@ namespace ShadowsocksR.Controller
             {
                 CloseLogFile();
 
-                string curpath = Path.Combine(System.Windows.Forms.Application.StartupPath, @"temp");// Path.GetFullPath(".");//Path.GetTempPath();
+                string curpath = Path.Combine(System.Windows.Forms.Application.StartupPath, @"logs");
                 LogFilePath = curpath;
                 if (!Directory.Exists(curpath))
                 {
                     Directory.CreateDirectory(curpath);
                 }
-                string new_date = DateTime.Now.ToString("yyyy-MM");
-                LogFileName = "shadowsocks_" + new_date + ".log";
+                string new_date = DateTime.Now.ToString("yyyy-MM-dd");
+                LogFileName = "shadowsocksr-" + new_date + ".log";
                 LogFile = Path.Combine(curpath, LogFileName);
                 _logFileStream = new FileStream(LogFile, FileMode.Append);
                 _logStreamWriter = new StreamWriterWithTimestamp(_logFileStream)
@@ -109,11 +109,11 @@ namespace ShadowsocksR.Controller
 
         protected static void UpdateLogFile()
         {
-            if (DateTime.Now.ToString("yyyy-MM") != date)
+            if (DateTime.Now.ToString("yyyy-MM-dd") != date)
             {
                 lock (_lock)
                 {
-                    if (DateTime.Now.ToString("yyyy-MM") != date)
+                    if (DateTime.Now.ToString("yyyy-MM-dd") != date)
                     {
                         OpenLogFile();
                     }
@@ -245,7 +245,7 @@ namespace ShadowsocksR.Controller
         public static void Log(LogLevel level, object s)
         {
             UpdateLogFile();
-            var strMap = new []{
+            var strMap = new[]{
                 "Debug",
                 "Info",
                 "Warn",

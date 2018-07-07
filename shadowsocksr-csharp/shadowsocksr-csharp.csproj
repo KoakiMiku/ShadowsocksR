@@ -196,18 +196,20 @@
     <None Include="Data\privoxy.exe.gz" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Data\ssr_gfw.txt" />
+    <Content Include="Data\chn-ip.txt" />
+    <Content Include="Data\ssr-gfw.txt" />
     <Content Include="Data\zh-tw.txt" />
     <Content Include="Resources\46418775_p0.jpg" />
     <Content Include="shadowsocksr.ico" />
-    <None Include="Data\proxy.pac.txt.gz" />
+    <Content Include="Data\host.txt" />
+    <None Include="Data\templates.zip" />
     <None Include="packages.config" />
     <None Include="Resources\ss20.png" />
     <None Include="Resources\ss16.png" />
     <None Include="Resources\ss24.png" />
     <None Include="Resources\ssw128.png" />
     <Content Include="Data\cn.txt" />
-    <None Include="Data\privoxy_conf.txt" />
+    <None Include="Data\privoxy-conf.txt" />
     <Content Include="Data\user-rule.txt" />
   </ItemGroup>
   <ItemGroup>

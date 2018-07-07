@@ -8,7 +8,7 @@ namespace ShadowsocksR.Encryption
 {
     public class MbedTLS
     {
-        const string DLLNAME = "libsscrypto";
+        private const string DLLNAME = "libsscrypto";
 
         public const int MBEDTLS_ENCRYPT = 1;
         public const int MBEDTLS_DECRYPT = 0;
@@ -56,7 +56,7 @@ namespace ShadowsocksR.Encryption
             public byte[] ComputeHash(byte[] buffer, int offset, int count)
             {
                 byte[] output = new byte[64];
-                ss_hmac_ex(MBEDTLS_MD_SHA1, key, key.Length, buffer,offset, count, output);
+                ss_hmac_ex(MBEDTLS_MD_SHA1, key, key.Length, buffer, offset, count, output);
                 return output;
             }
         }

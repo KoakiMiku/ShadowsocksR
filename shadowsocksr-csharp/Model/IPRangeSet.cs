@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ShadowsocksR.Properties;
+using System;
 using System.IO;
 using System.Net;
 
@@ -8,8 +9,21 @@ namespace ShadowsocksR.Model
     {
         private const string APNIC_FILENAME = "delegated-apnic-latest";
         private const string APNIC_EXT_FILENAME = "delegated-apnic-extended-latest";
-        private const string CHN_FILENAME = "chn_ip.txt";
+        private const string CHN_FILENAME = "chn-ip.txt";
         private uint[] _set;
+
+        public string TouchChnIpFile()
+        {
+            if (File.Exists(CHN_FILENAME))
+            {
+                return CHN_FILENAME;
+            }
+            else
+            {
+                File.WriteAllText(CHN_FILENAME, Resources.chn_ip);
+                return CHN_FILENAME;
+            }
+        }
 
         public IPRangeSet()
         {
@@ -79,7 +93,8 @@ namespace ShadowsocksR.Model
                 {
                     using (StreamReader stream = File.OpenText(absFilePath))
                     {
-                        using (StreamWriter out_stream = new StreamWriter(File.OpenWrite(CHN_FILENAME))) {
+                        using (StreamWriter out_stream = new StreamWriter(File.OpenWrite(CHN_FILENAME)))
+                        {
                             while (true)
                             {
                                 string line = stream.ReadLine();

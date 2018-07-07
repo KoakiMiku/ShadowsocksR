@@ -59,8 +59,7 @@ namespace ShadowsocksR.View
                 focusIndex = index;
             }
 
-            if (_modifiedConfiguration.isHideTips)
-                PictureQRcode.Visible = false;
+            PictureQRcode.Visible = false;
 
             int dpi_mul = Util.Utils.GetDpiMul();
             //ServersListBox.Height = ServersListBox.Height * 4 / dpi_mul;
@@ -479,6 +478,7 @@ namespace ShadowsocksR.View
 
             if (ServersListBox.Items.Count == 0)
             {
+                PictureQRcode.Visible = false;
                 DeleteButton.Enabled = false;
                 UpButton.Enabled = false;
                 DownButton.Enabled = false;

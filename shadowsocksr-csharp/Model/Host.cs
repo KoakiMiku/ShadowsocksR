@@ -1,5 +1,7 @@
-﻿using System;
+﻿using ShadowsocksR.Properties;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 
 namespace ShadowsocksR.Model
@@ -31,11 +33,24 @@ namespace ShadowsocksR.Model
         IPSegment ips = new IPSegment("remoteproxy");
 
         static HostMap instance = new HostMap();
-        const string HOST_FILENAME = "user.rule";
+        const string HOST_FILENAME = "host.txt";
 
         public static HostMap Instance()
         {
             return instance;
+        }
+
+        public string TouchHostFile()
+        {
+            if (File.Exists(HOST_FILENAME))
+            {
+                return HOST_FILENAME;
+            }
+            else
+            {
+                File.WriteAllText(HOST_FILENAME, Resources.host);
+                return HOST_FILENAME;
+            }
         }
 
         public void Clear(HostMap newInstance)
@@ -126,12 +141,12 @@ namespace ShadowsocksR.Model
         public bool LoadHostFile()
         {
             string filename = HOST_FILENAME;
-            string absFilePath = System.IO.Path.Combine(System.Windows.Forms.Application.StartupPath, filename);
-            if (System.IO.File.Exists(absFilePath))
+            string absFilePath = Path.Combine(System.Windows.Forms.Application.StartupPath, filename);
+            if (File.Exists(absFilePath))
             {
                 try
                 {
-                    using (System.IO.StreamReader stream = System.IO.File.OpenText(absFilePath))
+                    using (StreamReader stream = File.OpenText(absFilePath))
                     {
                         while (true)
                         {

@@ -20,7 +20,7 @@ namespace ShadowsocksR.Controller
         static HttpProxyRunner()
         {
             runningPath = Path.Combine(System.Windows.Forms.Application.StartupPath, _subPath);
-            _exeNameNoExt = System.IO.Path.GetFileNameWithoutExtension(Util.Utils.GetExecutablePath());
+            _exeNameNoExt = Path.GetFileNameWithoutExtension(Util.Utils.GetExecutablePath());
             _exeName = @"/" + _exeNameNoExt + @".exe";
             if (!Directory.Exists(runningPath))
             {
