@@ -8,11 +8,6 @@ var nowall_proxy = function(){ return direct; };
 var ip_proxy = function(){ return wall_proxy(); };
 var ipv6_proxy = function(){ return wall_v6_proxy(); };
 
-/*
- * Copyright (C) 2014 breakwa11
- * https://github.com/breakwa11/gfw_whitelist
- */
-
 var subnetIpRangeList = [
 0,1,
 167772160,184549376,	//10.0.0.0/8
