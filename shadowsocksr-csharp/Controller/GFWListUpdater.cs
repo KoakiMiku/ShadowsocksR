@@ -12,17 +12,13 @@ namespace ShadowsocksR.Controller
     public class GFWListUpdater
     {
         private const string GFWLIST_URL = "https://raw.githubusercontent.com/gfwlist/gfwlist/master/gfwlist.txt";
-
         private static string PAC_FILE = PACServer.PAC_FILE;
-
         private static string USER_RULE_FILE = PACServer.USER_RULE_FILE;
-
         private static string gfwlist_template = Resources.ssr_gfw;
 
         public int update_type;
 
         public event EventHandler<ResultEventArgs> UpdateCompleted;
-
         public event ErrorEventHandler Error;
 
         public class ResultEventArgs : EventArgs
@@ -103,6 +99,33 @@ namespace ShadowsocksR.Controller
                 http.BaseAddress = GFWLIST_URL;
                 http.DownloadStringCompleted += http_DownloadStringCompleted;
                 http.DownloadStringAsync(new Uri(GFWLIST_URL + "?rnd=" + Util.Utils.RandUInt32().ToString()));
+            }
+            catch (Exception ex)
+            {
+                Error?.Invoke(this, new ErrorEventArgs(ex));
+            }
+        }
+
+        public void UpdatePACFile(string pacfile)
+        {
+            try
+            {
+                if (File.Exists(PAC_FILE))
+                {
+                    string original = File.ReadAllText(PAC_FILE, Encoding.UTF8);
+                    if (original == pacfile)
+                    {
+                        update_type = 1;
+                        UpdateCompleted(this, new ResultEventArgs(false));
+                        return;
+                    }
+                }
+                File.WriteAllText(PAC_FILE, pacfile, Encoding.UTF8);
+                if (UpdateCompleted != null)
+                {
+                    update_type = 1;
+                    UpdateCompleted(this, new ResultEventArgs(true));
+                }
             }
             catch (Exception ex)
             {

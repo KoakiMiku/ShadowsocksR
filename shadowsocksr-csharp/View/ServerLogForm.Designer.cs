@@ -45,10 +45,11 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
             this.ServerDataGrid = new ShadowsocksR.View.ServerLogForm.DoubleBufferListView();
+            this.timer = new System.Windows.Forms.Timer(this.components);
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Group = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Server = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Enable = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.TotalConnect = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Connecting = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.AvgLatency = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -64,8 +65,6 @@
             this.ConnectTimeout = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ConnectEmpty = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Continuous = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.timer = new System.Windows.Forms.Timer(this.components);
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)(this.ServerDataGrid)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -81,7 +80,6 @@
             this.ID,
             this.Group,
             this.Server,
-            this.Enable,
             this.TotalConnect,
             this.Connecting,
             this.AvgLatency,
@@ -114,6 +112,28 @@
             this.ServerDataGrid.SortCompare += new System.Windows.Forms.DataGridViewSortCompareEventHandler(this.ServerDataGrid_SortCompare);
             this.ServerDataGrid.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ServerDataGrid_MouseUp);
             // 
+            // timer
+            // 
+            this.timer.Enabled = true;
+            this.timer.Interval = 250;
+            this.timer.Tick += new System.EventHandler(this.timer_Tick);
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.tableLayoutPanel1.ColumnCount = 1;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel1.Controls.Add(this.ServerDataGrid, 0, 0);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 1;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(784, 461);
+            this.tableLayoutPanel1.TabIndex = 1;
+            // 
             // ID
             // 
             dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
@@ -140,16 +160,6 @@
             this.Server.Name = "Server";
             this.Server.ReadOnly = true;
             this.Server.Width = 88;
-            // 
-            // Enable
-            // 
-            this.Enable.HeaderText = "Enable";
-            this.Enable.MinimumWidth = 8;
-            this.Enable.Name = "Enable";
-            this.Enable.ReadOnly = true;
-            this.Enable.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.Enable.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.Enable.Width = 24;
             // 
             // TotalConnect
             // 
@@ -303,28 +313,6 @@
             this.Continuous.Visible = false;
             this.Continuous.Width = 28;
             // 
-            // timer
-            // 
-            this.timer.Enabled = true;
-            this.timer.Interval = 250;
-            this.timer.Tick += new System.EventHandler(this.timer_Tick);
-            // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.tableLayoutPanel1.ColumnCount = 1;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.Controls.Add(this.ServerDataGrid, 0, 0);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 1;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(784, 461);
-            this.tableLayoutPanel1.TabIndex = 1;
-            // 
             // ServerLogForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -351,7 +339,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn ID;
         private System.Windows.Forms.DataGridViewTextBoxColumn Group;
         private System.Windows.Forms.DataGridViewTextBoxColumn Server;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Enable;
         private System.Windows.Forms.DataGridViewTextBoxColumn TotalConnect;
         private System.Windows.Forms.DataGridViewTextBoxColumn Connecting;
         private System.Windows.Forms.DataGridViewTextBoxColumn AvgLatency;

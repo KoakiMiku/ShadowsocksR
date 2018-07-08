@@ -22,7 +22,7 @@ namespace ShadowsocksR.View
         // and it should just do anything related to the config form
 
         private ShadowsocksController controller;
-        private UpdateNode updateFreeNodeChecker;
+        private UpdateNode updateNodeChecker;
         private UpdateSubscribeManager updateSubscribeManager;
 
         private NotifyIcon _notifyIcon;
@@ -46,6 +46,7 @@ namespace ShadowsocksR.View
         private SettingsForm settingsForm;
         private ServerLogForm serverLogForm;
         private SubscribeForm subScribeForm;
+        private LogForm logForm;
         private string _urlToOpen;
         private System.Timers.Timer timerDelayCheckUpdate;
 
@@ -73,8 +74,8 @@ namespace ShadowsocksR.View
             _notifyIcon.ContextMenu = contextMenu1;
             _notifyIcon.MouseClick += notifyIcon1_Click;
 
-            updateFreeNodeChecker = new UpdateNode();
-            updateFreeNodeChecker.NewFreeNodeFound += updateFreeNodeChecker_NewFreeNodeFound;
+            updateNodeChecker = new UpdateNode();
+            updateNodeChecker.NewNodeFound += updateNodeChecker_NewNodeFound;
 
             updateSubscribeManager = new UpdateSubscribeManager();
 
@@ -83,7 +84,7 @@ namespace ShadowsocksR.View
             Configuration cfg = controller.GetCurrentConfiguration();
             if (cfg.isDefaultConfig() || cfg.nodeFeedAutoUpdate)
             {
-                updateSubscribeManager.CreateTask(controller.GetCurrentConfiguration(), updateFreeNodeChecker, -1, !cfg.isDefaultConfig());
+                updateSubscribeManager.CreateTask(controller.GetCurrentConfiguration(), updateNodeChecker, -1, !cfg.isDefaultConfig());
             }
 
             timerDelayCheckUpdate = new System.Timers.Timer(1000.0 * 10);
@@ -223,24 +224,31 @@ namespace ShadowsocksR.View
             contextMenu1 = new ContextMenu(new MenuItem[] {
                 modeItem = CreateMenuGroup("Mode", new MenuItem[] {
                     enableItem = CreateMenuItem("Disable system proxy", new EventHandler(EnableItem_Click)),
+                    new MenuItem("-"),
                     PACModeItem = CreateMenuItem("PAC", new EventHandler(PACModeItem_Click)),
                     globalModeItem = CreateMenuItem("Global", new EventHandler(GlobalModeItem_Click)),
                 }),
                 CreateMenuGroup("PAC ", new MenuItem[] {
                     CreateMenuItem("Update local PAC from GFWList", new EventHandler(UpdatePACFromGFWListItem_Click)),
                     new MenuItem("-"),
+                    CreateMenuItem("Update local PAC from Lan IP list", new EventHandler(UpdatePACFromLanIPListItem_Click)),
+                    CreateMenuItem("Update local PAC from Chn White list", new EventHandler(UpdatePACFromCNWhiteListItem_Click)),
+                    CreateMenuItem("Update local PAC from Chn IP list", new EventHandler(UpdatePACFromCNIPListItem_Click)),
+                    CreateMenuItem("Update local PAC from Chn Only list", new EventHandler(UpdatePACFromCNOnlyListItem_Click)),
+                    new MenuItem("-"),
                     CreateMenuItem("Edit local PAC file", new EventHandler(EditPACFileItem_Click)),
                     CreateMenuItem("Edit user rule for GFWList", new EventHandler(EditUserRuleFileForGFWListItem_Click)),
                 }),
                 CreateMenuGroup("Proxy rule", new MenuItem[] {
+                    ruleDisableBypass = CreateMenuItem("Disable bypass", new EventHandler(RuleBypassDisableItem_Click)),
+                    new MenuItem("-"),
                     ruleBypassLan = CreateMenuItem("Bypass LAN", new EventHandler(RuleBypassLanItem_Click)),
                     ruleBypassChina = CreateMenuItem("Bypass LAN and China", new EventHandler(RuleBypassChinaItem_Click)),
                     ruleBypassNotChina = CreateMenuItem("Bypass LAN and not China", new EventHandler(RuleBypassNotChinaItem_Click)),
                     ruleUser = CreateMenuItem("User custom", new EventHandler(RuleUserItem_Click)),
-                    ruleDisableBypass = CreateMenuItem("Disable bypass", new EventHandler(RuleBypassDisableItem_Click)),
                     new MenuItem("-"),
-                    CreateMenuItem("Edit Host file", new EventHandler(EditHostFileItem_Click)),
                     CreateMenuItem("Edit China IP file", new EventHandler(EditChnIpFileItem_Click)),
+                    CreateMenuItem("Edit Host file", new EventHandler(EditHostFileItem_Click)),
                 }),
                 new MenuItem("-"),
                 ServersItem = CreateMenuGroup("Servers", new MenuItem[] {
@@ -256,13 +264,14 @@ namespace ShadowsocksR.View
                     CreateMenuItem("Import servers from file", new EventHandler(Import_Click)),
                 }),
                 CreateMenuGroup("Servers Subscribe", new MenuItem[] {
-                    CreateMenuItem("Subscribe setting", new EventHandler(SubscribeSetting_Click)),
-                    new MenuItem("-"),
                     CreateMenuItem("Update subscribe SSR node", new EventHandler(CheckNodeUpdate_Click)),
                     CreateMenuItem("Update subscribe SSR node(bypass proxy)", new EventHandler(CheckNodeUpdateBypassProxy_Click)),
+                    new MenuItem("-"),
+                    CreateMenuItem("Subscribe setting", new EventHandler(SubscribeSetting_Click)),
                 }),
                 new MenuItem("-"),
                 CreateMenuItem("Global settings", new EventHandler(Setting_Click)),
+                CreateMenuItem("Show logs", new EventHandler(ShowLogItem_Click)),
                 new MenuItem("-"),
                 CreateMenuItem("Quit", new EventHandler(Quit_Click))
             });
@@ -316,13 +325,13 @@ namespace ShadowsocksR.View
             ShowBalloonTip(I18N.GetString("Shadowsocks"), result, ToolTipIcon.Info, 1000);
         }
 
-        void updateFreeNodeChecker_NewFreeNodeFound(object sender, EventArgs e)
+        void updateNodeChecker_NewNodeFound(object sender, EventArgs e)
         {
             int count = 0;
-            if (!String.IsNullOrEmpty(updateFreeNodeChecker.FreeNodeResult))
+            if (!String.IsNullOrEmpty(updateNodeChecker.NodeResult))
             {
                 List<string> urls = new List<string>();
-                updateFreeNodeChecker.FreeNodeResult = updateFreeNodeChecker.FreeNodeResult.TrimEnd('\r', '\n', ' ');
+                updateNodeChecker.NodeResult = updateNodeChecker.NodeResult.TrimEnd('\r', '\n', ' ');
                 Configuration config = controller.GetCurrentConfiguration();
                 Server selected_server = null;
                 if (config.index >= 0 && config.index < config.configs.Count)
@@ -331,15 +340,15 @@ namespace ShadowsocksR.View
                 }
                 try
                 {
-                    updateFreeNodeChecker.FreeNodeResult = Util.Base64.DecodeBase64(updateFreeNodeChecker.FreeNodeResult);
+                    updateNodeChecker.NodeResult = Util.Base64.DecodeBase64(updateNodeChecker.NodeResult);
                 }
                 catch
                 {
-                    updateFreeNodeChecker.FreeNodeResult = "";
+                    updateNodeChecker.NodeResult = "";
                 }
                 int max_node_num = 0;
 
-                Match match_maxnum = Regex.Match(updateFreeNodeChecker.FreeNodeResult, "^MAX=([0-9]+)");
+                Match match_maxnum = Regex.Match(updateNodeChecker.NodeResult, "^MAX=([0-9]+)");
                 if (match_maxnum.Success)
                 {
                     try
@@ -351,7 +360,7 @@ namespace ShadowsocksR.View
 
                     }
                 }
-                URL_Split(updateFreeNodeChecker.FreeNodeResult, ref urls);
+                URL_Split(updateNodeChecker.NodeResult, ref urls);
                 for (int i = urls.Count - 1; i >= 0; --i)
                 {
                     if (!urls[i].StartsWith("ssr"))
@@ -678,6 +687,12 @@ namespace ShadowsocksR.View
 
         private void ShowServerLogForm()
         {
+            Configuration config = controller.GetCurrentConfiguration();
+            if (config.configs.Count == 0)
+            {
+                MessageBox.Show(I18N.GetString("Please add at least one server"));
+                return;
+            }
             if (serverLogForm != null)
             {
                 serverLogForm.Activate();
@@ -694,6 +709,27 @@ namespace ShadowsocksR.View
                 serverLogForm.Activate();
                 serverLogForm.BringToFront();
                 serverLogForm.FormClosed += serverLogForm_FormClosed;
+            }
+        }
+
+        private void ShowGlobalLogForm()
+        {
+            if (logForm != null)
+            {
+                logForm.Activate();
+                logForm.Update();
+                if (logForm.WindowState == FormWindowState.Minimized)
+                {
+                    logForm.WindowState = FormWindowState.Normal;
+                }
+            }
+            else
+            {
+                logForm = new LogForm(controller);
+                logForm.Show();
+                logForm.Activate();
+                logForm.BringToFront();
+                logForm.FormClosed += globalLogForm_FormClosed;
             }
         }
 
@@ -733,6 +769,12 @@ namespace ShadowsocksR.View
         void serverLogForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             serverLogForm = null;
+            Util.Utils.ReleaseMemory();
+        }
+
+        void globalLogForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            logForm = null;
             Util.Utils.ReleaseMemory();
         }
 
@@ -804,27 +846,13 @@ namespace ShadowsocksR.View
         }
 
         [DllImport("user32.dll")]
-        private static extern short GetAsyncKeyState(System.Windows.Forms.Keys vKey);
+        private static extern short GetAsyncKeyState(Keys vKey);
 
         private void notifyIcon1_Click(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
             {
-                int SCA_key = GetAsyncKeyState(Keys.ShiftKey) < 0 ? 1 : 0;
-                SCA_key |= GetAsyncKeyState(Keys.ControlKey) < 0 ? 2 : 0;
-                SCA_key |= GetAsyncKeyState(Keys.Menu) < 0 ? 4 : 0;
-                if (SCA_key == 2)
-                {
-                    ShowServerLogForm();
-                }
-                else if (SCA_key == 1)
-                {
-                    ShowSettingForm();
-                }
-                else
-                {
-                    ShowConfigForm(false);
-                }
+                ShowConfigForm(false);
             }
             else if (e.Button == MouseButtons.Middle)
             {
@@ -839,11 +867,23 @@ namespace ShadowsocksR.View
 
         private void GlobalModeItem_Click(object sender, EventArgs e)
         {
+            Configuration config = controller.GetCurrentConfiguration();
+            if (config.configs.Count == 0)
+            {
+                MessageBox.Show(I18N.GetString("Please add at least one server"));
+                return;
+            }
             controller.ToggleMode(ProxyMode.Global);
         }
 
         private void PACModeItem_Click(object sender, EventArgs e)
         {
+            Configuration config = controller.GetCurrentConfiguration();
+            if (config.configs.Count == 0)
+            {
+                MessageBox.Show(I18N.GetString("Please add at least one server"));
+                return;
+            }
             controller.ToggleMode(ProxyMode.Pac);
         }
 
@@ -878,6 +918,18 @@ namespace ShadowsocksR.View
             controller.ToggleSameHostForSameTargetRandom(sameHostForSameTargetItem.Checked);
         }
 
+        private void CopyPACURLItem_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Configuration config = controller.GetCurrentConfiguration();
+                string pacUrl;
+                pacUrl = "http://127.0.0.1:" + config.localPort.ToString() + "/pac?" + "auth=" + config.localAuthPassword + "&t=" + Util.Utils.GetTimestamp(DateTime.Now);
+                Clipboard.SetText(pacUrl);
+            }
+            catch { }
+        }
+
         private void EditPACFileItem_Click(object sender, EventArgs e)
         {
             controller.TouchPACFile();
@@ -887,6 +939,27 @@ namespace ShadowsocksR.View
         {
             controller.UpdatePACFromGFWList();
         }
+
+        private void UpdatePACFromLanIPListItem_Click(object sender, EventArgs e)
+        {
+            controller.UpdatePACFile(Resources.ssr_lanip);
+        }
+
+        private void UpdatePACFromCNWhiteListItem_Click(object sender, EventArgs e)
+        {
+            controller.UpdatePACFile(Resources.ssr_white);
+        }
+
+        private void UpdatePACFromCNOnlyListItem_Click(object sender, EventArgs e)
+        {
+            controller.UpdatePACFile(Resources.ssr_white_r);
+        }
+
+        private void UpdatePACFromCNIPListItem_Click(object sender, EventArgs e)
+        {
+            controller.UpdatePACFile(Resources.ssr_cnip);
+        }
+
 
         private void EditUserRuleFileForGFWListItem_Click(object sender, EventArgs e)
         {
@@ -911,12 +984,17 @@ namespace ShadowsocksR.View
 
         private void CheckNodeUpdate_Click(object sender, EventArgs e)
         {
-            updateSubscribeManager.CreateTask(controller.GetCurrentConfiguration(), updateFreeNodeChecker, -1, true);
+            updateSubscribeManager.CreateTask(controller.GetCurrentConfiguration(), updateNodeChecker, -1, true);
         }
 
         private void CheckNodeUpdateBypassProxy_Click(object sender, EventArgs e)
         {
-            updateSubscribeManager.CreateTask(controller.GetCurrentConfiguration(), updateFreeNodeChecker, -1, false);
+            updateSubscribeManager.CreateTask(controller.GetCurrentConfiguration(), updateNodeChecker, -1, false);
+        }
+
+        private void ShowLogItem_Click(object sender, EventArgs e)
+        {
+            ShowGlobalLogForm();
         }
 
         private void ShowServerLogItem_Click(object sender, EventArgs e)
@@ -932,6 +1010,11 @@ namespace ShadowsocksR.View
         private void DisconnectCurrent_Click(object sender, EventArgs e)
         {
             Configuration config = controller.GetCurrentConfiguration();
+            if (config.configs.Count == 0)
+            {
+                MessageBox.Show(I18N.GetString("Please add at least one server"));
+                return;
+            }
             for (int id = 0; id < config.configs.Count; ++id)
             {
                 Server server = config.configs[id];

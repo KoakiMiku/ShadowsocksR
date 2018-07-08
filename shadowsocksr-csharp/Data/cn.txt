@@ -6,7 +6,7 @@ Shadowsocks=Shadowsocks
 
 Mode=代理模式
 No modify system proxy=不修改当前状态
-Disable system proxy=直连模式
+Disable system proxy=直连模式(不代理)
 PAC=PAC 模式
 Global=全局模式
 Proxy rule=代理规则
@@ -15,21 +15,25 @@ Bypass LAN and China=绕过局域网和大陆
 Bypass LAN and not China=绕过局域网和非大陆
 User custom=用户自定义
 Disable bypass=全局代理
-Edit Host file=编辑 Host 文件
-Edit China IP file=编辑 大陆 IP 文件
+Edit Host file=编辑用户自定义规则
+Edit China IP file=编辑大陆规则
 Servers=服务器
 Edit servers=编辑服务器
 Import servers from file=从文件导入服务器
 Servers Subscribe=服务器订阅
 Subscribe setting=服务器订阅设置
 Update subscribe SSR node=更新服务器订阅
-Update subscribe SSR node(bypass proxy)=更新服务器订阅（不代理）
+Update subscribe SSR node(bypass proxy)=更新服务器订阅(不代理)
 Global settings=选项设置
 Start on Boot=开机启动
 Allow Clients from LAN=允许来自局域网的连接
 Same host for same address=优先连接相同节点
 Enable domain white list(http proxy only)=使用域名白名单(仅http代理)
 Update local PAC from GFWList=更新 PAC 为 GFWList
+Update local PAC from Lan IP list=更新 PAC 为绕过局域网
+Update local PAC from Chn White list=更新 PAC 为绕过大陆域名
+Update local PAC from Chn IP list=更新 PAC 为绕过大陆 IP
+Update local PAC from Chn Only list=更新 PAC 为仅通过大陆域名
 Edit local PAC file=编辑 PAC 文件
 Edit user rule for GFWList=编辑 GFWList 用户规则
 Show QRCode=显示二维码
@@ -73,29 +77,11 @@ SSR Link=SSR链接
 Original=原版
 Verify all=校验所有数据
 
-Balance=负载均衡
-Order=按次序
-Random=随机
-LowLatency=低延迟优先
-LowException=低错误优先
-SelectedFirst=选中优先
-Timer=定时切换
-Balance in group=所选组切换
-AutoBan=自动禁用出错服务器
-
-Remote proxy=二级（前置）代理
-Proxy On=开启代理
-PAC "direct" return this proxy=PAC“直连”使用二级代理
-Socks5(support UDP)=Socks5(支持UDP)
-Http tunnel=Http隧道
-TCP Port tunnel=TCP端口转发(需要相关混淆插件)
-Username=用户名
-
 Local proxy=本地代理
 Build-in http proxy=内置http代理(目前有bug)
 Proxy Port=本地端口
 Reconnect Times=重连次数
-Timeout=连接超时
+Connect Timeout=连接超时
 TTL=空闲断开秒数
 
 OK=确定
@@ -136,6 +122,10 @@ Empty Response=空连
 Error Percent=出错比例
 Continuous=连错
 Version=版本
+
+# Global Log Form
+
+Log Viewer=日志查看器
 
 # PAC Url Form
 

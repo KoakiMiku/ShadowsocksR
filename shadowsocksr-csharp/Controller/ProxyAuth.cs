@@ -517,7 +517,7 @@ namespace ShadowsocksR.Controller
 
         private void Connect()
         {
-            Handler.GetCurrentServer getCurrentServer = delegate (int localPort, ServerSelectStrategy.FilterFunc filter, string targetURI, bool cfgRandom, bool usingRandom, bool forceRandom) { return _config.GetCurrentServer(localPort, filter, targetURI, cfgRandom, usingRandom, forceRandom); };
+            Handler.GetCurrentServer getCurrentServer = delegate (int localPort, ServerSelectStrategy.FilterFunc filter, string targetURI) { return _config.GetCurrentServer(localPort, filter, targetURI); };
             Handler.KeepCurrentServer keepCurrentServer = delegate (int localPort, string targetURI, string id) { _config.KeepCurrentServer(localPort, targetURI, id); };
 
             int local_port = ((IPEndPoint)_connection.LocalEndPoint).Port;

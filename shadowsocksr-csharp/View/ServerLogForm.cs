@@ -89,12 +89,6 @@ namespace ShadowsocksR.View
                     CreateMenuItem("Clear &Selected Total", new EventHandler(ClearSelectedTotal_Click)),
                     CreateMenuItem("Clear &Total", new EventHandler(ClearTotal_Click)),
                 }),
-                CreateMenuGroup("Port &out", new MenuItem[] {
-                    CreateMenuItem("Copy current link", new EventHandler(copyLinkItem_Click)),
-                    CreateMenuItem("Copy current group links", new EventHandler(copyGroupLinkItem_Click)),
-                    CreateMenuItem("Copy all enable links", new EventHandler(copyEnableLinksItem_Click)),
-                    CreateMenuItem("Copy all links", new EventHandler(copyLinksItem_Click)),
-                }),
                 CreateMenuGroup("&Window", new MenuItem[] {
                     CreateMenuItem("Auto &size", new EventHandler(autosizeItem_Click)),
                     topmostItem = CreateMenuItem("Always On &Top", new EventHandler(topmostItem_Click)),
@@ -687,73 +681,6 @@ namespace ShadowsocksR.View
             autosizeColumns();
         }
 
-        private void copyLinkItem_Click(object sender, EventArgs e)
-        {
-            Configuration config = controller.GetCurrentConfiguration();
-            if (config.index >= 0 && config.index < config.configs.Count)
-            {
-                try
-                {
-                    string link = config.configs[config.index].GetSSRLinkForServer();
-                    Clipboard.SetText(link);
-                }
-                catch { }
-            }
-        }
-
-        private void copyGroupLinkItem_Click(object sender, EventArgs e)
-        {
-            Configuration config = controller.GetCurrentConfiguration();
-            if (config.index >= 0 && config.index < config.configs.Count)
-            {
-                string group = config.configs[config.index].group;
-                string link = "";
-                for (int index = 0; index < config.configs.Count; ++index)
-                {
-                    if (config.configs[index].group != group)
-                        continue;
-                    link += config.configs[index].GetSSRLinkForServer() + "\r\n";
-                }
-                try
-                {
-                    Clipboard.SetText(link);
-                }
-                catch { }
-            }
-        }
-
-        private void copyEnableLinksItem_Click(object sender, EventArgs e)
-        {
-            Configuration config = controller.GetCurrentConfiguration();
-            string link = "";
-            for (int index = 0; index < config.configs.Count; ++index)
-            {
-                if (!config.configs[index].enable)
-                    continue;
-                link += config.configs[index].GetSSRLinkForServer() + "\r\n";
-            }
-            try
-            {
-                Clipboard.SetText(link);
-            }
-            catch { }
-        }
-
-        private void copyLinksItem_Click(object sender, EventArgs e)
-        {
-            Configuration config = controller.GetCurrentConfiguration();
-            string link = "";
-            for (int index = 0; index < config.configs.Count; ++index)
-            {
-                link += config.configs[index].GetSSRLinkForServer() + "\r\n";
-            }
-            try
-            {
-                Clipboard.SetText(link);
-            }
-            catch { }
-        }
-
         private void topmostItem_Click(object sender, EventArgs e)
         {
             topmostItem.Checked = !topmostItem.Checked;
@@ -866,34 +793,6 @@ namespace ShadowsocksR.View
                         Configuration config = controller.GetCurrentConfiguration();
                         controller.SelectServerIndex(id);
                     }
-                    if (ServerDataGrid.Columns[col_index].Name == "Group")
-                    {
-                        Configuration config = controller.GetCurrentConfiguration();
-                        Server cur_server = config.configs[id];
-                        string group = cur_server.group;
-                        if (!string.IsNullOrEmpty(group))
-                        {
-                            bool enable = !cur_server.enable;
-                            foreach (Server server in config.configs)
-                            {
-                                if (server.group == group)
-                                {
-                                    if (server.enable != enable)
-                                    {
-                                        server.setEnable(enable);
-                                    }
-                                }
-                            }
-                            controller.SelectServerIndex(config.index);
-                        }
-                    }
-                    if (ServerDataGrid.Columns[col_index].Name == "Enable")
-                    {
-                        Configuration config = controller.GetCurrentConfiguration();
-                        Server server = config.configs[id];
-                        server.setEnable(!server.isEnable());
-                        controller.SelectServerIndex(config.index);
-                    }
                     ServerDataGrid[0, row_index].Selected = true;
                 }
             }
@@ -908,34 +807,6 @@ namespace ShadowsocksR.View
                 {
                     Configuration config = controller.GetCurrentConfiguration();
                     controller.SelectServerIndex(id);
-                }
-                if (ServerDataGrid.Columns[e.ColumnIndex].Name == "Group")
-                {
-                    Configuration config = controller.GetCurrentConfiguration();
-                    Server cur_server = config.configs[id];
-                    string group = cur_server.group;
-                    if (!string.IsNullOrEmpty(group))
-                    {
-                        bool enable = !cur_server.enable;
-                        foreach (Server server in config.configs)
-                        {
-                            if (server.group == group)
-                            {
-                                if (server.enable != enable)
-                                {
-                                    server.setEnable(enable);
-                                }
-                            }
-                        }
-                        controller.SelectServerIndex(config.index);
-                    }
-                }
-                if (ServerDataGrid.Columns[e.ColumnIndex].Name == "Enable")
-                {
-                    Configuration config = controller.GetCurrentConfiguration();
-                    Server server = config.configs[id];
-                    server.setEnable(!server.isEnable());
-                    controller.SelectServerIndex(config.index);
                 }
                 ServerDataGrid[0, e.RowIndex].Selected = true;
             }
@@ -974,17 +845,14 @@ namespace ShadowsocksR.View
                 {
                     Configuration config = controller.GetCurrentConfiguration();
                     config.configs[id].ServerSpeedLog().Clear();
-                    config.configs[id].setEnable(true);
                 }
                 if (ServerDataGrid.Columns[e.ColumnIndex].Name == "ConnectError"
                     || ServerDataGrid.Columns[e.ColumnIndex].Name == "ConnectTimeout"
                     || ServerDataGrid.Columns[e.ColumnIndex].Name == "ConnectEmpty"
-                    || ServerDataGrid.Columns[e.ColumnIndex].Name == "Continuous"
-                    )
+                    || ServerDataGrid.Columns[e.ColumnIndex].Name == "Continuous")
                 {
                     Configuration config = controller.GetCurrentConfiguration();
                     config.configs[id].ServerSpeedLog().ClearError();
-                    config.configs[id].setEnable(true);
                 }
                 ServerDataGrid[0, e.RowIndex].Selected = true;
             }

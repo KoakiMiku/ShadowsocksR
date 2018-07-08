@@ -508,11 +508,6 @@ namespace ShadowsocksR.Model
             return enable;
         }
 
-        public void setEnable(bool enable)
-        {
-            this.enable = enable;
-        }
-
         public object getObfsData()
         {
             return obfsdata;

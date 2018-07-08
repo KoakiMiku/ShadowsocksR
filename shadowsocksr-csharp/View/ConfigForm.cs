@@ -112,7 +112,7 @@ namespace ShadowsocksR.View
 
         private void UpdateTexts()
         {
-            Text = I18N.GetString("Edit Servers") + "(" + (controller.GetCurrentConfiguration().shareOverLan ? "any" : "local") + ":" + controller.GetCurrentConfiguration().localPort.ToString() + ")";
+            Text = I18N.GetString("Edit Servers");
 
             AddButton.Text = I18N.GetString("&Add");
             DeleteButton.Text = I18N.GetString("&Delete");
@@ -255,7 +255,6 @@ namespace ShadowsocksR.View
                 }
                 PictureQRcode.Image = drawArea;
                 PictureQRcode.Visible = true;
-                _modifiedConfiguration.isHideTips = true;
             }
             else
             {
@@ -491,11 +490,11 @@ namespace ShadowsocksR.View
             {
                 return;
             }
-            if (_modifiedConfiguration.configs.Count == 0)
-            {
-                MessageBox.Show(I18N.GetString("Please add at least one server"));
-                return;
-            }
+            //if (_modifiedConfiguration.configs.Count == 0)
+            //{
+            //    MessageBox.Show(I18N.GetString("Please add at least one server"));
+            //    return;
+            //}
             if (_oldSelectedID != null)
             {
                 for (int i = 0; i < _modifiedConfiguration.configs.Count; ++i)

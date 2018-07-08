@@ -7,14 +7,14 @@ namespace ShadowsocksR.Controller
 {
     public class UpdateNode
     {
-        public event EventHandler NewFreeNodeFound;
-        public string FreeNodeResult;
+        public event EventHandler NewNodeFound;
+        public string NodeResult;
 
         public const string Name = "ShadowsocksR";
 
         public void CheckUpdate(Configuration config, string URL, bool use_proxy)
         {
-            FreeNodeResult = null;
+            NodeResult = null;
             try
             {
                 WebClient http = new WebClient();
@@ -47,9 +47,9 @@ namespace ShadowsocksR.Controller
             try
             {
                 string response = e.Result;
-                FreeNodeResult = response;
+                NodeResult = response;
 
-                NewFreeNodeFound?.Invoke(this, new EventArgs());
+                NewNodeFound?.Invoke(this, new EventArgs());
             }
             catch (Exception ex)
             {
@@ -58,7 +58,7 @@ namespace ShadowsocksR.Controller
                     Logging.Debug(e.Error.ToString());
                 }
                 Logging.Debug(ex.ToString());
-                NewFreeNodeFound?.Invoke(this, new EventArgs());
+                NewNodeFound?.Invoke(this, new EventArgs());
                 return;
             }
         }

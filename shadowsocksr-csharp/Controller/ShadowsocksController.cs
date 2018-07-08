@@ -1,4 +1,5 @@
 ﻿using ShadowsocksR.Model;
+using ShadowsocksR.Properties;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -334,6 +335,14 @@ namespace ShadowsocksR.Controller
             if (gfwListUpdater != null)
             {
                 gfwListUpdater.UpdatePACFromGFWList(_config);
+            }
+        }
+
+        public void UpdatePACFile(string pacfile)
+        {
+            if (gfwListUpdater != null)
+            {
+                gfwListUpdater.UpdatePACFile(pacfile);
             }
         }
 

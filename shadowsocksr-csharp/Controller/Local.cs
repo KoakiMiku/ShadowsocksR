@@ -128,7 +128,7 @@ namespace ShadowsocksR.Controller
     {
         private delegate IPHostEntry GetHostEntryHandler(string ip);
 
-        public delegate Server GetCurrentServer(int localPort, ServerSelectStrategy.FilterFunc filter, string targetURI = null, bool cfgRandom = false, bool usingRandom = false, bool forceRandom = false);
+        public delegate Server GetCurrentServer(int localPort, ServerSelectStrategy.FilterFunc filter, string targetURI = null);
         public delegate void KeepCurrentServer(int localPort, string targetURI, string id);
         public GetCurrentServer getCurrentServer;
         public KeepCurrentServer keepCurrentServer;
@@ -694,7 +694,7 @@ namespace ShadowsocksR.Controller
             CloseSocket(ref remoteUDP);
             if (connection != null && cfg != null)
             {
-                Logging.Debug("Close   " + cfg.targetHost + ":" + cfg.targetPort.ToString() + " " + connection.GetSocket().Handle.ToString());
+                Logging.Debug("Close " + cfg.targetHost + ":" + cfg.targetPort.ToString() + " " + connection.GetSocket().Handle.ToString());
             }
             if (lastErrCode == 0 && server != null && speedTester != null)
             {
@@ -802,11 +802,11 @@ namespace ShadowsocksR.Controller
                 {
                     cfg.targetHost = GetQueryString();
                     cfg.targetPort = GetQueryPort();
-                    server = getCurrentServer(localPort, null, cfg.targetHost, cfg.random, true);
+                    server = getCurrentServer(localPort, null, cfg.targetHost);
                 }
                 else
                 {
-                    server = getCurrentServer(localPort, null, cfg.targetHost, cfg.random, true, cfg.forceRandom);
+                    server = getCurrentServer(localPort, null, cfg.targetHost);
                 }
             }
             else
@@ -815,11 +815,11 @@ namespace ShadowsocksR.Controller
                 {
                     cfg.targetHost = GetQueryString();
                     cfg.targetPort = GetQueryPort();
-                    server = getCurrentServer(localPort, select_server, cfg.targetHost, true, true);
+                    server = getCurrentServer(localPort, select_server, cfg.targetHost);
                 }
                 else
                 {
-                    server = getCurrentServer(localPort, select_server, cfg.targetHost, true, true, cfg.forceRandom);
+                    server = getCurrentServer(localPort, select_server, cfg.targetHost);
                 }
             }
             speedTester.server = server.server;

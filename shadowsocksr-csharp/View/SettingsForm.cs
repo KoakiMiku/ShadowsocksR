@@ -43,14 +43,14 @@ namespace ShadowsocksR.View
 
         private void UpdateTexts()
         {
-            Text = I18N.GetString("Global Settings") + "(" + (controller.GetCurrentConfiguration().shareOverLan ? "any" : "local") + ":" + controller.GetCurrentConfiguration().localPort.ToString() + ")";
+            Text = I18N.GetString("Global Settings");
 
             ListenGroup.Text = I18N.GetString(ListenGroup.Text);
             checkShareOverLan.Text = I18N.GetString(checkShareOverLan.Text);
             ProxyPortLabel.Text = I18N.GetString("Proxy Port");
             ReconnectLabel.Text = I18N.GetString("Reconnect Times");
             TTLLabel.Text = I18N.GetString("TTL");
-            labelTimeout.Text = I18N.GetString(labelTimeout.Text);
+            labelTimeout.Text = I18N.GetString("Connect Timeout");
 
             checkAutoStartup.Text = I18N.GetString(checkAutoStartup.Text);
 

@@ -78,13 +78,10 @@ namespace ShadowsocksR.Model
 
         public string dnsServer;
         public int reconnectTimes;
-        public int randomAlgorithm;
-        public bool randomInGroup;
         public int TTL;
         public int connectTimeout;
 
         public int proxyRuleMode;
-
         public bool proxyEnable;
         public bool pacDirectGoProxy;
         public int proxyType;
@@ -99,8 +96,6 @@ namespace ShadowsocksR.Model
 
         public bool sameHostForSameTarget;
         public int keepVisitTime;
-
-        public bool isHideTips;
 
         public bool nodeFeedAutoUpdate;
         public List<ServerSubscribe> serverSubscribes;
@@ -152,7 +147,7 @@ namespace ShadowsocksR.Model
             return false;
         }
 
-        public Server GetCurrentServer(int localPort, ServerSelectStrategy.FilterFunc filter, string targetAddr = null, bool cfgRandom = false, bool usingRandom = false, bool forceRandom = false)
+        public Server GetCurrentServer(int localPort, ServerSelectStrategy.FilterFunc filter, string targetAddr = null)
         {
             lock (serverStrategyMap)
             {
@@ -169,7 +164,7 @@ namespace ShadowsocksR.Model
                     time2uri.Remove(p.Key);
                     break;
                 }
-                if (sameHostForSameTarget && !forceRandom && targetAddr != null && uri2time.ContainsKey(targetAddr))
+                if (sameHostForSameTarget && targetAddr != null && uri2time.ContainsKey(targetAddr))
                 {
                     UriVisitTime visit = uri2time[targetAddr];
                     if (visit.index < configs.Count && configs[visit.index].enable)
@@ -182,48 +177,15 @@ namespace ShadowsocksR.Model
                         return configs[visit.index];
                     }
                 }
-                if (forceRandom)
+                if (index >= 0 && index < configs.Count)
                 {
-                    int index;
-                    if (filter == null && randomInGroup)
-                    {
-                        index = serverStrategy.Select(configs, this.index, randomAlgorithm, delegate (Server server, Server selServer)
-                        {
-                            if (selServer != null)
-                                return selServer.group == server.group;
-                            return false;
-                        }, true);
-                    }
-                    else
-                    {
-                        index = serverStrategy.Select(configs, this.index, randomAlgorithm, filter, true);
-                    }
-                    if (index == -1) return GetErrorServer();
-                    return configs[index];
-                }
-                else if (usingRandom && cfgRandom)
-                {
-                    int index;
-                    if (filter == null && randomInGroup)
-                    {
-                        index = serverStrategy.Select(configs, this.index, randomAlgorithm, delegate (Server server, Server selServer)
-                        {
-                            if (selServer != null)
-                                return selServer.group == server.group;
-                            return false;
-                        });
-                    }
-                    else
-                    {
-                        index = serverStrategy.Select(configs, this.index, randomAlgorithm, filter);
-                    }
-                    if (index == -1) return GetErrorServer();
+                    int selIndex = index;
                     if (targetAddr != null)
                     {
                         UriVisitTime visit = new UriVisitTime
                         {
                             uri = targetAddr,
-                            index = index,
+                            index = selIndex,
                             visitTime = DateTime.Now
                         };
                         if (uri2time.ContainsKey(targetAddr))
@@ -233,49 +195,11 @@ namespace ShadowsocksR.Model
                         uri2time[targetAddr] = visit;
                         time2uri[visit] = targetAddr;
                     }
-                    return configs[index];
+                    return configs[selIndex];
                 }
                 else
                 {
-                    if (index >= 0 && index < configs.Count)
-                    {
-                        int selIndex = index;
-                        if (usingRandom)
-                        {
-                            for (int i = 0; i < configs.Count; ++i)
-                            {
-                                if (configs[selIndex].isEnable())
-                                {
-                                    break;
-                                }
-                                else
-                                {
-                                    selIndex = (selIndex + 1) % configs.Count;
-                                }
-                            }
-                        }
-
-                        if (targetAddr != null)
-                        {
-                            UriVisitTime visit = new UriVisitTime
-                            {
-                                uri = targetAddr,
-                                index = selIndex,
-                                visitTime = DateTime.Now
-                            };
-                            if (uri2time.ContainsKey(targetAddr))
-                            {
-                                time2uri.Remove(uri2time[targetAddr]);
-                            }
-                            uri2time[targetAddr] = visit;
-                            time2uri[visit] = targetAddr;
-                        }
-                        return configs[selIndex];
-                    }
-                    else
-                    {
-                        return GetErrorServer();
-                    }
+                    return GetErrorServer();
                 }
             }
         }
@@ -361,9 +285,8 @@ namespace ShadowsocksR.Model
             connectTimeout = 5;
             dnsServer = "";
 
-            randomAlgorithm = (int)ServerSelectStrategy.SelectAlgorithm.LowException;
             sysProxyMode = (int)ProxyMode.Direct;
-            proxyRuleMode = (int)ProxyRuleMode.BypassLanAndChina;
+            proxyRuleMode = (int)ProxyRuleMode.Disable;
             nodeFeedAutoUpdate = false;
 
             serverSubscribes = new List<ServerSubscribe>();
@@ -378,8 +301,6 @@ namespace ShadowsocksR.Model
             shareOverLan = config.shareOverLan;
             localPort = config.localPort;
             reconnectTimes = config.reconnectTimes;
-            randomAlgorithm = config.randomAlgorithm;
-            randomInGroup = config.randomInGroup;
             TTL = config.TTL;
             connectTimeout = config.connectTimeout;
             dnsServer = config.dnsServer;
@@ -395,7 +316,6 @@ namespace ShadowsocksR.Model
             authPass = config.authPass;
             sameHostForSameTarget = config.sameHostForSameTarget;
             keepVisitTime = config.keepVisitTime;
-            isHideTips = config.isHideTips;
             nodeFeedAutoUpdate = config.nodeFeedAutoUpdate;
             serverSubscribes = config.serverSubscribes;
         }

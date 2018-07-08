@@ -7,7 +7,7 @@ using System.IO;
 using System.Threading;
 using System.Windows.Forms;
 
-namespace Shadowsocks
+namespace ShadowsocksR
 {
     static class Program
     {
