@@ -4,11 +4,7 @@ namespace ShadowsocksR.Obfs
 {
     public class ObfsException : Exception
     {
-        public ObfsException(string info)
-            : base(info)
-        {
-
-        }
+        public ObfsException(string info) : base(info) { }
     }
     public class ServerInfo
     {

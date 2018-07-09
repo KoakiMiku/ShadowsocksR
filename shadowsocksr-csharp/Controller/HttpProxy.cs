@@ -58,46 +58,6 @@ namespace ShadowsocksR.Controller
             return host;
         }
 
-        protected string ParseURL(string url, string host, int port)
-        {
-            if (url.StartsWith("http://"))
-            {
-                url = url.Substring(7);
-            }
-            if (url.StartsWith("["))
-            {
-                if (url.StartsWith("[" + host + "]"))
-                {
-                    url = url.Substring(host.Length + 2);
-                }
-            }
-            else if (url.StartsWith(host))
-            {
-                url = url.Substring(host.Length);
-            }
-            if (url.StartsWith(":"))
-            {
-                if (url.StartsWith(":" + port.ToString()))
-                {
-                    url = url.Substring((":" + port.ToString()).Length);
-                }
-            }
-            if (!url.StartsWith("/"))
-            {
-                int pos_slash = url.IndexOf('/');
-                int pos_space = url.IndexOf(' ');
-                if (pos_slash > 0 && pos_slash < pos_space)
-                {
-                    url = url.Substring(pos_slash);
-                }
-            }
-            if (url.StartsWith(" "))
-            {
-                url = "/" + url;
-            }
-            return url;
-        }
-
         public void HostToHandshakeBuffer(string host, int port, ref byte[] remoteHeaderSendBuffer)
         {
             if (redir)

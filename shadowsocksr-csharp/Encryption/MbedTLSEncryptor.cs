@@ -4,8 +4,7 @@ using System.Runtime.InteropServices;
 
 namespace ShadowsocksR.Encryption
 {
-    public class MbedTLSEncryptor
-        : IVEncryptor, IDisposable
+    public class MbedTLSEncryptor : IVEncryptor, IDisposable
     {
         const int CIPHER_RC4 = 1;
         const int CIPHER_AES = 2;
@@ -15,10 +14,7 @@ namespace ShadowsocksR.Encryption
         private IntPtr _encryptCtx = IntPtr.Zero;
         private IntPtr _decryptCtx = IntPtr.Zero;
 
-        public MbedTLSEncryptor(string method, string password)
-            : base(method, password)
-        {
-        }
+        public MbedTLSEncryptor(string method, string password) : base(method, password) { }
 
         private static Dictionary<string, EncryptorInfo> _ciphers = new Dictionary<string, EncryptorInfo> {
             { "aes-128-cbc", new EncryptorInfo(16, 16, false, CIPHER_AES, "AES-128-CBC") },
@@ -75,7 +71,7 @@ namespace ShadowsocksR.Encryption
                 realkey = _key;
             }
             MbedTLS.cipher_init(ctx);
-            if (MbedTLS.cipher_setup( ctx, MbedTLS.cipher_info_from_string( getInfo().name ) ) != 0 )
+            if (MbedTLS.cipher_setup(ctx, MbedTLS.cipher_info_from_string(getInfo().name)) != 0)
                 throw new Exception("Cannot initialize mbed TLS cipher context");
             /*
              * MbedTLS takes key length by bit
@@ -89,7 +85,7 @@ namespace ShadowsocksR.Encryption
              *  
              */
             if (MbedTLS.cipher_setkey(ctx, realkey, keyLen * 8,
-                isCipher ? MbedTLS.MBEDTLS_ENCRYPT : MbedTLS.MBEDTLS_DECRYPT) != 0 )
+                isCipher ? MbedTLS.MBEDTLS_ENCRYPT : MbedTLS.MBEDTLS_DECRYPT) != 0)
                 throw new Exception("Cannot set mbed TLS cipher key");
             if (MbedTLS.cipher_set_iv(ctx, iv, ivLen) != 0)
                 throw new Exception("Cannot set mbed TLS cipher IV");
@@ -105,7 +101,7 @@ namespace ShadowsocksR.Encryption
                 throw new ObjectDisposedException(ToString());
             }
             if (MbedTLS.cipher_update(isCipher ? _encryptCtx : _decryptCtx,
-                buf, length, outbuf, ref length) != 0 )
+                buf, length, outbuf, ref length) != 0)
                 throw new Exception("Cannot update mbed TLS cipher context");
         }
 

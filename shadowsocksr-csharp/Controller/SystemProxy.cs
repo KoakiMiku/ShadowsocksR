@@ -546,8 +546,6 @@ namespace ShadowsocksR.Controller
                 catch (Exception e)
                 {
                     Logging.LogUsefulException(e);
-                    // TODO this should be moved into views
-                    //MessageBox.Show(I18N.GetString("Failed to update registry"));
                 }
             }
             Version win8 = new Version("6.2");

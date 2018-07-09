@@ -9,7 +9,7 @@ using System.Text;
 
 namespace ShadowsocksR.Controller
 {
-    class PACServer : Listener.Service
+    class PACServer : Listener.IService
     {
         public static string PAC_FILE = "pac.txt";
         public static string USER_RULE_FILE = "user-rule.txt";

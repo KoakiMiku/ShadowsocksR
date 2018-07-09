@@ -76,10 +76,16 @@ namespace ShadowsocksR.View
             SetSelectIndex(select_index);
         }
 
-        private int SaveAllSettings()
+        private void SaveAllSettings()
         {
-            _modifiedConfiguration.nodeFeedAutoUpdate = checkBoxAutoUpdate.Checked;
-            return 0;
+            if (listServerSubscribe.Items.Count == 0)
+            {
+                _modifiedConfiguration.nodeFeedAutoUpdate = false;
+            }
+            else
+            {
+                _modifiedConfiguration.nodeFeedAutoUpdate = checkBoxAutoUpdate.Checked;
+            }
         }
 
         private void buttonCancel_Click(object sender, EventArgs e)
@@ -91,10 +97,7 @@ namespace ShadowsocksR.View
         {
             int select_index = listServerSubscribe.SelectedIndex;
             SaveSelected(select_index);
-            if (SaveAllSettings() == -1)
-            {
-                return;
-            }
+            SaveAllSettings();
             controller.SaveServersConfig(_modifiedConfiguration);
             Close();
         }

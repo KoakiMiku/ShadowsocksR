@@ -86,7 +86,8 @@ namespace ShadowsocksR.View
 
                 if (checkAutoStartup.Checked != AutoStartup.Check() && !AutoStartup.Set(checkAutoStartup.Checked))
                 {
-                    MessageBox.Show(I18N.GetString("Failed to update registry"));
+                    MessageBox.Show(I18N.GetString("Failed to update registry"), "ShadowsocksR",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 _modifiedConfiguration.TTL = Convert.ToInt32(NumTTL.Value);
                 _modifiedConfiguration.connectTimeout = Convert.ToInt32(NumTimeout.Value);
@@ -98,7 +99,7 @@ namespace ShadowsocksR.View
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             return -1; // ERROR
         }

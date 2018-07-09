@@ -6,7 +6,7 @@ using System.Threading;
 
 namespace ShadowsocksR.Controller
 {
-    class HttpPortForwarder : Listener.Service
+    class HttpPortForwarder : Listener.IService
     {
         int _targetPort;
         Configuration _config;

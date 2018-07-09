@@ -46,46 +46,6 @@ namespace ShadowsocksR.Controller
             }
         }
 
-        public static bool Switch()
-        {
-            bool enabled = !Check();
-            RegistryKey runKey = null;
-            try
-            {
-                string path = Util.Utils.GetExecutablePath();
-                runKey = Registry.CurrentUser.OpenSubKey(RegistryRunPath, true);
-                if (enabled)
-                {
-                    runKey.SetValue(Key, path);
-                }
-                else
-                {
-                    runKey.DeleteValue(Key);
-                }
-                runKey.Close();
-                return true;
-            }
-            catch (Exception e)
-            {
-                Logging.LogUsefulException(e);
-                return false;
-            }
-            finally
-            {
-                if (runKey != null)
-                {
-                    try
-                    {
-                        runKey.Close();
-                    }
-                    catch (Exception e)
-                    {
-                        Logging.LogUsefulException(e);
-                    }
-                }
-            }
-        }
-
         public static bool Check()
         {
             RegistryKey runKey = null;

@@ -4,10 +4,8 @@ namespace ShadowsocksR.Obfs
 {
     public class Plain : ObfsBase
     {
-        public Plain(string method)
-            : base(method)
-        {
-        }
+        public Plain(string method) : base(method) { }
+
         private static Dictionary<string, int[]> _obfs = new Dictionary<string, int[]> {
                 {"plain", new int[]{0, 0, 0}},
                 {"origin", new int[]{0, 0, 0}},

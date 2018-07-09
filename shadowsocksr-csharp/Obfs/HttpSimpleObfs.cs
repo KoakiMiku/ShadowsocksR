@@ -6,8 +6,7 @@ namespace ShadowsocksR.Obfs
 {
     class HttpSimpleObfs : ObfsBase
     {
-        public HttpSimpleObfs(string method)
-            : base(method)
+        public HttpSimpleObfs(string method) : base(method)
         {
             has_sent_header = false;
             //has_recv_header = false;

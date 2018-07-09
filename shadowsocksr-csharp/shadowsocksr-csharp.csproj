@@ -79,7 +79,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controller\APIServer.cs" />
     <Compile Include="Controller\AutoStartup.cs" />
     <Compile Include="Controller\FileManager.cs" />
     <Compile Include="Controller\GFWListUpdater.cs" />

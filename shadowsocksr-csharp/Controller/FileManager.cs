@@ -10,17 +10,14 @@ namespace ShadowsocksR.Controller
         {
             try
             {
-                System.IO.FileStream _FileStream =
-                   new System.IO.FileStream(fileName, System.IO.FileMode.Create,
-                                            System.IO.FileAccess.Write);
+                FileStream _FileStream = new FileStream(fileName, FileMode.Create, FileAccess.Write);
                 _FileStream.Write(content, 0, content.Length);
                 _FileStream.Close();
                 return true;
             }
             catch (Exception _Exception)
             {
-                Console.WriteLine("Exception caught in process: {0}",
-                                  _Exception.ToString());
+                Console.WriteLine("Exception caught in process: {0}", _Exception.ToString());
             }
             return false;
         }
@@ -34,8 +31,7 @@ namespace ShadowsocksR.Controller
             byte[] buffer = new byte[4096];
             int n;
 
-            using (GZipStream input = new GZipStream(new MemoryStream(content),
-                CompressionMode.Decompress, false))
+            using (GZipStream input = new GZipStream(new MemoryStream(content), CompressionMode.Decompress, false))
             {
                 while (true)
                 {
@@ -66,8 +62,7 @@ namespace ShadowsocksR.Controller
             }
             catch (Exception _Exception)
             {
-                Console.WriteLine("Exception caught in process: {0}",
-                                  _Exception.ToString());
+                Console.WriteLine("Exception caught in process: {0}", _Exception.ToString());
             }
             return null;
         }
@@ -95,8 +90,7 @@ namespace ShadowsocksR.Controller
             }
             catch (Exception _Exception)
             {
-                Console.WriteLine("Exception caught in process: {0}",
-                                  _Exception.ToString());
+                Console.WriteLine("Exception caught in process: {0}", _Exception.ToString());
             }
             return null;
         }

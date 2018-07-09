@@ -5,8 +5,7 @@ using System.Text;
 
 namespace ShadowsocksR.Encryption
 {
-    public abstract class IVEncryptor
-        : EncryptorBase
+    public abstract class IVEncryptor : EncryptorBase
     {
         protected Dictionary<string, EncryptorInfo> ciphers;
 
@@ -28,8 +27,7 @@ namespace ShadowsocksR.Encryption
         protected byte[] encbuf = new byte[MAX_INPUT_SIZE];
         protected byte[] decbuf = new byte[MAX_INPUT_SIZE];
 
-        public IVEncryptor(string method, string password)
-            : base(method, password)
+        public IVEncryptor(string method, string password) : base(method, password)
         {
             InitKey(method, password);
         }

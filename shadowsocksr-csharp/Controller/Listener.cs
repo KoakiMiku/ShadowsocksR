@@ -10,7 +10,7 @@ namespace ShadowsocksR.Controller
 {
     public class Listener
     {
-        public interface Service
+        public interface IService
         {
             bool Handle(byte[] firstPacket, int length, Socket socket);
         }
@@ -22,17 +22,17 @@ namespace ShadowsocksR.Controller
         Socket _socket;
         Socket _socket_v6;
         bool _stop;
-        IList<Service> _services;
+        IList<IService> _services;
         protected Timer timer;
         protected object timerLock = new object();
 
-        public Listener(IList<Service> services)
+        public Listener(IList<IService> services)
         {
             _services = services;
             _stop = false;
         }
 
-        public IList<Service> GetServices()
+        public IList<IService> GetServices()
         {
             return _services;
         }
@@ -120,25 +120,8 @@ namespace ShadowsocksR.Controller
                     _socket_v6.Bind(localEndPointV6);
                     _socket_v6.Listen(1024);
                 }
-                //try
-                {
-                    //throw new SocketException();
-                    _socket.Bind(localEndPoint);
-                    _socket.Listen(1024);
-                }
-                //catch (SocketException e)
-                //{
-                //    if (_socket_v6 == null)
-                //    {
-                //        throw e;
-                //    }
-                //    else
-                //    {
-                //        _socket.Close();
-                //        _socket = _socket_v6;
-                //        _socket_v6 = null;
-                //    }
-                //}
+                _socket.Bind(localEndPoint);
+                _socket.Listen(1024);
 
                 // Start an asynchronous socket to listen for connections.
                 Console.WriteLine("ShadowsocksR started on port " + localPort.ToString());
@@ -280,7 +263,7 @@ namespace ShadowsocksR.Controller
                     }
                     else
                     {
-                        foreach (Service service in _services)
+                        foreach (IService service in _services)
                         {
                             if (service.Handle(buf, 0, conn))
                             {
@@ -331,7 +314,7 @@ namespace ShadowsocksR.Controller
             try
             {
                 int bytesRead = conn.EndReceive(ar);
-                foreach (Service service in _services)
+                foreach (IService service in _services)
                 {
                     if (service.Handle(buf, bytesRead, conn))
                     {

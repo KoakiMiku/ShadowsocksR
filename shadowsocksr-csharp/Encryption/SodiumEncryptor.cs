@@ -3,8 +3,7 @@ using System.Collections.Generic;
 
 namespace ShadowsocksR.Encryption
 {
-    public class SodiumEncryptor
-        : IVEncryptor, IDisposable
+    public class SodiumEncryptor : IVEncryptor, IDisposable
     {
         const int CIPHER_SALSA20 = 1;
         const int CIPHER_CHACHA20 = 2;
@@ -22,8 +21,7 @@ namespace ShadowsocksR.Encryption
         private delegate void crypto_stream(byte[] c, byte[] m, ulong mlen, byte[] n, ulong ic, byte[] k);
         private crypto_stream encryptor_delegate;
 
-        public SodiumEncryptor(string method, string password)
-            : base(method, password)
+        public SodiumEncryptor(string method, string password) : base(method, password)
         {
             InitKey(method, password);
             _encryptBuf = new byte[MAX_INPUT_SIZE + SODIUM_BLOCK_SIZE];

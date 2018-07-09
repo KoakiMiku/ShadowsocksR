@@ -32,7 +32,8 @@ namespace ShadowsocksR
                 {
                     MessageBox.Show(I18N.GetString("Find Shadowsocks icon in your notify tray.") + "\n" +
                         I18N.GetString("If you want to start multiple Shadowsocks, make a copy in another directory."),
-                        I18N.GetString("ShadowsocksR is already running."));
+                        I18N.GetString("ShadowsocksR is already running."),
+                        MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
                 Directory.SetCurrentDirectory(Application.StartupPath);
@@ -112,7 +113,7 @@ namespace ShadowsocksR
                 Logging.Log(LogLevel.Error, e.ExceptionObject != null ? e.ExceptionObject.ToString() : "");
                 MessageBox.Show(I18N.GetString("Unexpected error, ShadowsocksR will exit.") +
                     Environment.NewLine + (e.ExceptionObject != null ? e.ExceptionObject.ToString() : ""),
-                    "Shadowsocks Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    "ShadowsocksR", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Application.Exit();
             }
         }

@@ -7,14 +7,6 @@ using System.Text;
 
 namespace ShadowsocksR.Controller
 {
-    public class ProtocolException : Exception
-    {
-        public ProtocolException(string info) : base(info)
-        {
-
-        }
-    }
-
     class ProxyAuthHandler
     {
         private Configuration _config;

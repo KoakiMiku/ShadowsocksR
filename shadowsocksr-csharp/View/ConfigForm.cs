@@ -211,11 +211,12 @@ namespace ShadowsocksR.View
             }
             catch (FormatException)
             {
-                MessageBox.Show(I18N.GetString("Illegal port number format"));
+                MessageBox.Show(I18N.GetString("Illegal port number format"), I18N.GetString("Information"),
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message);
+                MessageBox.Show(ex.Message, ex.Source, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             return -1; // ERROR
         }
@@ -490,11 +491,6 @@ namespace ShadowsocksR.View
             {
                 return;
             }
-            //if (_modifiedConfiguration.configs.Count == 0)
-            //{
-            //    MessageBox.Show(I18N.GetString("Please add at least one server"));
-            //    return;
-            //}
             if (_oldSelectedID != null)
             {
                 for (int i = 0; i < _modifiedConfiguration.configs.Count; ++i)

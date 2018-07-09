@@ -9,7 +9,7 @@ using System.Timers;
 
 namespace ShadowsocksR.Controller
 {
-    class Socks5Forwarder : Listener.Service
+    class Socks5Forwarder : Listener.IService
     {
         private Configuration _config;
         private IPRangeSet _IPRange;

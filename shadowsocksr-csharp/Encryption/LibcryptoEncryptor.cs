@@ -3,8 +3,7 @@ using System.Collections.Generic;
 
 namespace ShadowsocksR.Encryption
 {
-    public class LibcryptoEncryptor
-        : IVEncryptor, IDisposable
+    public class LibcryptoEncryptor : IVEncryptor, IDisposable
     {
         const int CIPHER_AES = 1;
         const int CIPHER_RC4 = 2;

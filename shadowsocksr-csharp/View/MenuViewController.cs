@@ -109,7 +109,9 @@ namespace ShadowsocksR.View
 
         void controller_Errored(object sender, System.IO.ErrorEventArgs e)
         {
-            MessageBox.Show(e.GetException().ToString(), String.Format(I18N.GetString("Shadowsocks Error: {0}"), e.GetException().Message));
+            MessageBox.Show(e.GetException().ToString(),
+                String.Format(I18N.GetString("Shadowsocks Error: {0}"), e.GetException().Message),
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         private void UpdateTrayIcon()
@@ -699,7 +701,8 @@ namespace ShadowsocksR.View
             Configuration config = controller.GetCurrentConfiguration();
             if (config.configs.Count == 0)
             {
-                MessageBox.Show(I18N.GetString("Please add at least one server"));
+                MessageBox.Show(I18N.GetString("Please add at least one server"), I18N.GetString("Information"),
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
             if (serverLogForm != null)
@@ -815,7 +818,8 @@ namespace ShadowsocksR.View
                     Configuration cfg = Configuration.LoadFile(name);
                     if (cfg.configs.Count == 1 && cfg.configs[0].server == Configuration.GetDefaultServer().server)
                     {
-                        MessageBox.Show("Load config file failed", "ShadowsocksR");
+                        //MessageBox.Show("Load config file failed", I18N.GetString("Information"),
+                        //    MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     else
                     {
@@ -879,7 +883,8 @@ namespace ShadowsocksR.View
             Configuration config = controller.GetCurrentConfiguration();
             if (config.configs.Count == 0)
             {
-                MessageBox.Show(I18N.GetString("Please add at least one server"));
+                MessageBox.Show(I18N.GetString("Please add at least one server"), I18N.GetString("Information"),
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
             controller.ToggleMode(ProxyMode.Global);
@@ -890,7 +895,8 @@ namespace ShadowsocksR.View
             Configuration config = controller.GetCurrentConfiguration();
             if (config.configs.Count == 0)
             {
-                MessageBox.Show(I18N.GetString("Please add at least one server"));
+                MessageBox.Show(I18N.GetString("Please add at least one server"), I18N.GetString("Information"),
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
             controller.ToggleMode(ProxyMode.Pac);
@@ -993,11 +999,25 @@ namespace ShadowsocksR.View
 
         private void CheckNodeUpdate_Click(object sender, EventArgs e)
         {
+            Configuration config = controller.GetCurrentConfiguration();
+            if (config.serverSubscribes.Count == 0)
+            {
+                MessageBox.Show(I18N.GetString("Please add at least one server subscribe"), I18N.GetString("Information"),
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
             updateSubscribeManager.CreateTask(controller.GetCurrentConfiguration(), updateNodeChecker, -1, true);
         }
 
         private void CheckNodeUpdateBypassProxy_Click(object sender, EventArgs e)
         {
+            Configuration config = controller.GetCurrentConfiguration();
+            if (config.serverSubscribes.Count == 0)
+            {
+                MessageBox.Show(I18N.GetString("Please add at least one server subscribe"), I18N.GetString("Information"),
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
             updateSubscribeManager.CreateTask(controller.GetCurrentConfiguration(), updateNodeChecker, -1, false);
         }
 
@@ -1021,7 +1041,8 @@ namespace ShadowsocksR.View
             Configuration config = controller.GetCurrentConfiguration();
             if (config.configs.Count == 0)
             {
-                MessageBox.Show(I18N.GetString("Please add at least one server"));
+                MessageBox.Show(I18N.GetString("Please add at least one server"), I18N.GetString("Information"),
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
             for (int id = 0; id < config.configs.Count; ++id)
@@ -1065,16 +1086,17 @@ namespace ShadowsocksR.View
                     foreach (string url in urls)
                     {
                         if (controller.AddServerBySSURL(url))
+                        {
                             ++count;
+                        }
                     }
                     if (count > 0)
+                    {
                         ShowConfigForm(true);
+                    }
                 }
             }
-            catch
-            {
-
-            }
+            catch { }
         }
 
         private bool ScanQRCode(Screen screen, Bitmap fullImage, Rectangle cropRect, out string url, out Rectangle rect)
@@ -1262,12 +1284,14 @@ namespace ShadowsocksR.View
                     }
                     if (decode_fail)
                     {
-                        MessageBox.Show(I18N.GetString("Failed to decode QRCode"));
+                        MessageBox.Show(I18N.GetString("Failed to decode QRCode"), "ShadowsocksR",
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
                     }
                 }
             }
-            MessageBox.Show(I18N.GetString("No QRCode found. Try to zoom in or move it to the center of the screen."));
+            MessageBox.Show(I18N.GetString("No QRCode found. Try to zoom in or move it to the center of the screen."),
+                I18N.GetString("Information"), MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void ScanQRCodeItem_Click(object sender, EventArgs e)

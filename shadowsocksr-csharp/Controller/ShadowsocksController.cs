@@ -1,5 +1,4 @@
 ﻿using ShadowsocksR.Model;
-using ShadowsocksR.Properties;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -382,6 +381,11 @@ namespace ShadowsocksR.Controller
                 gfwListUpdater.Error += pacServer_PACUpdateError;
             }
 
+            _pacServer.TouchPACFile();
+            _pacServer.TouchUserRuleFile();
+            _rangeSet.TouchChnIpFile();
+            _hostMap.TouchHostFile();
+
             // don't put polipoRunner.Start() before pacServer.Stop()
             // or bind will fail when switching bind address from 0.0.0.0 to 127.0.0.1
             // though UseShellExecute is set to true now
@@ -417,10 +421,9 @@ namespace ShadowsocksR.Controller
                         polipoRunner.Start(_config);
 
                         Local local = new Local(_config, _transfer, _rangeSet);
-                        List<Listener.Service> services = new List<Listener.Service>();
+                        List<Listener.IService> services = new List<Listener.IService>();
                         services.Add(local);
                         services.Add(_pacServer);
-                        services.Add(new APIServer(this, _config));
                         services.Add(new HttpPortForwarder(polipoRunner.RunningPort, _config));
                         _listener = new Listener(services);
                         _listener.Start(_config, 0);
@@ -463,7 +466,7 @@ namespace ShadowsocksR.Controller
                 try
                 {
                     Local local = new Local(_config, _transfer, _rangeSet);
-                    List<Listener.Service> services = new List<Listener.Service>();
+                    List<Listener.IService> services = new List<Listener.IService>();
                     services.Add(local);
                     Listener listener = new Listener(services);
                     listener.Start(_config, pair.Key);

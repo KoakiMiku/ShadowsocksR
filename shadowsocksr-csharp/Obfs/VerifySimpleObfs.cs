@@ -10,10 +10,7 @@ namespace ShadowsocksR.Obfs
 
     public abstract class VerifySimpleBase : ObfsBase
     {
-        public VerifySimpleBase(string method)
-            : base(method)
-        {
-        }
+        public VerifySimpleBase(string method) : base(method) { }
 
         protected const int RecvBufferSize = 65536 * 2;
 

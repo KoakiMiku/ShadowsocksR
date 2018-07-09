@@ -49,7 +49,7 @@ namespace ShadowsocksR.Controller
         }
     }
 
-    class Local : Listener.Service
+    class Local : Listener.IService
     {
         private delegate void InvokeHandler();
         private Configuration _config;
@@ -324,19 +324,6 @@ namespace ShadowsocksR.Controller
             if (e is ObfsException)
             {
                 ObfsException oe = (ObfsException)e;
-                if (lastErrCode == 0)
-                {
-                    if (s != null)
-                    {
-                        lastErrCode = 16;
-                        s.ServerSpeedLog().AddErrorDecodeTimes();
-                    }
-                }
-                return 16; // ObfsException(decrypt error)
-            }
-            else if (e is ProtocolException)
-            {
-                ProtocolException pe = (ProtocolException)e;
                 if (lastErrCode == 0)
                 {
                     if (s != null)
