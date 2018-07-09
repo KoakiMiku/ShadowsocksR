@@ -73,23 +73,22 @@ namespace ShadowsocksR.Model
         public int index;
         public int sysProxyMode;
         public int proxyRuleMode;
-        public bool shareOverLan;
-        public int localPort;
         public string localAuthPassword;
 
-        public string dnsServer;
-        public int reconnectTimes;
-        public int TTL;
-        public int connectTimeout;
+        public List<ServerSubscribe> serverSubscribes;
+        public bool sameHostForSameTarget;
+        public bool nodeFeedAutoUpdate;
 
+        public bool shareOverLan;
+        public int localPort;
         public string authUser;
         public string authPass;
 
-        public bool sameHostForSameTarget;
+        public int reconnectTimes;
+        public int connectTimeout;
+        public int TTL;
+        public string dnsServer;
         public int keepVisitTime;
-
-        public bool nodeFeedAutoUpdate;
-        public List<ServerSubscribe> serverSubscribes;
 
         public Dictionary<string, string> token = new Dictionary<string, string>();
         public Dictionary<string, PortMapConfig> portMap = new Dictionary<string, PortMapConfig>();
