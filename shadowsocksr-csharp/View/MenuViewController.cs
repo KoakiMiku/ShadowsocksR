@@ -119,6 +119,7 @@ namespace ShadowsocksR.View
             {
                 dpi = (int)graphics.DpiX;
             }
+
             Configuration config = controller.GetCurrentConfiguration();
             bool enabled = config.sysProxyMode != (int)ProxyMode.Direct;
             bool global = config.sysProxyMode == (int)ProxyMode.Global;
@@ -191,20 +192,30 @@ namespace ShadowsocksR.View
             }
 
             string text = string.Empty;
-            if (enabled && global)
+            try
             {
-                text = I18N.GetString("System Proxy On: ") + I18N.GetString("Global");
+                if (enabled && global)
+                {
+                    text = config.configs[config.index].remarks + "\r\n" +
+                        I18N.GetString("Running: ") + I18N.GetString("Global");
+                }
+                else if (enabled && !global)
+                {
+                    text = config.configs[config.index].remarks + "\r\n" +
+                        I18N.GetString("Running: ") + I18N.GetString("PAC");
+                }
+                else
+                {
+                    text = String.Format(I18N.GetString("Running: Port {0}"), config.localPort) + "\r\n" +
+                        I18N.GetString("Running: ") + I18N.GetString("Disable system proxy");
+                }
             }
-            else if (enabled && !global)
+            catch
             {
-                text = I18N.GetString("System Proxy On: ") + I18N.GetString("PAC");
+                text = String.Format(I18N.GetString("Running: Port {0}"), config.localPort) + "\r\n" +
+                       I18N.GetString("Running: ") + I18N.GetString("Disable system proxy");
+                controller.ToggleMode(ProxyMode.Direct);
             }
-            else
-            {
-                // this feedback is very important because they need to know Shadowsocks is running
-                text = String.Format(I18N.GetString("Running: Port {0}"), config.localPort);
-            }
-
             // we want to show more details but notify icon title is limited to 63 characters
             _notifyIcon.Text = text.Substring(0, Math.Min(63, text.Length));
         }

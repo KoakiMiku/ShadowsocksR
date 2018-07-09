@@ -125,9 +125,7 @@ namespace ShadowsocksR.View
 
         private void UpdateTitle()
         {
-            Text = title_perfix + I18N.GetString("ServerLog") + "("
-                + (controller.GetCurrentConfiguration().shareOverLan ? "any" : "local") + ":" + controller.GetCurrentConfiguration().localPort.ToString()
-                + "(" + Model.Server.GetForwardServerRef().GetConnections().Count.ToString() + ")";
+            Text = title_perfix + I18N.GetString("ServerLog");
         }
         private void UpdateTexts()
         {

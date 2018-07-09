@@ -127,12 +127,6 @@ Version=版本
 
 Log Viewer=日誌檢視器
 
-# PAC Url Form
-
-Edit Online PAC URL=編輯在線 PAC 網址
-Edit Online PAC URL...=編輯在線 PAC 網址...
-Please input PAC Url=請輸入 PAC 網址
-
 # SubscribeForm Form
 
 Subscribe Settings=訂閱設置
@@ -169,6 +163,7 @@ Failed to decode QRCode=無法解析 QR 碼
 Failed to update registry=無法修改註冊表
 System Proxy On: =系統代理已啟用：
 Running: Port {0}=正在運行：連接埠 {0}
+Running: =正在運行：
 Password NOT match=密碼不匹配
 Update subscribe SSR node success=SSR伺服器訂閱更新成功
 Update subscribe SSR node failure=SSR伺服器訂閱更新失敗
