@@ -85,6 +85,7 @@ namespace ShadowsocksR.Controller
         private void ReloadIPRange()
         {
             _rangeSet = new IPRangeSet();
+            _rangeSet.ChnIpFileChanged += iPRangeSet_ChnIpFileChanged;
             _rangeSet.LoadChn();
             if (_config.proxyRuleMode == (int)ProxyRuleMode.BypassLanAndNotChina)
             {
@@ -95,6 +96,7 @@ namespace ShadowsocksR.Controller
         private void ReloadHost()
         {
             _hostMap = new HostMap();
+            _hostMap.HostFileChanged += hostMap_HostFileChanged;
             _hostMap.LoadHostFile();
             HostMap.Instance().Clear(_hostMap);
         }
@@ -384,6 +386,7 @@ namespace ShadowsocksR.Controller
             // or bind will fail when switching bind address from 0.0.0.0 to 127.0.0.1
             // though UseShellExecute is set to true now
             // http://stackoverflow.com/questions/10235093/socket-doesnt-close-after-application-exits-if-a-launched-process-is-open
+
             bool _firstRun = firstRun;
             for (int i = 1; i <= 5; ++i)
             {
@@ -499,6 +502,16 @@ namespace ShadowsocksR.Controller
         }
 
         private void pacServer_PACFileChanged(object sender, EventArgs e)
+        {
+            UpdateSystemProxy();
+        }
+
+        private void hostMap_HostFileChanged(object sender, EventArgs e)
+        {
+            UpdateSystemProxy();
+        }
+
+        private void iPRangeSet_ChnIpFileChanged(object sender, EventArgs e)
         {
             UpdateSystemProxy();
         }

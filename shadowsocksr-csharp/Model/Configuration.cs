@@ -72,6 +72,7 @@ namespace ShadowsocksR.Model
         public List<Server> configs;
         public int index;
         public int sysProxyMode;
+        public int proxyRuleMode;
         public bool shareOverLan;
         public int localPort;
         public string localAuthPassword;
@@ -80,16 +81,6 @@ namespace ShadowsocksR.Model
         public int reconnectTimes;
         public int TTL;
         public int connectTimeout;
-
-        public int proxyRuleMode;
-        public bool proxyEnable;
-        public bool pacDirectGoProxy;
-        public int proxyType;
-        public string proxyHost;
-        public int proxyPort;
-        public string proxyAuthUser;
-        public string proxyAuthPass;
-        public string proxyUserAgent;
 
         public string authUser;
         public string authPass;
@@ -304,14 +295,6 @@ namespace ShadowsocksR.Model
             TTL = config.TTL;
             connectTimeout = config.connectTimeout;
             dnsServer = config.dnsServer;
-            proxyEnable = config.proxyEnable;
-            pacDirectGoProxy = config.pacDirectGoProxy;
-            proxyType = config.proxyType;
-            proxyHost = config.proxyHost;
-            proxyPort = config.proxyPort;
-            proxyAuthUser = config.proxyAuthUser;
-            proxyAuthPass = config.proxyAuthPass;
-            proxyUserAgent = config.proxyUserAgent;
             authUser = config.authUser;
             authPass = config.authPass;
             sameHostForSameTarget = config.sameHostForSameTarget;

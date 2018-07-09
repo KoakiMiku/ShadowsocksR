@@ -112,11 +112,7 @@ namespace ShadowsocksR.Controller
         public bool fouce_local_dns_query = false;
         // Server proxy
         public int proxyType = 0;
-        public string socks5RemoteHost;
         public int socks5RemotePort = 0;
-        public string socks5RemoteUsername;
-        public string socks5RemotePassword;
-        public string proxyUserAgent;
         // Reconnect
         public int reconnectTimesRemain = 0;
         public int reconnectTimes = 0;
@@ -764,33 +760,6 @@ namespace ShadowsocksR.Controller
             }
         }
 
-        private bool ConnectProxyServer(string strRemoteHost, int iRemotePort)
-        {
-            if (cfg.proxyType == 0)
-            {
-                bool ret = remote.ConnectSocks5ProxyServer(strRemoteHost, iRemotePort, connectionUDP != null && !server.udp_over_tcp, cfg.socks5RemoteUsername, cfg.socks5RemotePassword);
-                remote.SetTcpServer(server.server, server.server_port);
-                remote.SetUdpServer(server.server, server.server_udp_port == 0 ? server.server_port : server.server_udp_port);
-                if (remoteUDP != null)
-                {
-                    remoteUDP.GoS5Proxy = true;
-                    remoteUDP.SetUdpServer(server.server, server.server_udp_port == 0 ? server.server_port : server.server_udp_port);
-                    remoteUDP.SetUdpEndPoint(remote.GetProxyUdpEndPoint());
-                }
-                return ret;
-            }
-            else if (cfg.proxyType == 1)
-            {
-                bool ret = remote.ConnectHttpProxyServer(strRemoteHost, iRemotePort, cfg.socks5RemoteUsername, cfg.socks5RemotePassword, cfg.proxyUserAgent);
-                remote.SetTcpServer(server.server, server.server_port);
-                return ret;
-            }
-            else
-            {
-                return true;
-            }
-        }
-
         private void Connect()
         {
             remote = null;
@@ -879,7 +848,6 @@ namespace ShadowsocksR.Controller
                 int serverPort = server.server_port;
                 if (cfg.socks5RemotePort > 0)
                 {
-                    serverHost = cfg.socks5RemoteHost;
                     serverPort = cfg.socks5RemotePort;
                 }
                 bool parsed = IPAddress.TryParse(serverHost, out IPAddress ipAddress);
@@ -958,10 +926,7 @@ namespace ShadowsocksR.Controller
                 remote.EndConnect(ar);
                 if (cfg.socks5RemotePort > 0)
                 {
-                    if (!ConnectProxyServer(server.server, server.server_port))
-                    {
-                        throw new SocketException((int)SocketError.ConnectionReset);
-                    }
+                    throw new SocketException((int)SocketError.ConnectionReset);
                 }
                 speedTester.EndConnect();
 

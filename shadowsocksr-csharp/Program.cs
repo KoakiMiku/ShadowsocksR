@@ -44,7 +44,7 @@ namespace ShadowsocksR
                         return;
                 }
                 _controller = new ShadowsocksController();
-                HostMap.Instance().LoadHostFile();
+                //HostMap.Instance().LoadHostFile();
                 _viewController = new MenuViewController(_controller);
                 _controller.Start();
                 //Util.Utils.ReleaseMemory();

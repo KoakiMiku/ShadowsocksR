@@ -50,6 +50,8 @@
             this.checkShareOverLan = new System.Windows.Forms.CheckBox();
             this.NumProxyPort = new System.Windows.Forms.NumericUpDown();
             this.ProxyPortLabel = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.DNSText = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -89,7 +91,7 @@
             this.tableLayoutPanel2.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel2.Controls.Add(this.MyCancelButton, 1, 0);
             this.tableLayoutPanel2.Controls.Add(this.OKButton, 0, 0);
-            this.tableLayoutPanel2.Location = new System.Drawing.Point(316, 138);
+            this.tableLayoutPanel2.Location = new System.Drawing.Point(316, 165);
             this.tableLayoutPanel2.Name = "tableLayoutPanel2";
             this.tableLayoutPanel2.RowCount = 1;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
@@ -128,7 +130,7 @@
             this.groupBox1.Controls.Add(this.tableLayoutPanel5);
             this.groupBox1.Location = new System.Drawing.Point(316, 3);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(192, 129);
+            this.groupBox1.Size = new System.Drawing.Size(192, 156);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             // 
@@ -139,6 +141,8 @@
             this.tableLayoutPanel5.ColumnCount = 2;
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel5.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel5.Controls.Add(this.DNSText, 1, 4);
+            this.tableLayoutPanel5.Controls.Add(this.label2, 0, 4);
             this.tableLayoutPanel5.Controls.Add(this.ReconnectLabel, 0, 1);
             this.tableLayoutPanel5.Controls.Add(this.NumReconnect, 1, 1);
             this.tableLayoutPanel5.Controls.Add(this.TTLLabel, 0, 3);
@@ -151,13 +155,13 @@
             this.tableLayoutPanel5.Margin = new System.Windows.Forms.Padding(0);
             this.tableLayoutPanel5.Name = "tableLayoutPanel5";
             this.tableLayoutPanel5.Padding = new System.Windows.Forms.Padding(3);
-            this.tableLayoutPanel5.RowCount = 4;
+            this.tableLayoutPanel5.RowCount = 5;
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-            this.tableLayoutPanel5.Size = new System.Drawing.Size(186, 109);
+            this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel5.Size = new System.Drawing.Size(186, 136);
             this.tableLayoutPanel5.TabIndex = 3;
             // 
             // ReconnectLabel
@@ -343,6 +347,26 @@
             this.ProxyPortLabel.TabIndex = 3;
             this.ProxyPortLabel.Text = "Port";
             // 
+            // label2
+            // 
+            this.label2.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(42, 113);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(23, 12);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "DNS";
+            // 
+            // DNSText
+            // 
+            this.DNSText.ImeMode = System.Windows.Forms.ImeMode.Off;
+            this.DNSText.Location = new System.Drawing.Point(71, 109);
+            this.DNSText.MaxLength = 0;
+            this.DNSText.Name = "DNSText";
+            this.DNSText.Size = new System.Drawing.Size(109, 21);
+            this.DNSText.TabIndex = 18;
+            this.DNSText.WordWrap = false;
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -404,5 +428,7 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel2;
         private System.Windows.Forms.Label TTLLabel;
         private System.Windows.Forms.NumericUpDown NumTTL;
+        private System.Windows.Forms.TextBox DNSText;
+        private System.Windows.Forms.Label label2;
     }
 }

@@ -539,7 +539,7 @@ namespace ShadowsocksR.Controller
                         RegistrySetValue(registry, "AutoConfigURL", "");
                     }
                     IEProxyUpdate(config, sysProxyMode);
-                    SystemProxy.NotifyIE();
+                    NotifyIE();
                     //Must Notify IE first, or the connections do not chanage
                     CopyProxySettingFromLan();
                 }

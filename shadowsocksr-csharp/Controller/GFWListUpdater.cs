@@ -16,8 +16,6 @@ namespace ShadowsocksR.Controller
         private static string USER_RULE_FILE = PACServer.USER_RULE_FILE;
         private static string gfwlist_template = Resources.ssr_gfw;
 
-        public int update_type;
-
         public event EventHandler<ResultEventArgs> UpdateCompleted;
         public event ErrorEventHandler Error;
 
@@ -60,17 +58,12 @@ namespace ShadowsocksR.Controller
                     string original = File.ReadAllText(PAC_FILE, Encoding.UTF8);
                     if (original == abpContent)
                     {
-                        update_type = 0;
                         UpdateCompleted(this, new ResultEventArgs(false));
                         return;
                     }
                 }
                 File.WriteAllText(PAC_FILE, abpContent, Encoding.UTF8);
-                if (UpdateCompleted != null)
-                {
-                    update_type = 0;
-                    UpdateCompleted(this, new ResultEventArgs(true));
-                }
+                UpdateCompleted?.Invoke(this, new ResultEventArgs(true));
             }
             catch (Exception ex)
             {
@@ -110,22 +103,8 @@ namespace ShadowsocksR.Controller
         {
             try
             {
-                if (File.Exists(PAC_FILE))
-                {
-                    string original = File.ReadAllText(PAC_FILE, Encoding.UTF8);
-                    if (original == pacfile)
-                    {
-                        update_type = 1;
-                        UpdateCompleted(this, new ResultEventArgs(false));
-                        return;
-                    }
-                }
                 File.WriteAllText(PAC_FILE, pacfile, Encoding.UTF8);
-                if (UpdateCompleted != null)
-                {
-                    update_type = 1;
-                    UpdateCompleted(this, new ResultEventArgs(true));
-                }
+                UpdateCompleted?.Invoke(this, new ResultEventArgs(true));
             }
             catch (Exception ex)
             {

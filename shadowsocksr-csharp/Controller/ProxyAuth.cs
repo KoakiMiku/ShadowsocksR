@@ -530,15 +530,6 @@ namespace ShadowsocksR.Controller
             };
             handler.cfg.reconnectTimesRemain = _config.reconnectTimes;
             handler.setServerTransferTotal(_transfer);
-            if (_config.proxyEnable)
-            {
-                handler.cfg.proxyType = _config.proxyType;
-                handler.cfg.socks5RemoteHost = _config.proxyHost;
-                handler.cfg.socks5RemotePort = _config.proxyPort;
-                handler.cfg.socks5RemoteUsername = _config.proxyAuthUser;
-                handler.cfg.socks5RemotePassword = _config.proxyAuthPass;
-                handler.cfg.proxyUserAgent = _config.proxyUserAgent;
-            }
             handler.cfg.TTL = _config.TTL;
             handler.cfg.connect_timeout = _config.connectTimeout;
             if (!string.IsNullOrEmpty(_config.dnsServer))

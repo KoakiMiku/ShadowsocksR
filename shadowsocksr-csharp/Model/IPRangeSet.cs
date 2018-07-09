@@ -7,10 +7,43 @@ namespace ShadowsocksR.Model
 {
     public class IPRangeSet
     {
+        FileSystemWatcher ChnIpFileWatcher;
+
         private const string APNIC_FILENAME = "delegated-apnic-latest";
         private const string APNIC_EXT_FILENAME = "delegated-apnic-extended-latest";
         private const string CHN_FILENAME = "chn-ip.txt";
         private uint[] _set;
+
+        public event EventHandler ChnIpFileChanged;
+
+        public IPRangeSet()
+        {
+            WatchChnIpFile();
+            _set = new uint[256 * 256 * 8];
+        }
+
+        private void WatchChnIpFile()
+        {
+            if (ChnIpFileWatcher != null)
+            {
+                ChnIpFileWatcher.Dispose();
+            }
+            ChnIpFileWatcher = new FileSystemWatcher(Directory.GetCurrentDirectory())
+            {
+                NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.DirectoryName,
+                Filter = CHN_FILENAME
+            };
+            ChnIpFileWatcher.Changed += ChnIpFileWatcher_Changed;
+            ChnIpFileWatcher.Created += ChnIpFileWatcher_Changed;
+            ChnIpFileWatcher.Deleted += ChnIpFileWatcher_Changed;
+            ChnIpFileWatcher.Renamed += ChnIpFileWatcher_Changed;
+            ChnIpFileWatcher.EnableRaisingEvents = true;
+        }
+
+        private void ChnIpFileWatcher_Changed(object sender, FileSystemEventArgs e)
+        {
+            ChnIpFileChanged?.Invoke(this, new EventArgs());
+        }
 
         public string TouchChnIpFile()
         {
@@ -23,11 +56,6 @@ namespace ShadowsocksR.Model
                 File.WriteAllText(CHN_FILENAME, Resources.chn_ip);
                 return CHN_FILENAME;
             }
-        }
-
-        public IPRangeSet()
-        {
-            _set = new uint[256 * 256 * 8];
         }
 
         public void InsertRange(uint begin, uint end)

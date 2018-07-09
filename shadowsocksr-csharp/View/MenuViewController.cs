@@ -319,9 +319,7 @@ namespace ShadowsocksR.View
         void controller_UpdatePACFromGFWListCompleted(object sender, GFWListUpdater.ResultEventArgs e)
         {
             GFWListUpdater updater = (GFWListUpdater)sender;
-            string result = e.Success ?
-                (updater.update_type <= 1 ? I18N.GetString("PAC updated") : I18N.GetString("Domain white list list updated"))
-                : I18N.GetString("No updates found. Please report to GFWList if you have problems with it.");
+            string result = e.Success ? I18N.GetString("PAC updated") : I18N.GetString("No updates found. Please report to GFWList if you have problems with it.");
             ShowBalloonTip(I18N.GetString("Shadowsocks"), result, ToolTipIcon.Info, 1000);
         }
 

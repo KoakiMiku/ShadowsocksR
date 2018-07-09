@@ -31,13 +31,44 @@ namespace ShadowsocksR.Model
     {
         Dictionary<string, HostNode> root = new Dictionary<string, HostNode>();
         IPSegment ips = new IPSegment("remoteproxy");
+        FileSystemWatcher HostFileWatcher;
 
         static HostMap instance = new HostMap();
         const string HOST_FILENAME = "host.txt";
 
+        public event EventHandler HostFileChanged;
+
+        public HostMap()
+        {
+            WatchHostFile();
+        }
+
         public static HostMap Instance()
         {
             return instance;
+        }
+
+        private void WatchHostFile()
+        {
+            if (HostFileWatcher != null)
+            {
+                HostFileWatcher.Dispose();
+            }
+            HostFileWatcher = new FileSystemWatcher(Directory.GetCurrentDirectory())
+            {
+                NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.DirectoryName,
+                Filter = HOST_FILENAME
+            };
+            HostFileWatcher.Changed += HostFileWatcher_Changed;
+            HostFileWatcher.Created += HostFileWatcher_Changed;
+            HostFileWatcher.Deleted += HostFileWatcher_Changed;
+            HostFileWatcher.Renamed += HostFileWatcher_Changed;
+            HostFileWatcher.EnableRaisingEvents = true;
+        }
+
+        private void HostFileWatcher_Changed(object sender, FileSystemEventArgs e)
+        {
+            HostFileChanged?.Invoke(this, new EventArgs());
         }
 
         public string TouchHostFile()

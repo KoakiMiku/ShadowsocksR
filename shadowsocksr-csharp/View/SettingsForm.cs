@@ -30,6 +30,7 @@ namespace ShadowsocksR.View
             TextAuthUser.Width = TextAuthUser.Width * dpi_mul / 4;
             TextAuthPass.Width = TextAuthPass.Width * dpi_mul / 4;
 
+            DNSText.Width = DNSText.Width * dpi_mul / 4;
             NumReconnect.Width = NumReconnect.Width * dpi_mul / 4;
             NumTimeout.Width = NumTimeout.Width * dpi_mul / 4;
             NumTTL.Width = NumTTL.Width * dpi_mul / 4;
@@ -91,6 +92,7 @@ namespace ShadowsocksR.View
                 _modifiedConfiguration.connectTimeout = Convert.ToInt32(NumTimeout.Value);
                 _modifiedConfiguration.authUser = TextAuthUser.Text;
                 _modifiedConfiguration.authPass = TextAuthPass.Text;
+                _modifiedConfiguration.dnsServer = DNSText.Text;
 
                 return ret;
             }
@@ -110,6 +112,7 @@ namespace ShadowsocksR.View
             checkAutoStartup.Checked = AutoStartup.Check();
             NumTTL.Value = _modifiedConfiguration.TTL;
             NumTimeout.Value = _modifiedConfiguration.connectTimeout;
+            DNSText.Text = _modifiedConfiguration.dnsServer;
 
             TextAuthUser.Text = _modifiedConfiguration.authUser;
             TextAuthPass.Text = _modifiedConfiguration.authPass;
