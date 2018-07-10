@@ -31,6 +31,7 @@ namespace ShadowsocksR.Controller
             {
                 FileManager.UncompressFile(runningPath + _exeName, Resources.privoxy_exe);
                 FileManager.UncompressFile(runningPath + "/mgwz.dll", Resources.mgwz_dll);
+                Templates.UncompressFile();
             }
             catch (IOException e)
             {
