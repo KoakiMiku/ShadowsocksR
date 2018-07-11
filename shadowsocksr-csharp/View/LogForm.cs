@@ -86,24 +86,5 @@ namespace ShadowsocksR.View
         {
             logTextBox.ScrollToCaret();
         }
-
-        private Font CreateFont()
-        {
-            try
-            {
-                return new Font("Consolas", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            }
-            catch
-            {
-                try
-                {
-                    return new Font("微软雅黑", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-                }
-                catch
-                {
-                    return new Font(FontFamily.GenericMonospace, 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-                }
-            }
-        }
     }
 }
