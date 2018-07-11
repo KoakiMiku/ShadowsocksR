@@ -85,11 +85,11 @@
             this.tableLayoutPanel4.Controls.Add(this.buttonAdd, 0, 0);
             this.tableLayoutPanel4.Controls.Add(this.buttonDel, 2, 0);
             this.tableLayoutPanel4.Controls.Add(this.buttonModify, 1, 0);
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(74, 57);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(44, 57);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
             this.tableLayoutPanel4.RowCount = 1;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(235, 29);
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(265, 29);
             this.tableLayoutPanel4.TabIndex = 2;
             // 
             // buttonAdd
@@ -129,7 +129,7 @@
             // 
             this.label1.Anchor = System.Windows.Forms.AnchorStyles.Right;
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(45, 7);
+            this.label1.Location = new System.Drawing.Point(15, 7);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(23, 12);
             this.label1.TabIndex = 0;
@@ -141,17 +141,17 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(3, 34);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(65, 12);
+            this.label2.Size = new System.Drawing.Size(35, 12);
             this.label2.TabIndex = 0;
-            this.label2.Text = "Group name";
+            this.label2.Text = "Group";
             // 
             // textBoxURL
             // 
             this.textBoxURL.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxURL.Location = new System.Drawing.Point(74, 3);
+            this.textBoxURL.Location = new System.Drawing.Point(44, 3);
             this.textBoxURL.Name = "textBoxURL";
-            this.textBoxURL.Size = new System.Drawing.Size(235, 21);
+            this.textBoxURL.Size = new System.Drawing.Size(265, 21);
             this.textBoxURL.TabIndex = 1;
             this.textBoxURL.TextChanged += new System.EventHandler(this.textBoxURL_TextChanged);
             // 
@@ -159,16 +159,16 @@
             // 
             this.textBoxGroup.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBoxGroup.Location = new System.Drawing.Point(74, 30);
+            this.textBoxGroup.Location = new System.Drawing.Point(44, 30);
             this.textBoxGroup.Name = "textBoxGroup";
             this.textBoxGroup.ReadOnly = true;
-            this.textBoxGroup.Size = new System.Drawing.Size(235, 21);
+            this.textBoxGroup.Size = new System.Drawing.Size(265, 21);
             this.textBoxGroup.TabIndex = 1;
             // 
             // checkBoxAutoUpdate
             // 
             this.checkBoxAutoUpdate.AutoSize = true;
-            this.checkBoxAutoUpdate.Location = new System.Drawing.Point(74, 92);
+            this.checkBoxAutoUpdate.Location = new System.Drawing.Point(44, 92);
             this.checkBoxAutoUpdate.Name = "checkBoxAutoUpdate";
             this.checkBoxAutoUpdate.Size = new System.Drawing.Size(90, 16);
             this.checkBoxAutoUpdate.TabIndex = 3;

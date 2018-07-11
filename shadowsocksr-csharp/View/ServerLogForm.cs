@@ -328,14 +328,6 @@ namespace ShadowsocksR.View
                         {
                             SetCellText(cell, server.group);
                         }
-                        // Enable
-                        if (columnName == "Enable")
-                        {
-                            if (server.isEnable())
-                                SetBackColor(cell, Color.White);
-                            else
-                                SetBackColor(cell, Color.Red);
-                        }
                         // TotalConnectTimes
                         else if (columnName == "TotalConnect")
                         {
@@ -345,11 +337,6 @@ namespace ShadowsocksR.View
                         else if (columnName == "Connecting")
                         {
                             long connections = serverSpeedLog.totalConnectTimes - serverSpeedLog.totalDisconnectTimes;
-                            //long ref_connections = server.GetConnections().Count;
-                            //if (ref_connections < connections)
-                            //{
-                            //    connections = ref_connections;
-                            //}
                             Color[] colList = new Color[5] { Color.White, Color.LightGreen, Color.Yellow, Color.Red, Color.Red };
                             long[] bytesList = new long[5] { 0, 16, 32, 64, 65536 };
                             for (int i = 1; i < colList.Length; ++i)

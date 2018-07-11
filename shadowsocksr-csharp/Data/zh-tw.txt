@@ -133,7 +133,7 @@ Log Viewer=日誌檢視器
 
 Subscribe Settings=訂閱設置
 URL=網址
-Group name=組名
+Group=分組
 Auto update=自動更新
 Add=添加
 Delete=刪除

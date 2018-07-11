@@ -31,7 +31,7 @@ namespace ShadowsocksR.View
         {
             Text = I18N.GetString("Subscribe Settings");
             label1.Text = I18N.GetString("URL");
-            label2.Text = I18N.GetString("Group name");
+            label2.Text = I18N.GetString("Group");
             checkBoxAutoUpdate.Text = I18N.GetString("Auto update");
             buttonOK.Text = I18N.GetString("OK");
             buttonCancel.Text = I18N.GetString("Cancel");

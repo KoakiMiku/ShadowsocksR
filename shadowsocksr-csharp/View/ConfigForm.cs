@@ -106,6 +106,7 @@ namespace ShadowsocksR.View
             TCPProtocolLabel.Text = mark_str + I18N.GetString(TCPProtocolLabel.Text);
             labelObfs.Text = mark_str + I18N.GetString(labelObfs.Text);
             labelRemarks.Text = I18N.GetString("Remarks");
+            labelGroup.Text = I18N.GetString("Group");
 
             checkAdvSetting.Text = I18N.GetString(checkAdvSetting.Text);
             TCPoverUDPLabel.Text = I18N.GetString(TCPoverUDPLabel.Text);
