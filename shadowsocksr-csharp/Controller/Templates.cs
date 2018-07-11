@@ -2,7 +2,6 @@
 using System;
 using System.IO;
 using System.IO.Compression;
-using System.Windows.Forms;
 
 namespace ShadowsocksR.Controller
 {
@@ -39,7 +38,10 @@ namespace ShadowsocksR.Controller
                     }
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Logging.LogUsefulException(ex);
+            }
         }
     }
 }
