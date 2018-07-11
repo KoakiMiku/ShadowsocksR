@@ -25,7 +25,7 @@ namespace ShadowsocksR.View
             }
         }
 
-        private ShadowsocksController controller;
+        private ShadowsocksController _controller;
         //private ContextMenu contextMenu1;
         private MenuItem topmostItem;
         private MenuItem clearItem;
@@ -44,20 +44,10 @@ namespace ShadowsocksR.View
 
         public ServerLogForm(ShadowsocksController controller)
         {
-            this.controller = controller;
-            try
-            {
-                Icon = Icon.FromHandle((new Bitmap("icon.png")).GetHicon());
-                title_perfix = Application.StartupPath;
-                if (title_perfix.Length > 20)
-                    title_perfix = title_perfix.Substring(0, 20);
-            }
-            catch
-            {
-                Icon = Icon.FromHandle(Resources.ssw128.GetHicon());
-            }
-            Font = SystemFonts.MessageBoxFont;
             InitializeComponent();
+            Font = SystemFonts.MessageBoxFont;
+            Icon = Icon.FromHandle(Resources.ssw128.GetHicon());
+            _controller = controller;
 
             Width = 810;
             int dpi_mul = Util.Utils.GetDpiMul();
@@ -244,7 +234,7 @@ namespace ShadowsocksR.View
         {
             while (workerThread != null)
             {
-                Configuration config = controller.GetCurrentConfiguration();
+                Configuration config = _controller.GetCurrentConfiguration();
                 ServerSpeedLogShow[] _ServerSpeedLogList = new ServerSpeedLogShow[config.configs.Count];
                 for (int i = 0; i < config.configs.Count; ++i)
                 {
@@ -273,7 +263,7 @@ namespace ShadowsocksR.View
                 return;
 
             int last_rowcount = ServerDataGrid.RowCount;
-            Configuration config = controller.GetCurrentConfiguration();
+            Configuration config = _controller.GetCurrentConfiguration();
             if (listOrder.Count > config.configs.Count)
             {
                 listOrder.RemoveRange(config.configs.Count, listOrder.Count - config.configs.Count);
@@ -692,7 +682,7 @@ namespace ShadowsocksR.View
 
         private void Disconnect_Click(object sender, EventArgs e)
         {
-            Configuration config = controller.GetCurrentConfiguration();
+            Configuration config = _controller.GetCurrentConfiguration();
             for (int id = 0; id < config.configs.Count; ++id)
             {
                 Server server = config.configs[id];
@@ -703,7 +693,7 @@ namespace ShadowsocksR.View
 
         private void ClearMaxSpeed_Click(object sender, EventArgs e)
         {
-            Configuration config = controller.GetCurrentConfiguration();
+            Configuration config = _controller.GetCurrentConfiguration();
             foreach (Server server in config.configs)
             {
                 server.ServerSpeedLog().ClearMaxSpeed();
@@ -712,12 +702,12 @@ namespace ShadowsocksR.View
 
         private void ClearSelectedTotal_Click(object sender, EventArgs e)
         {
-            Configuration config = controller.GetCurrentConfiguration();
+            Configuration config = _controller.GetCurrentConfiguration();
             if (config.index >= 0 && config.index < config.configs.Count)
             {
                 try
                 {
-                    controller.ClearTransferTotal(config.configs[config.index].server);
+                    _controller.ClearTransferTotal(config.configs[config.index].server);
                 }
                 catch { }
             }
@@ -725,16 +715,16 @@ namespace ShadowsocksR.View
 
         private void ClearTotal_Click(object sender, EventArgs e)
         {
-            Configuration config = controller.GetCurrentConfiguration();
+            Configuration config = _controller.GetCurrentConfiguration();
             foreach (Server server in config.configs)
             {
-                controller.ClearTransferTotal(server.server);
+                _controller.ClearTransferTotal(server.server);
             }
         }
 
         private void ClearItem_Click(object sender, EventArgs e)
         {
-            Configuration config = controller.GetCurrentConfiguration();
+            Configuration config = _controller.GetCurrentConfiguration();
             foreach (Server server in config.configs)
             {
                 server.ServerSpeedLog().Clear();
@@ -788,8 +778,8 @@ namespace ShadowsocksR.View
                     int id = (int)ServerDataGrid[0, row_index].Value;
                     if (ServerDataGrid.Columns[col_index].Name == "Server")
                     {
-                        Configuration config = controller.GetCurrentConfiguration();
-                        controller.SelectServerIndex(id);
+                        Configuration config = _controller.GetCurrentConfiguration();
+                        _controller.SelectServerIndex(id);
                     }
                     ServerDataGrid[0, row_index].Selected = true;
                 }
@@ -803,8 +793,8 @@ namespace ShadowsocksR.View
                 int id = (int)ServerDataGrid[0, e.RowIndex].Value;
                 if (ServerDataGrid.Columns[e.ColumnIndex].Name == "Server")
                 {
-                    Configuration config = controller.GetCurrentConfiguration();
-                    controller.SelectServerIndex(id);
+                    Configuration config = _controller.GetCurrentConfiguration();
+                    _controller.SelectServerIndex(id);
                 }
                 ServerDataGrid[0, e.RowIndex].Selected = true;
             }
@@ -817,31 +807,31 @@ namespace ShadowsocksR.View
                 int id = (int)ServerDataGrid[0, e.RowIndex].Value;
                 if (ServerDataGrid.Columns[e.ColumnIndex].Name == "ID")
                 {
-                    controller.ShowConfigForm(id);
+                    _controller.ShowConfigForm(id);
                 }
                 if (ServerDataGrid.Columns[e.ColumnIndex].Name == "Server")
                 {
-                    controller.ShowConfigForm(id);
+                    _controller.ShowConfigForm(id);
                 }
                 if (ServerDataGrid.Columns[e.ColumnIndex].Name == "Connecting")
                 {
-                    Configuration config = controller.GetCurrentConfiguration();
+                    Configuration config = _controller.GetCurrentConfiguration();
                     Server server = config.configs[id];
                     server.GetConnections().CloseAll();
                 }
                 if (ServerDataGrid.Columns[e.ColumnIndex].Name == "MaxDownSpeed" || ServerDataGrid.Columns[e.ColumnIndex].Name == "MaxUpSpeed")
                 {
-                    Configuration config = controller.GetCurrentConfiguration();
+                    Configuration config = _controller.GetCurrentConfiguration();
                     config.configs[id].ServerSpeedLog().ClearMaxSpeed();
                 }
                 if (ServerDataGrid.Columns[e.ColumnIndex].Name == "Upload" || ServerDataGrid.Columns[e.ColumnIndex].Name == "Download")
                 {
-                    Configuration config = controller.GetCurrentConfiguration();
+                    Configuration config = _controller.GetCurrentConfiguration();
                     config.configs[id].ServerSpeedLog().ClearTrans();
                 }
                 if (ServerDataGrid.Columns[e.ColumnIndex].Name == "DownloadRaw")
                 {
-                    Configuration config = controller.GetCurrentConfiguration();
+                    Configuration config = _controller.GetCurrentConfiguration();
                     config.configs[id].ServerSpeedLog().Clear();
                 }
                 if (ServerDataGrid.Columns[e.ColumnIndex].Name == "ConnectError"
@@ -849,7 +839,7 @@ namespace ShadowsocksR.View
                     || ServerDataGrid.Columns[e.ColumnIndex].Name == "ConnectEmpty"
                     || ServerDataGrid.Columns[e.ColumnIndex].Name == "Continuous")
                 {
-                    Configuration config = controller.GetCurrentConfiguration();
+                    Configuration config = _controller.GetCurrentConfiguration();
                     config.configs[id].ServerSpeedLog().ClearError();
                 }
                 ServerDataGrid[0, e.RowIndex].Selected = true;
@@ -858,7 +848,7 @@ namespace ShadowsocksR.View
 
         private void ServerLogForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            controller.ConfigChanged -= controller_ConfigChanged;
+            _controller.ConfigChanged -= controller_ConfigChanged;
             Thread thread = workerThread;
             workerThread = null;
             while (thread.IsAlive)

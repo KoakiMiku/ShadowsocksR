@@ -19,10 +19,11 @@ namespace ShadowsocksR.View
 
         public LogForm(ShadowsocksController controller)
         {
-            _controller = controller;
             InitializeComponent();
+            Font = SystemFonts.MessageBoxFont;
             Icon = Icon.FromHandle(Resources.ssw128.GetHicon());
-            logTextBox.Font = CreateFont();
+            _controller = controller;
+
             UpdateTexts();
         }
 

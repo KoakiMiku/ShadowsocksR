@@ -33,7 +33,7 @@
             this.tableLayoutPanel2 = new System.Windows.Forms.TableLayoutPanel();
             this.ServerGroupBox = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.ObfsCombo = new System.Windows.Forms.ComboBox();
+            this.ObfsComboBox = new System.Windows.Forms.ComboBox();
             this.labelObfs = new System.Windows.Forms.Label();
             this.ServerPortLabel = new System.Windows.Forms.Label();
             this.IPTextBox = new System.Windows.Forms.TextBox();
@@ -68,10 +68,11 @@
             this.tableLayoutPanel7 = new System.Windows.Forms.TableLayoutPanel();
             this.ServersListBox = new System.Windows.Forms.ListBox();
             this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+            this.AddButton = new System.Windows.Forms.Button();
             this.DownButton = new System.Windows.Forms.Button();
             this.UpButton = new System.Windows.Forms.Button();
+            this.ModifyButton = new System.Windows.Forms.Button();
             this.DeleteButton = new System.Windows.Forms.Button();
-            this.AddButton = new System.Windows.Forms.Button();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
             this.tableLayoutPanel3 = new System.Windows.Forms.TableLayoutPanel();
             this.MyCancelButton = new System.Windows.Forms.Button();
@@ -128,7 +129,7 @@
             this.tableLayoutPanel2.RowCount = 2;
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel2.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel2.Size = new System.Drawing.Size(909, 518);
+            this.tableLayoutPanel2.Size = new System.Drawing.Size(909, 549);
             this.tableLayoutPanel2.TabIndex = 7;
             // 
             // ServerGroupBox
@@ -152,7 +153,7 @@
             this.tableLayoutPanel1.ColumnCount = 2;
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.Controls.Add(this.ObfsCombo, 1, 7);
+            this.tableLayoutPanel1.Controls.Add(this.ObfsComboBox, 1, 7);
             this.tableLayoutPanel1.Controls.Add(this.labelObfs, 0, 7);
             this.tableLayoutPanel1.Controls.Add(this.ServerPortLabel, 0, 2);
             this.tableLayoutPanel1.Controls.Add(this.IPTextBox, 1, 1);
@@ -210,23 +211,23 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(347, 427);
             this.tableLayoutPanel1.TabIndex = 0;
             // 
-            // ObfsCombo
+            // ObfsComboBox
             // 
-            this.ObfsCombo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
-            this.ObfsCombo.FormattingEnabled = true;
-            this.ObfsCombo.Items.AddRange(new object[] {
+            this.ObfsComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
+            this.ObfsComboBox.FormattingEnabled = true;
+            this.ObfsComboBox.Items.AddRange(new object[] {
             "plain",
             "http_simple",
             "http_post",
             "random_head",
             "tls1.2_ticket_auth",
             "tls1.2_ticket_fastauth"});
-            this.ObfsCombo.Location = new System.Drawing.Point(108, 174);
-            this.ObfsCombo.Margin = new System.Windows.Forms.Padding(3, 3, 3, 7);
-            this.ObfsCombo.Name = "ObfsCombo";
-            this.ObfsCombo.Size = new System.Drawing.Size(233, 20);
-            this.ObfsCombo.TabIndex = 19;
-            this.ObfsCombo.TextChanged += new System.EventHandler(this.ObfsCombo_TextChanged);
+            this.ObfsComboBox.Location = new System.Drawing.Point(108, 174);
+            this.ObfsComboBox.Margin = new System.Windows.Forms.Padding(3, 3, 3, 7);
+            this.ObfsComboBox.Name = "ObfsComboBox";
+            this.ObfsComboBox.Size = new System.Drawing.Size(233, 20);
+            this.ObfsComboBox.TabIndex = 19;
+            this.ObfsComboBox.TextChanged += new System.EventHandler(this.ObfsCombo_TextChanged);
             // 
             // labelObfs
             // 
@@ -447,6 +448,7 @@
             this.TCPProtocolComboBox.Name = "TCPProtocolComboBox";
             this.TCPProtocolComboBox.Size = new System.Drawing.Size(233, 20);
             this.TCPProtocolComboBox.TabIndex = 15;
+            this.TCPProtocolComboBox.TextChanged += new System.EventHandler(this.ProtocolCombo_TextChanged);
             // 
             // labelObfsParam
             // 
@@ -594,7 +596,7 @@
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel7.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel7.Size = new System.Drawing.Size(250, 512);
+            this.tableLayoutPanel7.Size = new System.Drawing.Size(250, 543);
             this.tableLayoutPanel7.TabIndex = 16;
             // 
             // ServersListBox
@@ -615,42 +617,68 @@
             this.tableLayoutPanel4.ColumnCount = 2;
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
             this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel4.Controls.Add(this.DownButton, 1, 1);
-            this.tableLayoutPanel4.Controls.Add(this.UpButton, 0, 1);
-            this.tableLayoutPanel4.Controls.Add(this.DeleteButton, 1, 0);
             this.tableLayoutPanel4.Controls.Add(this.AddButton, 0, 0);
+            this.tableLayoutPanel4.Controls.Add(this.DownButton, 1, 2);
+            this.tableLayoutPanel4.Controls.Add(this.UpButton, 0, 2);
+            this.tableLayoutPanel4.Controls.Add(this.ModifyButton, 0, 1);
+            this.tableLayoutPanel4.Controls.Add(this.DeleteButton, 1, 0);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 444);
+            this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 441);
             this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0, 5, 0, 0);
             this.tableLayoutPanel4.Name = "tableLayoutPanel4";
-            this.tableLayoutPanel4.RowCount = 2;
+            this.tableLayoutPanel4.RowCount = 3;
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel4.Size = new System.Drawing.Size(250, 68);
+            this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel4.Size = new System.Drawing.Size(250, 102);
             this.tableLayoutPanel4.TabIndex = 8;
+            // 
+            // AddButton
+            // 
+            this.AddButton.Location = new System.Drawing.Point(0, 0);
+            this.AddButton.Margin = new System.Windows.Forms.Padding(0);
+            this.AddButton.Name = "AddButton";
+            this.AddButton.Size = new System.Drawing.Size(120, 34);
+            this.AddButton.TabIndex = 1;
+            this.AddButton.Text = "&Add";
+            this.AddButton.UseVisualStyleBackColor = true;
+            this.AddButton.Click += new System.EventHandler(this.AddButton_Click);
             // 
             // DownButton
             // 
             this.DownButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.DownButton.Location = new System.Drawing.Point(130, 34);
+            this.DownButton.Location = new System.Drawing.Point(130, 68);
             this.DownButton.Margin = new System.Windows.Forms.Padding(0);
             this.DownButton.Name = "DownButton";
             this.DownButton.Size = new System.Drawing.Size(120, 34);
-            this.DownButton.TabIndex = 4;
+            this.DownButton.TabIndex = 5;
             this.DownButton.Text = "Down";
             this.DownButton.UseVisualStyleBackColor = true;
             this.DownButton.Click += new System.EventHandler(this.DownButton_Click);
             // 
             // UpButton
             // 
-            this.UpButton.Location = new System.Drawing.Point(0, 34);
+            this.UpButton.Location = new System.Drawing.Point(0, 68);
             this.UpButton.Margin = new System.Windows.Forms.Padding(0);
             this.UpButton.Name = "UpButton";
             this.UpButton.Size = new System.Drawing.Size(120, 34);
-            this.UpButton.TabIndex = 3;
+            this.UpButton.TabIndex = 4;
             this.UpButton.Text = "Up";
             this.UpButton.UseVisualStyleBackColor = true;
             this.UpButton.Click += new System.EventHandler(this.UpButton_Click);
+            // 
+            // ModifyButton
+            // 
+            this.ModifyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.ModifyButton.AutoSize = true;
+            this.ModifyButton.Location = new System.Drawing.Point(0, 34);
+            this.ModifyButton.Margin = new System.Windows.Forms.Padding(0);
+            this.ModifyButton.Name = "ModifyButton";
+            this.ModifyButton.Size = new System.Drawing.Size(120, 34);
+            this.ModifyButton.TabIndex = 3;
+            this.ModifyButton.Text = "&Modify";
+            this.ModifyButton.UseVisualStyleBackColor = true;
+            this.ModifyButton.Click += new System.EventHandler(this.ModifyButton_Click);
             // 
             // DeleteButton
             // 
@@ -663,17 +691,6 @@
             this.DeleteButton.Text = "&Delete";
             this.DeleteButton.UseVisualStyleBackColor = true;
             this.DeleteButton.Click += new System.EventHandler(this.DeleteButton_Click);
-            // 
-            // AddButton
-            // 
-            this.AddButton.Location = new System.Drawing.Point(0, 0);
-            this.AddButton.Margin = new System.Windows.Forms.Padding(0);
-            this.AddButton.Name = "AddButton";
-            this.AddButton.Size = new System.Drawing.Size(120, 34);
-            this.AddButton.TabIndex = 1;
-            this.AddButton.Text = "&Add";
-            this.AddButton.UseVisualStyleBackColor = true;
-            this.AddButton.Click += new System.EventHandler(this.AddButton_Click);
             // 
             // tableLayoutPanel5
             // 
@@ -693,7 +710,6 @@
             // 
             // tableLayoutPanel3
             // 
-            this.tableLayoutPanel3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.tableLayoutPanel3.AutoSize = true;
             this.tableLayoutPanel3.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.tableLayoutPanel3.ColumnCount = 2;
@@ -701,7 +717,8 @@
             this.tableLayoutPanel3.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.tableLayoutPanel3.Controls.Add(this.MyCancelButton, 1, 0);
             this.tableLayoutPanel3.Controls.Add(this.OKButton, 0, 0);
-            this.tableLayoutPanel3.Location = new System.Drawing.Point(259, 479);
+            this.tableLayoutPanel3.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.tableLayoutPanel3.Location = new System.Drawing.Point(259, 510);
             this.tableLayoutPanel3.Margin = new System.Windows.Forms.Padding(3, 3, 0, 3);
             this.tableLayoutPanel3.Name = "tableLayoutPanel3";
             this.tableLayoutPanel3.RowCount = 1;
@@ -767,6 +784,7 @@
             this.tableLayoutPanel7.ResumeLayout(false);
             this.tableLayoutPanel7.PerformLayout();
             this.tableLayoutPanel4.ResumeLayout(false);
+            this.tableLayoutPanel4.PerformLayout();
             this.tableLayoutPanel5.ResumeLayout(false);
             this.tableLayoutPanel5.PerformLayout();
             this.tableLayoutPanel3.ResumeLayout(false);
@@ -783,7 +801,7 @@
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel5;
         private System.Windows.Forms.GroupBox ServerGroupBox;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
-        private System.Windows.Forms.ComboBox ObfsCombo;
+        private System.Windows.Forms.ComboBox ObfsComboBox;
         private System.Windows.Forms.Label labelObfs;
         private System.Windows.Forms.Label ServerPortLabel;
         private System.Windows.Forms.TextBox IPTextBox;
@@ -825,6 +843,7 @@
         private System.Windows.Forms.Button UpButton;
         private System.Windows.Forms.Button DeleteButton;
         private System.Windows.Forms.Button AddButton;
+        private System.Windows.Forms.Button ModifyButton;
     }
 }
 

@@ -71,25 +71,17 @@ namespace ShadowsocksR.Controller
         UpdateNode _updater;
         bool _use_proxy;
 
-        public void CreateTask(Configuration config, UpdateNode updater, int index, bool use_proxy)
+        public void CreateTask(Configuration config, UpdateNode updater, bool use_proxy)
         {
             if (_config == null)
             {
                 _config = config;
                 _updater = updater;
                 _use_proxy = use_proxy;
-                if (index < 0)
+                _serverSubscribes = new List<ServerSubscribe>();
+                for (int i = 0; i < config.serverSubscribes.Count; ++i)
                 {
-                    _serverSubscribes = new List<ServerSubscribe>();
-                    for (int i = 0; i < config.serverSubscribes.Count; ++i)
-                    {
-                        _serverSubscribes.Add(config.serverSubscribes[i]);
-                    }
-                }
-                else if (index < _config.serverSubscribes.Count)
-                {
-                    _serverSubscribes = new List<ServerSubscribe>();
-                    _serverSubscribes.Add(config.serverSubscribes[index]);
+                    _serverSubscribes.Add(config.serverSubscribes[i]);
                 }
                 Next();
             }

@@ -301,7 +301,7 @@ namespace ShadowsocksR.Model
         {
             server = "server";
             server_port = 8000;
-            method = "aes-256-cfb";
+            method = "none";
             protocol = "origin";
             protocolparam = "";
             obfs = "plain";
@@ -343,8 +343,7 @@ namespace ShadowsocksR.Model
                 && obfs == server.obfs
                 && obfsparam == server.obfsparam
                 && password == server.password
-                && udp_over_tcp == server.udp_over_tcp
-                )
+                && udp_over_tcp == server.udp_over_tcp)
                 return true;
             return false;
         }
@@ -471,7 +470,7 @@ namespace ShadowsocksR.Model
         public string GetSSLinkForServer()
         {
             string parts = method + ":" + password + "@" + server + ":" + server_port;
-            string base64 = System.Convert.ToBase64String(Encoding.UTF8.GetBytes(parts)).Replace("=", "");
+            string base64 = Convert.ToBase64String(Encoding.UTF8.GetBytes(parts)).Replace("=", "");
             return "ss://" + base64;
         }
 

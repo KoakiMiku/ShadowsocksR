@@ -45,8 +45,6 @@
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
             System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
             this.ServerDataGrid = new ShadowsocksR.View.ServerLogForm.DoubleBufferListView();
-            this.timer = new System.Windows.Forms.Timer(this.components);
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Group = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Server = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -65,6 +63,8 @@
             this.ConnectTimeout = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ConnectEmpty = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Continuous = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.timer = new System.Windows.Forms.Timer(this.components);
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)(this.ServerDataGrid)).BeginInit();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -111,28 +111,6 @@
             this.ServerDataGrid.ColumnWidthChanged += new System.Windows.Forms.DataGridViewColumnEventHandler(this.ServerDataGrid_ColumnWidthChanged);
             this.ServerDataGrid.SortCompare += new System.Windows.Forms.DataGridViewSortCompareEventHandler(this.ServerDataGrid_SortCompare);
             this.ServerDataGrid.MouseUp += new System.Windows.Forms.MouseEventHandler(this.ServerDataGrid_MouseUp);
-            // 
-            // timer
-            // 
-            this.timer.Enabled = true;
-            this.timer.Interval = 250;
-            this.timer.Tick += new System.EventHandler(this.timer_Tick);
-            // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.tableLayoutPanel1.ColumnCount = 1;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
-            this.tableLayoutPanel1.Controls.Add(this.ServerDataGrid, 0, 0);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 1;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(784, 461);
-            this.tableLayoutPanel1.TabIndex = 1;
             // 
             // ID
             // 
@@ -312,6 +290,28 @@
             this.Continuous.ReadOnly = true;
             this.Continuous.Visible = false;
             this.Continuous.Width = 28;
+            // 
+            // timer
+            // 
+            this.timer.Enabled = true;
+            this.timer.Interval = 250;
+            this.timer.Tick += new System.EventHandler(this.timer_Tick);
+            // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.tableLayoutPanel1.ColumnCount = 1;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.tableLayoutPanel1.Controls.Add(this.ServerDataGrid, 0, 0);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.GrowStyle = System.Windows.Forms.TableLayoutPanelGrowStyle.FixedSize;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Margin = new System.Windows.Forms.Padding(0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 1;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(784, 461);
+            this.tableLayoutPanel1.TabIndex = 1;
             // 
             // ServerLogForm
             // 

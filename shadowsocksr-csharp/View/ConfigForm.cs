@@ -13,30 +13,26 @@ namespace ShadowsocksR.View
 {
     public partial class ConfigForm : Form
     {
-        private ShadowsocksController controller;
+        private ShadowsocksController _controller;
 
         // this is a copy of configuration that we are working on
         private Configuration _modifiedConfiguration;
         private int _oldSelectedIndex = -1;
-        private bool _allowSave = true;
         private bool _ignoreLoad = false;
         private string _oldSelectedID = null;
-
         private string _SelectedID = null;
 
         public ConfigForm(ShadowsocksController controller, int focusIndex)
         {
-            Font = SystemFonts.MessageBoxFont;
             InitializeComponent();
-            ServersListBox.Font = CreateFont();
+            Font = SystemFonts.MessageBoxFont;
+            Icon = Icon.FromHandle(Resources.ssw128.GetHicon());
+            _controller = controller;
 
             NumServerPort.Minimum = IPEndPoint.MinPort;
             NumServerPort.Maximum = IPEndPoint.MaxPort;
             NumUDPPort.Minimum = IPEndPoint.MinPort;
             NumUDPPort.Maximum = IPEndPoint.MaxPort;
-
-            Icon = Icon.FromHandle(Resources.ssw128.GetHicon());
-            this.controller = controller;
 
             foreach (string name in EncryptorFactory.GetEncryptor())
             {
@@ -91,31 +87,13 @@ namespace ShadowsocksR.View
             UpdateServersListBoxTopIndex();
         }
 
-        private Font CreateFont()
-        {
-            try
-            {
-                return new Font("Consolas", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            }
-            catch
-            {
-                try
-                {
-                    return new Font("微软雅黑", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-                }
-                catch
-                {
-                    return new Font(FontFamily.GenericMonospace, 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
-                }
-            }
-        }
-
         private void UpdateTexts()
         {
             Text = I18N.GetString("Edit Servers");
 
             AddButton.Text = I18N.GetString("&Add");
             DeleteButton.Text = I18N.GetString("&Delete");
+            ModifyButton.Text = I18N.GetString("&Modify");
             UpButton.Text = I18N.GetString("Up");
             DownButton.Text = I18N.GetString("Down");
 
@@ -180,7 +158,7 @@ namespace ShadowsocksR.View
                     method = EncryptionSelect.Text,
                     protocol = TCPProtocolComboBox.Text,
                     protocolparam = TextProtocolParam.Text,
-                    obfs = ObfsCombo.Text,
+                    obfs = ObfsComboBox.Text,
                     obfsparam = TextObfsParam.Text,
                     remarks = RemarksTextBox.Text,
                     group = TextGroup.Text.Trim(),
@@ -193,8 +171,7 @@ namespace ShadowsocksR.View
                 if (_modifiedConfiguration.configs[_oldSelectedIndex].server != server.server
                     || _modifiedConfiguration.configs[_oldSelectedIndex].server_port != server.server_port
                     || _modifiedConfiguration.configs[_oldSelectedIndex].remarks_base64 != server.remarks_base64
-                    || _modifiedConfiguration.configs[_oldSelectedIndex].group != server.group
-                    )
+                    || _modifiedConfiguration.configs[_oldSelectedIndex].group != server.group)
                 {
                     ret = 1; // display changed
                 }
@@ -273,17 +250,9 @@ namespace ShadowsocksR.View
                 NumServerPort.Value = server.server_port;
                 NumUDPPort.Value = server.server_udp_port;
                 PasswordTextBox.Text = server.password;
-                EncryptionSelect.Text = server.method ?? "aes-256-cfb";
-                if (string.IsNullOrEmpty(server.protocol))
-                {
-                    TCPProtocolComboBox.Text = "origin";
-                }
-                else
-                {
-                    TCPProtocolComboBox.Text = server.protocol ?? "origin";
-                }
-                string obfs_text = server.obfs ?? "plain";
-                ObfsCombo.Text = obfs_text;
+                EncryptionSelect.Text = server.method ?? "none";
+                TCPProtocolComboBox.Text = server.protocol ?? "origin";
+                ObfsComboBox.Text = server.obfs ?? "plain";
                 TextProtocolParam.Text = server.protocolparam;
                 TextObfsParam.Text = server.obfsparam;
                 RemarksTextBox.Text = server.remarks;
@@ -292,7 +261,54 @@ namespace ShadowsocksR.View
                 //CheckObfsUDP.Checked = server.obfs_udp;
                 _SelectedID = server.id;
 
-                if (TCPProtocolComboBox.Text == "origin" && obfs_text == "plain" && !CheckUDPoverUDP.Checked)
+                if (TCPProtocolComboBox.Text == "origin" && ObfsComboBox.Text == "plain" && !CheckUDPoverUDP.Checked)
+                {
+                    checkAdvSetting.Checked = false;
+                }
+
+                if (checkSSRLink.Checked)
+                {
+                    TextLink.Text = server.GetSSRLinkForServer();
+                }
+                else
+                {
+                    TextLink.Text = server.GetSSLinkForServer();
+                }
+
+                if (CheckTCPoverUDP.Checked || CheckUDPoverUDP.Checked || server.server_udp_port != 0)
+                {
+                    checkAdvSetting.Checked = true;
+                }
+
+                Update_SSR_controls_Visable();
+                UpdateObfsTextbox();
+                TextLink.SelectAll();
+                GenQR(TextLink.Text);
+            }
+        }
+
+        private void LoadDefaultServer()
+        {
+            if (_modifiedConfiguration.configs.Count == 0)
+            {
+                Server server = Configuration.GetDefaultServer();
+
+                IPTextBox.Text = server.server;
+                NumServerPort.Value = server.server_port;
+                NumUDPPort.Value = server.server_udp_port;
+                PasswordTextBox.Text = server.password;
+                EncryptionSelect.Text = server.method;
+                TCPProtocolComboBox.Text = server.protocol;
+                ObfsComboBox.Text = server.obfs;
+                TextProtocolParam.Text = server.protocolparam;
+                TextObfsParam.Text = server.obfsparam;
+                RemarksTextBox.Text = server.remarks;
+                TextGroup.Text = server.group;
+                CheckUDPoverUDP.Checked = server.udp_over_tcp;
+                //CheckObfsUDP.Checked = server.obfs_udp;
+                _SelectedID = server.id;
+
+                if (TCPProtocolComboBox.Text == "origin" && ObfsComboBox.Text == "plain" && !CheckUDPoverUDP.Checked)
                 {
                     checkAdvSetting.Checked = false;
                 }
@@ -331,7 +347,7 @@ namespace ShadowsocksR.View
                     }
                     else
                     {
-                        ServersListBox.Items.Add(server.HiddenName());
+                        ServersListBox.Items.Add(I18N.GetString("(empty group)") + " - " + server.HiddenName());
                     }
                 }
             }
@@ -345,7 +361,7 @@ namespace ShadowsocksR.View
                     }
                     else
                     {
-                        ServersListBox.Items[i] = _modifiedConfiguration.configs[i].HiddenName();
+                        ServersListBox.Items[i] = I18N.GetString("(empty group)") + " - " + _modifiedConfiguration.configs[i].HiddenName();
                     }
                 }
             }
@@ -362,14 +378,13 @@ namespace ShadowsocksR.View
 
         private void LoadCurrentConfiguration()
         {
-            _modifiedConfiguration = controller.GetConfiguration();
+            _modifiedConfiguration = _controller.GetConfiguration();
             LoadConfiguration(_modifiedConfiguration);
-            _allowSave = false;
             SetServerListSelectedIndex(_modifiedConfiguration.index);
-            _allowSave = true;
             LoadSelectedServer();
             if (ServersListBox.Items.Count == 0)
             {
+                LoadDefaultServer();
                 DeleteButton.Enabled = false;
                 UpButton.Enabled = false;
                 DownButton.Enabled = false;
@@ -382,19 +397,6 @@ namespace ShadowsocksR.View
             {
                 // we are moving back to oldSelectedIndex or doing a force move
                 return;
-            }
-            if (_allowSave)
-            {
-                int change = SaveOldSelectedServer();
-                if (change == -1)
-                {
-                    ServersListBox.SelectedIndex = _oldSelectedIndex; // go back
-                    return;
-                }
-                if (change == 1)
-                {
-                    LoadConfiguration(_modifiedConfiguration);
-                }
             }
             if (!_ignoreLoad) LoadSelectedServer();
             _oldSelectedIndex = ServersListBox.SelectedIndex;
@@ -419,13 +421,26 @@ namespace ShadowsocksR.View
 
         private void AddButton_Click(object sender, EventArgs e)
         {
-            if (SaveOldSelectedServer() == -1)
+            Server server = new Server
             {
-                return;
-            }
-            Server server = _oldSelectedIndex >= 0 && _oldSelectedIndex < _modifiedConfiguration.configs.Count
-                ? Configuration.CopyServer(_modifiedConfiguration.configs[_oldSelectedIndex])
-                : Configuration.GetDefaultServer();
+                server = IPTextBox.Text.Trim(),
+                server_port = Convert.ToInt32(NumServerPort.Value),
+                server_udp_port = Convert.ToInt32(NumUDPPort.Value),
+                password = PasswordTextBox.Text,
+                method = EncryptionSelect.Text,
+                protocol = TCPProtocolComboBox.Text,
+                protocolparam = TextProtocolParam.Text,
+                obfs = ObfsComboBox.Text,
+                obfsparam = TextObfsParam.Text,
+                remarks = RemarksTextBox.Text,
+                group = TextGroup.Text.Trim(),
+                udp_over_tcp = CheckUDPoverUDP.Checked,
+                //obfs_udp = CheckObfsUDP.Checked,
+                id = _SelectedID
+            };
+            Configuration.CheckServer(server);
+
+            if (server == null) return;
             _modifiedConfiguration.configs.Insert(_oldSelectedIndex < 0 ? 0 : _oldSelectedIndex + 1, server);
             LoadConfiguration(_modifiedConfiguration);
             _SelectedID = server.id;
@@ -485,6 +500,22 @@ namespace ShadowsocksR.View
             }
         }
 
+        private void ModifyButton_Click(object sender, EventArgs e)
+        {
+            if (SaveOldSelectedServer() == -1)
+            {
+                return;
+            }
+            LoadConfiguration(_modifiedConfiguration);
+
+            if (ServersListBox.Items.Count != 0)
+            {
+                DeleteButton.Enabled = true;
+                UpButton.Enabled = true;
+                DownButton.Enabled = true;
+            }
+        }
+
         private void OKButton_Click(object sender, EventArgs e)
         {
             if (SaveOldSelectedServer() == -1)
@@ -502,7 +533,7 @@ namespace ShadowsocksR.View
                     }
                 }
             }
-            controller.SaveServersConfig(_modifiedConfiguration);
+            _controller.SaveServersConfig(_modifiedConfiguration);
             Close();
         }
 
@@ -518,7 +549,7 @@ namespace ShadowsocksR.View
 
         private void ConfigForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            controller.ConfigChanged -= controller_ConfigChanged;
+            _controller.ConfigChanged -= controller_ConfigChanged;
         }
 
         private void UpButton_Click(object sender, EventArgs e)
@@ -553,7 +584,6 @@ namespace ShadowsocksR.View
                 {
                     _modifiedConfiguration.configs.Reverse(item - 1, 2);
                 }
-                _allowSave = false;
                 _ignoreLoad = true;
                 ServersListBox.SelectedIndex = _oldSelectedIndex = index - 1;
                 LoadConfiguration(_modifiedConfiguration);
@@ -565,7 +595,6 @@ namespace ShadowsocksR.View
                 }
                 ServersListBox.SelectedIndex = _oldSelectedIndex = index - 1;
                 _ignoreLoad = false;
-                _allowSave = true;
                 LoadSelectedServer();
             }
             UpdateServersListBoxTopIndex(1);
@@ -604,7 +633,6 @@ namespace ShadowsocksR.View
                 {
                     _modifiedConfiguration.configs.Reverse(item, 2);
                 }
-                _allowSave = false;
                 _ignoreLoad = true;
                 ServersListBox.SelectedIndex = _oldSelectedIndex = index + 1;
                 LoadConfiguration(_modifiedConfiguration);
@@ -616,7 +644,6 @@ namespace ShadowsocksR.View
                 }
                 ServersListBox.SelectedIndex = _oldSelectedIndex = index + 1;
                 _ignoreLoad = false;
-                _allowSave = true;
                 LoadSelectedServer();
             }
             UpdateServersListBoxTopIndex(2);
@@ -653,12 +680,33 @@ namespace ShadowsocksR.View
             }
         }
 
+        private void UpdateProtocolTextbox()
+        {
+            try
+            {
+                Obfs.ObfsBase obfs = (Obfs.ObfsBase)Obfs.ObfsFactory.GetObfs(TCPProtocolComboBox.Text);
+                int[] properties = obfs.GetObfs()[TCPProtocolComboBox.Text];
+                if (properties[2] > 0)
+                {
+                    TextProtocolParam.Enabled = true;
+                }
+                else
+                {
+                    TextProtocolParam.Enabled = false;
+                }
+            }
+            catch
+            {
+                TextProtocolParam.Enabled = false;
+            }
+        }
+
         private void UpdateObfsTextbox()
         {
             try
             {
-                Obfs.ObfsBase obfs = (Obfs.ObfsBase)Obfs.ObfsFactory.GetObfs(ObfsCombo.Text);
-                int[] properties = obfs.GetObfs()[ObfsCombo.Text];
+                Obfs.ObfsBase obfs = (Obfs.ObfsBase)Obfs.ObfsFactory.GetObfs(ObfsComboBox.Text);
+                int[] properties = obfs.GetObfs()[ObfsComboBox.Text];
                 if (properties[2] > 0)
                 {
                     TextObfsParam.Enabled = true;
@@ -670,8 +718,13 @@ namespace ShadowsocksR.View
             }
             catch
             {
-                TextObfsParam.Enabled = true;
+                TextObfsParam.Enabled = false;
             }
+        }
+
+        private void ProtocolCombo_TextChanged(object sender, EventArgs e)
+        {
+            UpdateProtocolTextbox();
         }
 
         private void ObfsCombo_TextChanged(object sender, EventArgs e)

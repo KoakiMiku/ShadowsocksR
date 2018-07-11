@@ -81,10 +81,17 @@ namespace ShadowsocksR.View
 
             LoadCurrentConfiguration();
 
-            Configuration cfg = controller.GetCurrentConfiguration();
-            if (cfg.isDefaultConfig() || cfg.nodeFeedAutoUpdate)
+            Configuration config = controller.GetCurrentConfiguration();
+            if (config.nodeFeedAutoUpdate)
             {
-                updateSubscribeManager.CreateTask(controller.GetCurrentConfiguration(), updateNodeChecker, -1, !cfg.isDefaultConfig());
+                if (config.sysProxyMode == (int)ProxyMode.Direct)
+                {
+                    updateSubscribeManager.CreateTask(controller.GetCurrentConfiguration(), updateNodeChecker, false);
+                }
+                else
+                {
+                    updateSubscribeManager.CreateTask(controller.GetCurrentConfiguration(), updateNodeChecker, true);
+                }
             }
 
             timerDelayCheckUpdate = new System.Timers.Timer(1000.0 * 10);
@@ -366,10 +373,7 @@ namespace ShadowsocksR.View
                     {
                         max_node_num = Convert.ToInt32(match_maxnum.Groups[1].Value, 10);
                     }
-                    catch
-                    {
-
-                    }
+                    catch { }
                 }
                 URL_Split(updateNodeChecker.NodeResult, ref urls);
                 for (int i = urls.Count - 1; i >= 0; --i)
@@ -452,62 +456,61 @@ namespace ShadowsocksR.View
                     }
 
                     // import all, find difference
+                    Dictionary<string, Server> old_servers = new Dictionary<string, Server>();
+                    if (!String.IsNullOrEmpty(lastGroup))
                     {
-                        Dictionary<string, Server> old_servers = new Dictionary<string, Server>();
-                        if (!String.IsNullOrEmpty(lastGroup))
+                        for (int i = config.configs.Count - 1; i >= 0; --i)
                         {
-                            for (int i = config.configs.Count - 1; i >= 0; --i)
+                            if (lastGroup == config.configs[i].group)
                             {
-                                if (lastGroup == config.configs[i].group)
-                                {
-                                    old_servers[config.configs[i].id] = config.configs[i];
-                                }
+                                old_servers[config.configs[i].id] = config.configs[i];
                             }
                         }
-                        foreach (string url in urls)
+                    }
+                    foreach (string url in urls)
+                    {
+                        try
                         {
-                            try
+                            Server server = new Server(url, curGroup);
+                            bool match = false;
+                            foreach (KeyValuePair<string, Server> pair in old_servers)
                             {
-                                Server server = new Server(url, curGroup);
-                                bool match = false;
-                                foreach (KeyValuePair<string, Server> pair in old_servers)
+                                if (server.isMatchServer(pair.Value))
                                 {
-                                    if (server.isMatchServer(pair.Value))
-                                    {
-                                        match = true;
-                                        old_servers.Remove(pair.Key);
-                                        pair.Value.CopyServerInfo(server);
-                                        ++count;
-                                        break;
-                                    }
-                                }
-                                if (!match)
-                                {
-                                    config.configs.Add(server);
+                                    match = true;
+                                    old_servers.Remove(pair.Key);
+                                    pair.Value.CopyServerInfo(server);
                                     ++count;
-                                }
-                            }
-                            catch
-                            { }
-                        }
-                        foreach (KeyValuePair<string, Server> pair in old_servers)
-                        {
-                            for (int i = config.configs.Count - 1; i >= 0; --i)
-                            {
-                                if (config.configs[i].id == pair.Key)
-                                {
-                                    config.configs.RemoveAt(i);
                                     break;
                                 }
                             }
+                            if (!match)
+                            {
+                                config.configs.Add(server);
+                                ++count;
+                            }
                         }
-                        controller.SaveServersConfig(config);
+                        catch
+                        { }
                     }
+                    foreach (KeyValuePair<string, Server> pair in old_servers)
+                    {
+                        for (int i = config.configs.Count - 1; i >= 0; --i)
+                        {
+                            if (config.configs[i].id == pair.Key)
+                            {
+                                config.configs.RemoveAt(i);
+                                break;
+                            }
+                        }
+                    }
+                    controller.SaveServersConfig(config);
+
                     config = controller.GetCurrentConfiguration();
                     if (selected_server != null)
                     {
                         bool match = false;
-                        for (int i = config.configs.Count - 1; i >= 0; --i)
+                        for (int i = 0; i < config.configs.Count - 1; ++i)
                         {
                             if (config.configs[i].id == selected_server.id)
                             {
@@ -527,15 +530,14 @@ namespace ShadowsocksR.View
                         }
                         if (!match)
                         {
-                            config.index = config.configs.Count - 1;
+                            config.index = 0;
                         }
                     }
                     else
                     {
-                        config.index = config.configs.Count - 1;
+                        config.index = 0;
                     }
                     controller.SaveServersConfig(config);
-
                 }
             }
             if (count > 0)
@@ -627,7 +629,7 @@ namespace ShadowsocksR.View
                 {
                     if (pair.Key == def_group)
                     {
-                        pair.Value.Text = "(empty group)";
+                        pair.Value.Text = I18N.GetString("(empty group)");
                     }
                     if (pair.Key == select_group)
                     {
@@ -1006,7 +1008,7 @@ namespace ShadowsocksR.View
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-            updateSubscribeManager.CreateTask(controller.GetCurrentConfiguration(), updateNodeChecker, -1, true);
+            updateSubscribeManager.CreateTask(controller.GetCurrentConfiguration(), updateNodeChecker, true);
         }
 
         private void CheckNodeUpdateBypassProxy_Click(object sender, EventArgs e)
@@ -1018,7 +1020,7 @@ namespace ShadowsocksR.View
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-            updateSubscribeManager.CreateTask(controller.GetCurrentConfiguration(), updateNodeChecker, -1, false);
+            updateSubscribeManager.CreateTask(controller.GetCurrentConfiguration(), updateNodeChecker, false);
         }
 
         private void ShowLogItem_Click(object sender, EventArgs e)

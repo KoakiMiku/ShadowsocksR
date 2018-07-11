@@ -9,18 +9,17 @@ namespace ShadowsocksR.View
 {
     public partial class SubscribeForm : Form
     {
-        private ShadowsocksController controller;
+        private ShadowsocksController _controller;
         // this is a copy of configuration that we are working on
         private Configuration _modifiedConfiguration;
         private int _old_select_index;
 
         public SubscribeForm(ShadowsocksController controller)
         {
-            Font = SystemFonts.MessageBoxFont;
             InitializeComponent();
-
+            Font = SystemFonts.MessageBoxFont;
             Icon = Icon.FromHandle(Resources.ssw128.GetHicon());
-            this.controller = controller;
+            _controller = controller;
 
             UpdateTexts();
             controller.ConfigChanged += controller_ConfigChanged;
@@ -43,7 +42,7 @@ namespace ShadowsocksR.View
 
         private void SubscribeForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            controller.ConfigChanged -= controller_ConfigChanged;
+            _controller.ConfigChanged -= controller_ConfigChanged;
         }
 
         private void controller_ConfigChanged(object sender, EventArgs e)
@@ -53,7 +52,7 @@ namespace ShadowsocksR.View
 
         private void LoadCurrentConfiguration()
         {
-            _modifiedConfiguration = controller.GetConfiguration();
+            _modifiedConfiguration = _controller.GetConfiguration();
             LoadAllSettings();
             if (listServerSubscribe.Items.Count == 0)
             {
@@ -98,7 +97,7 @@ namespace ShadowsocksR.View
             int select_index = listServerSubscribe.SelectedIndex;
             SaveSelected(select_index);
             SaveAllSettings();
-            controller.SaveServersConfig(_modifiedConfiguration);
+            _controller.SaveServersConfig(_modifiedConfiguration);
             Close();
         }
 
@@ -151,9 +150,6 @@ namespace ShadowsocksR.View
             int select_index = listServerSubscribe.SelectedIndex;
             if (_old_select_index == select_index)
                 return;
-
-            SaveSelected(_old_select_index);
-            UpdateList();
             UpdateSelected(select_index);
             SetSelectIndex(select_index);
         }

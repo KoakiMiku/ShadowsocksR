@@ -34,6 +34,8 @@
             this.OKButton = new System.Windows.Forms.Button();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.tableLayoutPanel5 = new System.Windows.Forms.TableLayoutPanel();
+            this.DNSText = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.ReconnectLabel = new System.Windows.Forms.Label();
             this.NumReconnect = new System.Windows.Forms.NumericUpDown();
             this.TTLLabel = new System.Windows.Forms.Label();
@@ -50,8 +52,6 @@
             this.checkShareOverLan = new System.Windows.Forms.CheckBox();
             this.NumProxyPort = new System.Windows.Forms.NumericUpDown();
             this.ProxyPortLabel = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.DNSText = new System.Windows.Forms.TextBox();
             this.tableLayoutPanel1.SuspendLayout();
             this.tableLayoutPanel2.SuspendLayout();
             this.groupBox1.SuspendLayout();
@@ -163,6 +163,26 @@
             this.tableLayoutPanel5.RowStyles.Add(new System.Windows.Forms.RowStyle());
             this.tableLayoutPanel5.Size = new System.Drawing.Size(186, 136);
             this.tableLayoutPanel5.TabIndex = 3;
+            // 
+            // DNSText
+            // 
+            this.DNSText.ImeMode = System.Windows.Forms.ImeMode.Off;
+            this.DNSText.Location = new System.Drawing.Point(71, 109);
+            this.DNSText.MaxLength = 0;
+            this.DNSText.Name = "DNSText";
+            this.DNSText.Size = new System.Drawing.Size(109, 21);
+            this.DNSText.TabIndex = 18;
+            this.DNSText.WordWrap = false;
+            // 
+            // label2
+            // 
+            this.label2.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(42, 113);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(23, 12);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "DNS";
             // 
             // ReconnectLabel
             // 
@@ -346,26 +366,6 @@
             this.ProxyPortLabel.Size = new System.Drawing.Size(29, 12);
             this.ProxyPortLabel.TabIndex = 3;
             this.ProxyPortLabel.Text = "Port";
-            // 
-            // label2
-            // 
-            this.label2.Anchor = System.Windows.Forms.AnchorStyles.Right;
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(42, 113);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(23, 12);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "DNS";
-            // 
-            // DNSText
-            // 
-            this.DNSText.ImeMode = System.Windows.Forms.ImeMode.Off;
-            this.DNSText.Location = new System.Drawing.Point(71, 109);
-            this.DNSText.MaxLength = 0;
-            this.DNSText.Name = "DNSText";
-            this.DNSText.Size = new System.Drawing.Size(109, 21);
-            this.DNSText.TabIndex = 18;
-            this.DNSText.WordWrap = false;
             // 
             // SettingsForm
             // 

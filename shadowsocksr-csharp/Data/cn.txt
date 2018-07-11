@@ -17,6 +17,7 @@ User custom=用户自定义
 Disable bypass=全局代理
 Edit Host file=编辑用户自定义规则
 Edit China IP file=编辑大陆规则
+(empty group)=(未分组)
 Servers=服务器
 Edit servers=编辑服务器
 Import servers from file=从文件导入服务器
@@ -50,6 +51,7 @@ Global Settings=选项设置
 
 &Add=添加(&A)
 &Delete=删除(&D)
+&Modify=修改(&M)
 Up=上移
 Down=下移
 

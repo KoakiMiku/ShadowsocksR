@@ -37,7 +37,6 @@
             // 
             this.logTextBox.BackColor = System.Drawing.Color.Black;
             this.logTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.logTextBox.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.logTextBox.ForeColor = System.Drawing.Color.White;
             this.logTextBox.Location = new System.Drawing.Point(0, 0);
             this.logTextBox.MaxLength = 2147483647;

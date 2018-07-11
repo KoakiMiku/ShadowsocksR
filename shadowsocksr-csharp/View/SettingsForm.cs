@@ -9,17 +9,16 @@ namespace ShadowsocksR.View
 {
     public partial class SettingsForm : Form
     {
-        private ShadowsocksController controller;
+        private ShadowsocksController _controller;
         // this is a copy of configuration that we are working on
         private Configuration _modifiedConfiguration;
 
         public SettingsForm(ShadowsocksController controller)
         {
-            Font = SystemFonts.MessageBoxFont;
             InitializeComponent();
-
+            Font = SystemFonts.MessageBoxFont;
             Icon = Icon.FromHandle(Resources.ssw128.GetHicon());
-            this.controller = controller;
+            _controller = controller;
 
             UpdateTexts();
             controller.ConfigChanged += controller_ConfigChanged;
@@ -39,7 +38,7 @@ namespace ShadowsocksR.View
         }
         private void SettingsForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            controller.ConfigChanged -= controller_ConfigChanged;
+            _controller.ConfigChanged -= controller_ConfigChanged;
         }
 
         private void UpdateTexts()
@@ -121,7 +120,7 @@ namespace ShadowsocksR.View
 
         private void LoadCurrentConfiguration()
         {
-            _modifiedConfiguration = controller.GetConfiguration();
+            _modifiedConfiguration = _controller.GetConfiguration();
             LoadSelectedServer();
         }
 
@@ -131,7 +130,7 @@ namespace ShadowsocksR.View
             {
                 return;
             }
-            controller.SaveServersConfig(_modifiedConfiguration);
+            _controller.SaveServersConfig(_modifiedConfiguration);
             Close();
         }
 
