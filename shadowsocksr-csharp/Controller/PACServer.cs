@@ -254,19 +254,6 @@ Connection: Close
 
         private string GetPACAddress(byte[] requestBuf, int length, IPEndPoint localEndPoint, int socksType)
         {
-            //try
-            //{
-            //    string requestString = Encoding.UTF8.GetString(requestBuf);
-            //    if (requestString.IndexOf("AppleWebKit") >= 0)
-            //    {
-            //        string address = "" + localEndPoint.Address + ":" + config.GetCurrentServer().local_port;
-            //        proxy = "SOCKS5 " + address + "; SOCKS " + address + ";";
-            //    }
-            //}
-            //catch (Exception e)
-            //{
-            //    Console.WriteLine(e);
-            //}
             if (socksType == 5)
             {
                 return "SOCKS5 " + localEndPoint.Address + ":" + _config.localPort + ";";

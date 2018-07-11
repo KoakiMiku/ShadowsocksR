@@ -21,16 +21,20 @@ namespace ShadowsocksR.Controller
                         var zipArchive = new ZipArchive(templatesStream, ZipArchiveMode.Read);
                         foreach (var item in zipArchive.Entries)
                         {
-                            byte[] buffer = new byte[item.Length];
-                            using (var stream = item.Open())
+                            try
                             {
-                                stream.Read(buffer, 0, buffer.Length);
-                                string filename = Path.Combine(templatesDirectory, item.Name);
-                                using (var fileStream = new FileStream(filename, FileMode.Create))
+                                byte[] buffer = new byte[item.Length];
+                                using (var stream = item.Open())
                                 {
-                                    fileStream.Write(buffer, 0, buffer.Length);
+                                    stream.Read(buffer, 0, buffer.Length);
+                                    string filename = Path.Combine(templatesDirectory, item.Name);
+                                    using (var fileStream = new FileStream(filename, FileMode.Create))
+                                    {
+                                        fileStream.Write(buffer, 0, buffer.Length);
+                                    }
                                 }
                             }
+                            catch { }
                         }
                     }
                 }

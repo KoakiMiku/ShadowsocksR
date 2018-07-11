@@ -235,6 +235,7 @@ namespace ShadowsocksR.Controller
                             ipAddress = new IPAddress(addr);
                             _targetPort = (_firstPacket[5] << 8) | _firstPacket[6];
                             _remote_host = ipAddress.ToString();
+                            Logging.Info("Direct" + " connect " + _remote_host + ":" + _targetPort.ToString());
                         }
                         else if (_firstPacket[0] == 4)
                         {
@@ -243,6 +244,7 @@ namespace ShadowsocksR.Controller
                             ipAddress = new IPAddress(addr);
                             _targetPort = (_firstPacket[17] << 8) | _firstPacket[18];
                             _remote_host = ipAddress.ToString();
+                            Logging.Info("Direct" + " connect " + _remote_host + ":" + _targetPort.ToString());
                         }
                         else if (_firstPacket[0] == 3)
                         {
@@ -251,6 +253,7 @@ namespace ShadowsocksR.Controller
                             Array.Copy(_firstPacket, 2, addr, 0, addr.Length);
                             _remote_host = Encoding.UTF8.GetString(_firstPacket, 2, len);
                             _targetPort = (_firstPacket[len + 2] << 8) | _firstPacket[len + 3];
+                            Logging.Info("Direct" + " connect " + _remote_host + ":" + _targetPort.ToString());
 
                             if (!IPAddress.TryParse(_remote_host, out ipAddress))
                             {

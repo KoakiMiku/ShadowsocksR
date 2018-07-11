@@ -372,7 +372,7 @@ namespace ShadowsocksR.Model
             {
                 if (!(e is FileNotFoundException))
                 {
-                    Console.WriteLine(e);
+                    Logging.LogUsefulException(e);
                 }
                 return new Configuration();
             }
@@ -404,7 +404,7 @@ namespace ShadowsocksR.Model
             }
             catch (IOException e)
             {
-                Console.Error.WriteLine(e);
+                Logging.LogUsefulException(e);
             }
         }
 
@@ -529,7 +529,7 @@ namespace ShadowsocksR.Model
             {
                 if (!(e is FileNotFoundException))
                 {
-                    Console.WriteLine(e);
+                    Logging.LogUsefulException(e);
                 }
                 return new ServerTransferTotal();
             }
@@ -556,7 +556,7 @@ namespace ShadowsocksR.Model
             }
             catch (IOException e)
             {
-                Console.Error.WriteLine(e);
+                Logging.LogUsefulException(e);
             }
         }
 

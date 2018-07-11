@@ -30,7 +30,7 @@ namespace ShadowsocksR.Encryption
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.ToString());
+                Logging.LogUsefulException(e);
             }
         }
 
