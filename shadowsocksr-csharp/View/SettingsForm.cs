@@ -45,17 +45,19 @@ namespace ShadowsocksR.View
         {
             Text = I18N.GetString("Global Settings");
 
-            ListenGroup.Text = I18N.GetString(ListenGroup.Text);
-            checkShareOverLan.Text = I18N.GetString(checkShareOverLan.Text);
+            ListenGroup.Text = I18N.GetString("Local proxy");
+            checkShareOverLan.Text = I18N.GetString("Allow Clients from LAN");
             ProxyPortLabel.Text = I18N.GetString("Proxy Port");
+            LabelAuthUser.Text = I18N.GetString("Username");
+            LabelAuthPass.Text = I18N.GetString("Password");
+
+            ServerGroup.Text = I18N.GetString("Servers");
             ReconnectLabel.Text = I18N.GetString("Reconnect Times");
             TTLLabel.Text = I18N.GetString("TTL");
             labelTimeout.Text = I18N.GetString("Connect Timeout");
 
-            checkAutoStartup.Text = I18N.GetString(checkAutoStartup.Text);
-
-            LabelAuthUser.Text = I18N.GetString("Username");
-            LabelAuthPass.Text = I18N.GetString("Password");
+            groupBox.Text = I18N.GetString("Global settings");
+            checkAutoStartup.Text = I18N.GetString("Start on Boot");
 
             OKButton.Text = I18N.GetString("OK");
             MyCancelButton.Text = I18N.GetString("Cancel");

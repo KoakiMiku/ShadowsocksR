@@ -27,8 +27,6 @@ namespace ShadowsocksR.View
 
         private ShadowsocksController _controller;
         //private ContextMenu contextMenu1;
-        private MenuItem topmostItem;
-        private MenuItem clearItem;
         private List<int> listOrder = new List<int>();
         private int lastRefreshIndex = 0;
         private bool firstDispley = true;
@@ -68,23 +66,9 @@ namespace ShadowsocksR.View
             UpdateTexts();
             UpdateLog();
 
-            Menu = new MainMenu(new MenuItem[] {
-                CreateMenuGroup("&Control", new MenuItem[] {
-                    CreateMenuItem("&Disconnect direct connections", new EventHandler(DisconnectForward_Click)),
-                    CreateMenuItem("Disconnect &All", new EventHandler(Disconnect_Click)),
-                    new MenuItem("-"),
-                    CreateMenuItem("Clear &MaxSpeed", new EventHandler(ClearMaxSpeed_Click)),
-                    clearItem = CreateMenuItem("&Clear", new EventHandler(ClearItem_Click)),
-                    new MenuItem("-"),
-                    CreateMenuItem("Clear &Selected Total", new EventHandler(ClearSelectedTotal_Click)),
-                    CreateMenuItem("Clear &Total", new EventHandler(ClearTotal_Click)),
-                }),
-                CreateMenuGroup("&Window", new MenuItem[] {
-                    CreateMenuItem("Auto &size", new EventHandler(autosizeItem_Click)),
-                    topmostItem = CreateMenuItem("Always On &Top", new EventHandler(topmostItem_Click)),
-                }),
+            ContextMenu = new ContextMenu(new MenuItem[] {
+                CreateMenuItem("&Clear", new EventHandler(ClearItem_Click)),
             });
-            controller.ConfigChanged += controller_ConfigChanged;
 
             for (int i = 0; i < ServerDataGrid.Columns.Count; ++i)
             {
@@ -103,32 +87,19 @@ namespace ShadowsocksR.View
             Width = width + SystemInformation.VerticalScrollBarWidth + (Width - ClientSize.Width) + 1;
             ServerDataGrid.AutoResizeColumnHeadersHeight();
         }
-        private MenuItem CreateMenuGroup(string text, MenuItem[] items)
-        {
-            return new MenuItem(I18N.GetString(text), items);
-        }
 
         private MenuItem CreateMenuItem(string text, EventHandler click)
         {
             return new MenuItem(I18N.GetString(text), click);
         }
 
-        private void UpdateTitle()
-        {
-            Text = title_perfix + I18N.GetString("ServerLog");
-        }
         private void UpdateTexts()
         {
-            UpdateTitle();
+            Text = title_perfix + I18N.GetString("ServerLog");
             for (int i = 0; i < ServerDataGrid.Columns.Count; ++i)
             {
                 ServerDataGrid.Columns[i].HeaderText = I18N.GetString(ServerDataGrid.Columns[i].HeaderText);
             }
-        }
-
-        private void controller_ConfigChanged(object sender, EventArgs e)
-        {
-            UpdateTitle();
         }
 
         private string FormatBytes(long bytes)
@@ -190,6 +161,7 @@ namespace ShadowsocksR.View
             }
             return false;
         }
+
         public bool SetCellToolTipText(DataGridViewCell cell, string newString)
         {
             if (cell.ToolTipText != newString)
@@ -200,6 +172,7 @@ namespace ShadowsocksR.View
             }
             return false;
         }
+
         public bool SetCellText(DataGridViewCell cell, string newString)
         {
             if ((string)cell.Value != newString)
@@ -210,6 +183,7 @@ namespace ShadowsocksR.View
             }
             return false;
         }
+
         public bool SetCellText(DataGridViewCell cell, long newInteger)
         {
             if ((string)cell.Value != newInteger.ToString())
@@ -220,16 +194,19 @@ namespace ShadowsocksR.View
             }
             return false;
         }
+
         byte ColorMix(byte a, byte b, double alpha)
         {
             return (byte)(b * alpha + a * (1 - alpha));
         }
+
         Color ColorMix(Color a, Color b, double alpha)
         {
             return Color.FromArgb(ColorMix(a.R, b.R, alpha),
                 ColorMix(a.G, b.G, alpha),
                 ColorMix(a.B, b.B, alpha));
         }
+
         public void UpdateLogThread()
         {
             while (workerThread != null)
@@ -245,6 +222,7 @@ namespace ShadowsocksR.View
                 workerEvent.WaitOne();
             }
         }
+
         public void UpdateLog()
         {
             if (workerThread == null)
@@ -257,6 +235,7 @@ namespace ShadowsocksR.View
                 workerEvent.Set();
             }
         }
+
         public void RefreshLog()
         {
             if (ServerSpeedLogList == null)
@@ -296,8 +275,7 @@ namespace ShadowsocksR.View
             try
             {
                 for (int list_index = (lastRefreshIndex >= ServerDataGrid.RowCount) ? 0 : lastRefreshIndex, rowChangeCnt = 0;
-                    list_index < ServerDataGrid.RowCount && rowChangeCnt <= 100;
-                    ++list_index)
+                    list_index < ServerDataGrid.RowCount && rowChangeCnt <= 100; ++list_index)
                 {
                     lastRefreshIndex = list_index + 1;
 
@@ -309,9 +287,8 @@ namespace ShadowsocksR.View
                     rowChange = false;
                     for (int curcol = 0; curcol < ServerDataGrid.Columns.Count; ++curcol)
                     {
-                        if (!firstDispley
-                            && (ServerDataGrid.SortedColumn == null || ServerDataGrid.SortedColumn.Index != curcol)
-                            && (list_index < displayBeginIndex || list_index >= displayEndIndex))
+                        if (!firstDispley && (ServerDataGrid.SortedColumn == null || ServerDataGrid.SortedColumn.Index != curcol) &&
+                            (list_index < displayBeginIndex || list_index >= displayEndIndex))
                             continue;
                         DataGridViewCell cell = ServerDataGrid[curcol, list_index];
                         string columnName = ServerDataGrid.Columns[curcol].Name;
@@ -319,9 +296,13 @@ namespace ShadowsocksR.View
                         if (columnName == "Server")
                         {
                             if (config.index == id)
+                            {
                                 SetBackColor(cell, Color.Cyan);
+                            }
                             else
+                            {
                                 SetBackColor(cell, Color.White);
+                            }
                             SetCellText(cell, server.FriendlyName());
                         }
                         if (columnName == "Group")
@@ -343,12 +324,7 @@ namespace ShadowsocksR.View
                             {
                                 if (connections < bytesList[i])
                                 {
-                                    SetBackColor(cell,
-                                        ColorMix(colList[i - 1],
-                                            colList[i],
-                                            (double)(connections - bytesList[i - 1]) / (bytesList[i] - bytesList[i - 1])
-                                        )
-                                        );
+                                    SetBackColor(cell, ColorMix(colList[i - 1], colList[i], (double)(connections - bytesList[i - 1]) / (bytesList[i] - bytesList[i - 1])));
                                     break;
                                 }
                             }
@@ -358,9 +334,13 @@ namespace ShadowsocksR.View
                         else if (columnName == "AvgLatency")
                         {
                             if (serverSpeedLog.avgConnectTime >= 0)
+                            {
                                 SetCellText(cell, serverSpeedLog.avgConnectTime / 1000);
+                            }
                             else
+                            {
                                 SetCellText(cell, "-");
+                            }
                         }
                         // AvgDownSpeed
                         else if (columnName == "AvgDownSpeed")
@@ -373,12 +353,7 @@ namespace ShadowsocksR.View
                             {
                                 if (avgBytes < bytesList[i])
                                 {
-                                    SetBackColor(cell,
-                                        ColorMix(colList[i - 1],
-                                            colList[i],
-                                            (double)(avgBytes - bytesList[i - 1]) / (bytesList[i] - bytesList[i - 1])
-                                        )
-                                        );
+                                    SetBackColor(cell, ColorMix(colList[i - 1], colList[i], (double)(avgBytes - bytesList[i - 1]) / (bytesList[i] - bytesList[i - 1])));
                                     break;
                                 }
                             }
@@ -395,12 +370,7 @@ namespace ShadowsocksR.View
                             {
                                 if (maxBytes < bytesList[i])
                                 {
-                                    SetBackColor(cell,
-                                        ColorMix(colList[i - 1],
-                                            colList[i],
-                                            (double)(maxBytes - bytesList[i - 1]) / (bytesList[i] - bytesList[i - 1])
-                                        )
-                                        );
+                                    SetBackColor(cell, ColorMix(colList[i - 1], colList[i], (double)(maxBytes - bytesList[i - 1]) / (bytesList[i] - bytesList[i - 1])));
                                     break;
                                 }
                             }
@@ -417,12 +387,7 @@ namespace ShadowsocksR.View
                             {
                                 if (avgBytes < bytesList[i])
                                 {
-                                    SetBackColor(cell,
-                                        ColorMix(colList[i - 1],
-                                            colList[i],
-                                            (double)(avgBytes - bytesList[i - 1]) / (bytesList[i] - bytesList[i - 1])
-                                        )
-                                        );
+                                    SetBackColor(cell, ColorMix(colList[i - 1], colList[i], (double)(avgBytes - bytesList[i - 1]) / (bytesList[i] - bytesList[i - 1])));
                                     break;
                                 }
                             }
@@ -439,12 +404,7 @@ namespace ShadowsocksR.View
                             {
                                 if (maxBytes < bytesList[i])
                                 {
-                                    SetBackColor(cell,
-                                        ColorMix(colList[i - 1],
-                                            colList[i],
-                                            (double)(maxBytes - bytesList[i - 1]) / (bytesList[i] - bytesList[i - 1])
-                                        )
-                                        );
+                                    SetBackColor(cell, ColorMix(colList[i - 1], colList[i], (double)(maxBytes - bytesList[i - 1]) / (bytesList[i] - bytesList[i - 1])));
                                     break;
                                 }
                             }
@@ -458,7 +418,9 @@ namespace ShadowsocksR.View
                             if (cell.ToolTipText != fullVal)
                             {
                                 if (fullVal == "0")
+                                {
                                     SetBackColor(cell, Color.FromArgb(0xf4, 0xff, 0xf4));
+                                }
                                 else
                                 {
                                     SetBackColor(cell, Color.LightGreen);
@@ -469,8 +431,6 @@ namespace ShadowsocksR.View
                             {
                                 cell.Tag = (int)cell.Tag - 1;
                                 if ((int)cell.Tag == 0) SetBackColor(cell, Color.FromArgb(0xf4, 0xff, 0xf4));
-                                //Color col = cell.Style.BackColor;
-                                //SetBackColor(cell, Color.FromArgb(Math.Min(255, col.R + colAdd), Math.Min(255, col.G + colAdd), Math.Min(255, col.B + colAdd)));
                             }
                             SetCellToolTipText(cell, fullVal);
                             SetCellText(cell, valStr);
@@ -483,7 +443,9 @@ namespace ShadowsocksR.View
                             if (cell.ToolTipText != fullVal)
                             {
                                 if (fullVal == "0")
+                                {
                                     SetBackColor(cell, Color.FromArgb(0xff, 0xf0, 0xf0));
+                                }
                                 else
                                 {
                                     SetBackColor(cell, Color.LightGreen);
@@ -494,8 +456,6 @@ namespace ShadowsocksR.View
                             {
                                 cell.Tag = (int)cell.Tag - 1;
                                 if ((int)cell.Tag == 0) SetBackColor(cell, Color.FromArgb(0xff, 0xf0, 0xf0));
-                                //Color col = cell.Style.BackColor;
-                                //SetBackColor(cell, Color.FromArgb(Math.Min(255, col.R + colAdd), Math.Min(255, col.G + colAdd), Math.Min(255, col.B + colAdd)));
                             }
                             SetCellToolTipText(cell, fullVal);
                             SetCellText(cell, valStr);
@@ -504,29 +464,6 @@ namespace ShadowsocksR.View
                         {
                             string valStr = FormatBytes(serverSpeedLog.totalDownloadRawBytes);
                             string fullVal = serverSpeedLog.totalDownloadRawBytes.ToString();
-                            if (cell.ToolTipText != fullVal)
-                            {
-                                if (fullVal == "0")
-                                    SetBackColor(cell, Color.FromArgb(0xff, 0x80, 0x80));
-                                else
-                                {
-                                    SetBackColor(cell, Color.LightGreen);
-                                    cell.Tag = 8;
-                                }
-                            }
-                            else if (cell.Tag != null)
-                            {
-                                cell.Tag = (int)cell.Tag - 1;
-                                if ((int)cell.Tag == 0)
-                                {
-                                    if (fullVal == "0")
-                                        SetBackColor(cell, Color.FromArgb(0xff, 0x80, 0x80));
-                                    else
-                                        SetBackColor(cell, Color.FromArgb(0xf0, 0xf0, 0xff));
-                                }
-                                //Color col = cell.Style.BackColor;
-                                //SetBackColor(cell, Color.FromArgb(Math.Min(255, col.R + colAdd), Math.Min(255, col.G + colAdd), Math.Min(255, col.B + colAdd)));
-                            }
                             SetCellToolTipText(cell, fullVal);
                             SetCellText(cell, valStr);
                         }
@@ -564,11 +501,8 @@ namespace ShadowsocksR.View
                         {
                             if (serverSpeedLog.errorLogTimes + serverSpeedLog.totalConnectTimes - serverSpeedLog.totalDisconnectTimes > 0)
                             {
-                                double percent = (serverSpeedLog.errorConnectTimes
-                                    + serverSpeedLog.errorTimeoutTimes
-                                    + serverSpeedLog.errorDecodeTimes)
-                                    * 100.00
-                                    / (serverSpeedLog.errorLogTimes + serverSpeedLog.totalConnectTimes - serverSpeedLog.totalDisconnectTimes);
+                                double percent = (serverSpeedLog.errorConnectTimes + serverSpeedLog.errorTimeoutTimes + serverSpeedLog.errorDecodeTimes)
+                                    * 100.00 / (serverSpeedLog.errorLogTimes + serverSpeedLog.totalConnectTimes - serverSpeedLog.totalDisconnectTimes);
                                 SetBackColor(cell, Color.FromArgb(255, (byte)(255 - percent * 2), (byte)(255 - percent * 2)));
                                 SetCellText(cell, percent.ToString("F0") + "%");
                             }
@@ -580,14 +514,12 @@ namespace ShadowsocksR.View
                         }
                     }
                     if (rowChange && list_index >= displayBeginIndex && list_index < displayEndIndex)
+                    {
                         rowChangeCnt++;
+                    }
                 }
             }
-            catch
-            {
-
-            }
-            UpdateTitle();
+            catch { }
             if (ServerDataGrid.SortedColumn != null)
             {
                 ServerDataGrid.Sort(ServerDataGrid.SortedColumn, (ListSortDirection)((int)ServerDataGrid.SortOrder - 1));
@@ -600,112 +532,6 @@ namespace ShadowsocksR.View
             {
                 ServerDataGrid.FirstDisplayedScrollingRowIndex = Math.Max(0, config.index - ServerDataGrid.DisplayedRowCount(true) / 2);
                 firstDispley = false;
-            }
-        }
-
-        private void autosizeColumns()
-        {
-            for (int i = 0; i < ServerDataGrid.Columns.Count; ++i)
-            {
-                string name = ServerDataGrid.Columns[i].Name;
-                if (name == "AvgLatency"
-                    || name == "AvgDownSpeed"
-                    || name == "MaxDownSpeed"
-                    || name == "AvgUpSpeed"
-                    || name == "MaxUpSpeed"
-                    || name == "Upload"
-                    || name == "Download"
-                    || name == "DownloadRaw"
-                    || name == "Group"
-                    || name == "Connecting"
-                    || name == "ErrorPercent"
-                    || name == "ConnectError"
-                    || name == "ConnectTimeout"
-                    || name == "Continuous"
-                    || name == "ConnectEmpty"
-                    )
-                {
-                    if (ServerDataGrid.Columns[i].Width <= 2)
-                        continue;
-                    ServerDataGrid.AutoResizeColumn(i, DataGridViewAutoSizeColumnMode.AllCellsExceptHeader);
-                    if (name == "AvgLatency"
-                        || name == "Connecting"
-                        || name == "AvgDownSpeed"
-                        || name == "MaxDownSpeed"
-                        || name == "AvgUpSpeed"
-                        || name == "MaxUpSpeed"
-                        )
-                    {
-                        ServerDataGrid.Columns[i].MinimumWidth = ServerDataGrid.Columns[i].Width;
-                    }
-                }
-            }
-            int width = 0;
-            for (int i = 0; i < ServerDataGrid.Columns.Count; ++i)
-            {
-                if (!ServerDataGrid.Columns[i].Visible)
-                    continue;
-                width += ServerDataGrid.Columns[i].Width;
-            }
-            Width = width + SystemInformation.VerticalScrollBarWidth + (Width - ClientSize.Width) + 1;
-            ServerDataGrid.AutoResizeColumnHeadersHeight();
-        }
-
-        private void autosizeItem_Click(object sender, EventArgs e)
-        {
-            autosizeColumns();
-        }
-
-        private void topmostItem_Click(object sender, EventArgs e)
-        {
-            topmostItem.Checked = !topmostItem.Checked;
-            TopMost = topmostItem.Checked;
-        }
-
-        private void DisconnectForward_Click(object sender, EventArgs e)
-        {
-            Model.Server.GetForwardServerRef().GetConnections().CloseAll();
-        }
-
-        private void Disconnect_Click(object sender, EventArgs e)
-        {
-            Configuration config = _controller.GetCurrentConfiguration();
-            for (int id = 0; id < config.configs.Count; ++id)
-            {
-                Server server = config.configs[id];
-                server.GetConnections().CloseAll();
-            }
-            Model.Server.GetForwardServerRef().GetConnections().CloseAll();
-        }
-
-        private void ClearMaxSpeed_Click(object sender, EventArgs e)
-        {
-            Configuration config = _controller.GetCurrentConfiguration();
-            foreach (Server server in config.configs)
-            {
-                server.ServerSpeedLog().ClearMaxSpeed();
-            }
-        }
-
-        private void ClearSelectedTotal_Click(object sender, EventArgs e)
-        {
-            Configuration config = _controller.GetCurrentConfiguration();
-            if (config.index >= 0 && config.index < config.configs.Count)
-            {
-                try
-                {
-                    _controller.ClearTransferTotal(config.configs[config.index].server);
-                }
-                catch { }
-            }
-        }
-
-        private void ClearTotal_Click(object sender, EventArgs e)
-        {
-            Configuration config = _controller.GetCurrentConfiguration();
-            foreach (Server server in config.configs)
-            {
-                _controller.ClearTransferTotal(server.server);
             }
         }
 
@@ -749,10 +575,7 @@ namespace ShadowsocksR.View
 
         private void ServerDataGrid_MouseUp(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right)
-            {
-            }
-            else if (e.Button == MouseButtons.Left)
+            if (e.Button == MouseButtons.Left)
             {
                 int row_index = -1, col_index = -1;
                 if (ServerDataGrid.SelectedCells.Count > 0)
@@ -835,7 +658,6 @@ namespace ShadowsocksR.View
 
         private void ServerLogForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            _controller.ConfigChanged -= controller_ConfigChanged;
             Thread thread = workerThread;
             workerThread = null;
             while (thread.IsAlive)
@@ -893,8 +715,7 @@ namespace ShadowsocksR.View
                 || e.Column.Name == "Connecting"
                 || e.Column.Name == "ConnectError"
                 || e.Column.Name == "ConnectTimeout"
-                || e.Column.Name == "Continuous"
-                )
+                || e.Column.Name == "Continuous")
             {
                 Int32 v1 = Convert.ToInt32(e.CellValue1);
                 Int32 v2 = Convert.ToInt32(e.CellValue2);
@@ -915,8 +736,7 @@ namespace ShadowsocksR.View
                 || e.Column.Name == "MaxUpSpeed"
                 || e.Column.Name == "Upload"
                 || e.Column.Name == "Download"
-                || e.Column.Name == "DownloadRaw"
-                )
+                || e.Column.Name == "DownloadRaw")
             {
                 String s1 = Convert.ToString(e.CellValue1);
                 String s2 = Convert.ToString(e.CellValue2);
@@ -966,21 +786,6 @@ namespace ShadowsocksR.View
                     break;
             }
             base.WndProc(ref message);
-        }
-
-        private void ServerLogForm_ResizeEnd(object sender, EventArgs e)
-        {
-            updatePause = 0;
-
-            int width = 0;
-            for (int i = 0; i < ServerDataGrid.Columns.Count; ++i)
-            {
-                if (!ServerDataGrid.Columns[i].Visible)
-                    continue;
-                width += ServerDataGrid.Columns[i].Width;
-            }
-            width += SystemInformation.VerticalScrollBarWidth + (Width - ClientSize.Width) + 1;
-            ServerDataGrid.Columns[2].Width += Width - width;
         }
 
         private void ServerDataGrid_ColumnWidthChanged(object sender, DataGridViewColumnEventArgs e)

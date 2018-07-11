@@ -10,6 +10,7 @@ namespace ShadowsocksR.Model
         public int times;
         public DateTime recvTime;
         public DateTime endTime;
+
         public TransLog(int s, DateTime t)
         {
             firstsize = s;
@@ -24,6 +25,7 @@ namespace ShadowsocksR.Model
     {
         public int errno;
         public DateTime time;
+
         public ErrorLog(int no)
         {
             errno = no;
@@ -121,6 +123,7 @@ namespace ShadowsocksR.Model
             }
             return ret;
         }
+
         public long TotalConnectTimes
         {
             get
@@ -131,6 +134,7 @@ namespace ShadowsocksR.Model
                 }
             }
         }
+
         public long TotalDisconnectTimes
         {
             get
@@ -141,6 +145,7 @@ namespace ShadowsocksR.Model
                 }
             }
         }
+
         public long ErrorConnectTimes
         {
             get
@@ -151,6 +156,7 @@ namespace ShadowsocksR.Model
                 }
             }
         }
+
         public long ErrorTimeoutTimes
         {
             get
@@ -161,6 +167,7 @@ namespace ShadowsocksR.Model
                 }
             }
         }
+
         public long ErrorEncryptTimes
         {
             get
@@ -171,6 +178,7 @@ namespace ShadowsocksR.Model
                 }
             }
         }
+
         public long ErrorContinurousTimes
         {
             get
@@ -181,6 +189,7 @@ namespace ShadowsocksR.Model
                 }
             }
         }
+
         protected static long UpdateMaxTrans(long lastMaxTrans, List<TransLog> transAvgLog)
         {
             if (transAvgLog.Count > 1)
@@ -196,6 +205,7 @@ namespace ShadowsocksR.Model
             }
             return lastMaxTrans;
         }
+
         public long AvgDownloadBytes
         {
             get
@@ -234,6 +244,7 @@ namespace ShadowsocksR.Model
                 }
             }
         }
+
         public long AvgUploadBytes
         {
             get
@@ -274,6 +285,7 @@ namespace ShadowsocksR.Model
                 }
             }
         }
+
         public long AvgConnectTime
         {
             get
@@ -281,23 +293,29 @@ namespace ShadowsocksR.Model
                 return avgConnectTime;
             }
         }
+
         public void ClearError()
         {
             lock (this)
             {
                 if (totalConnectTimes > totalDisconnectTimes)
+                {
                     totalConnectTimes -= totalDisconnectTimes;
+                }
                 else
+                {
                     totalConnectTimes = 0;
-                totalDisconnectTimes = 0;
-                errorConnectTimes = 0;
-                errorTimeoutTimes = 0;
-                errorDecodeTimes = 0;
-                errorEmptyTimes = 0;
-                errList.Clear();
-                errorContinurousTimes = 0;
+                    totalDisconnectTimes = 0;
+                    errorConnectTimes = 0;
+                    errorTimeoutTimes = 0;
+                    errorDecodeTimes = 0;
+                    errorEmptyTimes = 0;
+                    errList.Clear();
+                    errorContinurousTimes = 0;
+                }
             }
         }
+
         public void ClearMaxSpeed()
         {
             lock (this)
@@ -306,28 +324,34 @@ namespace ShadowsocksR.Model
                 maxTransUpload = 0;
             }
         }
+
         public void Clear()
         {
             lock (this)
             {
                 if (totalConnectTimes > totalDisconnectTimes)
+                {
                     totalConnectTimes -= totalDisconnectTimes;
+                }
                 else
+                {
                     totalConnectTimes = 0;
-                totalDisconnectTimes = 0;
-                errorConnectTimes = 0;
-                errorTimeoutTimes = 0;
-                errorDecodeTimes = 0;
-                errorEmptyTimes = 0;
-                errList.Clear();
-                errorContinurousTimes = 0;
-                transUpload = 0;
-                transDownload = 0;
-                transDownloadRaw = 0;
-                maxTransDownload = 0;
-                maxTransUpload = 0;
+                    totalDisconnectTimes = 0;
+                    errorConnectTimes = 0;
+                    errorTimeoutTimes = 0;
+                    errorDecodeTimes = 0;
+                    errorEmptyTimes = 0;
+                    errList.Clear();
+                    errorContinurousTimes = 0;
+                    transUpload = 0;
+                    transDownload = 0;
+                    transDownloadRaw = 0;
+                    maxTransDownload = 0;
+                    maxTransUpload = 0;
+                }
             }
         }
+
         public void AddConnectTimes()
         {
             lock (this)
@@ -335,6 +359,7 @@ namespace ShadowsocksR.Model
                 totalConnectTimes += 1;
             }
         }
+
         public void AddDisconnectTimes()
         {
             lock (this)
@@ -342,6 +367,7 @@ namespace ShadowsocksR.Model
                 totalDisconnectTimes += 1;
             }
         }
+
         protected void Sweep()
         {
             while (errList.Count > 0)
@@ -369,6 +395,7 @@ namespace ShadowsocksR.Model
                 }
             }
         }
+
         public void AddNoErrorTimes()
         {
             lock (this)
@@ -378,6 +405,7 @@ namespace ShadowsocksR.Model
                 Sweep();
             }
         }
+
         public void AddErrorTimes()
         {
             lock (this)
@@ -388,6 +416,7 @@ namespace ShadowsocksR.Model
                 Sweep();
             }
         }
+
         public void AddTimeoutTimes()
         {
             lock (this)
@@ -398,6 +427,7 @@ namespace ShadowsocksR.Model
                 Sweep();
             }
         }
+
         public void AddErrorDecodeTimes()
         {
             lock (this)
@@ -408,6 +438,7 @@ namespace ShadowsocksR.Model
                 Sweep();
             }
         }
+
         public void AddErrorEmptyTimes()
         {
             lock (this)
@@ -418,6 +449,7 @@ namespace ShadowsocksR.Model
                 Sweep();
             }
         }
+
         protected static void UpdateTransLog(List<TransLog> transLog, int bytes, DateTime now, ref long maxTrans, bool updateMaxTrans)
         {
             if (transLog.Count > 0)
@@ -503,6 +535,7 @@ namespace ShadowsocksR.Model
                 transLog.Add(new TransLog(bytes, now));
             }
         }
+
         public void AddUploadBytes(int bytes, DateTime now, bool updateMaxTrans)
         {
             lock (this)
@@ -511,6 +544,7 @@ namespace ShadowsocksR.Model
                 UpdateTransLog(upTransLog, bytes, now, ref maxTransUpload, updateMaxTrans);
             }
         }
+
         public void AddDownloadBytes(int bytes, DateTime now, bool updateMaxTrans)
         {
             lock (this)
@@ -519,6 +553,7 @@ namespace ShadowsocksR.Model
                 UpdateTransLog(downTransLog, bytes, now, ref maxTransDownload, updateMaxTrans);
             }
         }
+
         public void AddDownloadRawBytes(long bytes)
         {
             lock (this)
@@ -526,6 +561,7 @@ namespace ShadowsocksR.Model
                 transDownloadRaw += bytes;
             }
         }
+
         public void ResetErrorDecodeTimes()
         {
             lock (this)
@@ -535,6 +571,7 @@ namespace ShadowsocksR.Model
                 errorContinurousTimes = 0;
             }
         }
+
         public void ResetContinurousTimes()
         {
             lock (this)
@@ -543,6 +580,7 @@ namespace ShadowsocksR.Model
                 errorContinurousTimes = 0;
             }
         }
+
         public void ResetEmptyTimes()
         {
             lock (this)
@@ -550,6 +588,7 @@ namespace ShadowsocksR.Model
                 errorEmptyTimes = 0;
             }
         }
+
         public void AddConnectTime(int millisecond)
         {
             lock (this)

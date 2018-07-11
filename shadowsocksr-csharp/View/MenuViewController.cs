@@ -290,8 +290,10 @@ namespace ShadowsocksR.View
                     CreateMenuItem("Subscribe setting", new EventHandler(SubscribeSetting_Click)),
                 }),
                 new MenuItem("-"),
-                CreateMenuItem("Global settings", new EventHandler(Setting_Click)),
-                CreateMenuItem("Show logs", new EventHandler(ShowLogItem_Click)),
+                CreateMenuGroup("Other", new MenuItem[] {
+                    CreateMenuItem("Global settings", new EventHandler(Setting_Click)),
+                    CreateMenuItem("Show logs", new EventHandler(ShowLogItem_Click)),
+                }),
                 new MenuItem("-"),
                 CreateMenuItem("Quit", new EventHandler(Quit_Click))
             });

@@ -29,21 +29,21 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle11 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle12 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle16 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle17 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle18 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle21 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle22 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle23 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle24 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle25 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle26 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle27 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle28 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle29 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle30 = new System.Windows.Forms.DataGridViewCellStyle();
             this.ServerDataGrid = new ShadowsocksR.View.ServerLogForm.DoubleBufferListView();
             this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Group = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -114,64 +114,66 @@
             // 
             // ID
             // 
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.ID.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle16.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.ID.DefaultCellStyle = dataGridViewCellStyle16;
             this.ID.HeaderText = "ID";
-            this.ID.MinimumWidth = 2;
+            this.ID.MinimumWidth = 40;
             this.ID.Name = "ID";
             this.ID.ReadOnly = true;
-            this.ID.Width = 36;
+            this.ID.Width = 40;
             // 
             // Group
             // 
+            dataGridViewCellStyle17.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.Group.DefaultCellStyle = dataGridViewCellStyle17;
             this.Group.HeaderText = "Group";
+            this.Group.MinimumWidth = 100;
             this.Group.Name = "Group";
             this.Group.ReadOnly = true;
-            this.Group.Width = 60;
             // 
             // Server
             // 
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            this.Server.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle18.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            this.Server.DefaultCellStyle = dataGridViewCellStyle18;
             this.Server.HeaderText = "Server";
-            this.Server.MinimumWidth = 2;
+            this.Server.MinimumWidth = 200;
             this.Server.Name = "Server";
             this.Server.ReadOnly = true;
-            this.Server.Width = 88;
+            this.Server.Width = 200;
             // 
             // TotalConnect
             // 
             this.TotalConnect.HeaderText = "Total Connect";
-            this.TotalConnect.MinimumWidth = 2;
+            this.TotalConnect.MinimumWidth = 60;
             this.TotalConnect.Name = "TotalConnect";
             this.TotalConnect.ReadOnly = true;
             this.TotalConnect.Visible = false;
-            this.TotalConnect.Width = 48;
+            this.TotalConnect.Width = 60;
             // 
             // Connecting
             // 
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.Connecting.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.Connecting.DefaultCellStyle = dataGridViewCellStyle19;
             this.Connecting.HeaderText = "Connecting";
-            this.Connecting.MinimumWidth = 16;
+            this.Connecting.MinimumWidth = 60;
             this.Connecting.Name = "Connecting";
             this.Connecting.ReadOnly = true;
-            this.Connecting.Width = 28;
+            this.Connecting.Width = 60;
             // 
             // AvgLatency
             // 
-            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.AvgLatency.DefaultCellStyle = dataGridViewCellStyle4;
+            dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.AvgLatency.DefaultCellStyle = dataGridViewCellStyle20;
             this.AvgLatency.HeaderText = "Latency";
-            this.AvgLatency.MinimumWidth = 36;
+            this.AvgLatency.MinimumWidth = 60;
             this.AvgLatency.Name = "AvgLatency";
             this.AvgLatency.ReadOnly = true;
-            this.AvgLatency.Width = 48;
+            this.AvgLatency.Width = 60;
             // 
             // AvgDownSpeed
             // 
-            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.AvgDownSpeed.DefaultCellStyle = dataGridViewCellStyle5;
+            dataGridViewCellStyle21.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.AvgDownSpeed.DefaultCellStyle = dataGridViewCellStyle21;
             this.AvgDownSpeed.HeaderText = "Avg DSpeed";
             this.AvgDownSpeed.MinimumWidth = 60;
             this.AvgDownSpeed.Name = "AvgDownSpeed";
@@ -180,18 +182,19 @@
             // 
             // MaxDownSpeed
             // 
-            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.MaxDownSpeed.DefaultCellStyle = dataGridViewCellStyle6;
+            dataGridViewCellStyle22.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.MaxDownSpeed.DefaultCellStyle = dataGridViewCellStyle22;
             this.MaxDownSpeed.HeaderText = "Max DSpeed";
-            this.MaxDownSpeed.MinimumWidth = 2;
+            this.MaxDownSpeed.MinimumWidth = 60;
             this.MaxDownSpeed.Name = "MaxDownSpeed";
             this.MaxDownSpeed.ReadOnly = true;
+            this.MaxDownSpeed.Visible = false;
             this.MaxDownSpeed.Width = 60;
             // 
             // AvgUpSpeed
             // 
-            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.AvgUpSpeed.DefaultCellStyle = dataGridViewCellStyle7;
+            dataGridViewCellStyle23.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.AvgUpSpeed.DefaultCellStyle = dataGridViewCellStyle23;
             this.AvgUpSpeed.HeaderText = "Avg UpSpeed";
             this.AvgUpSpeed.MinimumWidth = 60;
             this.AvgUpSpeed.Name = "AvgUpSpeed";
@@ -200,96 +203,92 @@
             // 
             // MaxUpSpeed
             // 
-            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.MaxUpSpeed.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle24.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.MaxUpSpeed.DefaultCellStyle = dataGridViewCellStyle24;
             this.MaxUpSpeed.HeaderText = "Max UpSpeed";
-            this.MaxUpSpeed.MinimumWidth = 2;
+            this.MaxUpSpeed.MinimumWidth = 60;
             this.MaxUpSpeed.Name = "MaxUpSpeed";
             this.MaxUpSpeed.ReadOnly = true;
+            this.MaxUpSpeed.Visible = false;
             this.MaxUpSpeed.Width = 60;
             // 
             // Download
             // 
-            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.Download.DefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle25.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.Download.DefaultCellStyle = dataGridViewCellStyle25;
             this.Download.HeaderText = "Dload";
-            this.Download.MinimumWidth = 2;
+            this.Download.MinimumWidth = 100;
             this.Download.Name = "Download";
             this.Download.ReadOnly = true;
-            this.Download.Width = 60;
             // 
             // Upload
             // 
-            dataGridViewCellStyle10.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.Upload.DefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle26.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.Upload.DefaultCellStyle = dataGridViewCellStyle26;
             this.Upload.HeaderText = "Upload";
-            this.Upload.MinimumWidth = 2;
+            this.Upload.MinimumWidth = 100;
             this.Upload.Name = "Upload";
             this.Upload.ReadOnly = true;
-            this.Upload.Width = 60;
             // 
             // DownloadRaw
             // 
-            dataGridViewCellStyle11.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.DownloadRaw.DefaultCellStyle = dataGridViewCellStyle11;
+            dataGridViewCellStyle27.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.DownloadRaw.DefaultCellStyle = dataGridViewCellStyle27;
             this.DownloadRaw.HeaderText = "DloadRaw";
-            this.DownloadRaw.MinimumWidth = 2;
+            this.DownloadRaw.MinimumWidth = 60;
             this.DownloadRaw.Name = "DownloadRaw";
             this.DownloadRaw.ReadOnly = true;
+            this.DownloadRaw.Visible = false;
             this.DownloadRaw.Width = 60;
             // 
             // ErrorPercent
             // 
             this.ErrorPercent.HeaderText = "Error Percent";
-            this.ErrorPercent.MinimumWidth = 2;
+            this.ErrorPercent.MinimumWidth = 60;
             this.ErrorPercent.Name = "ErrorPercent";
             this.ErrorPercent.ReadOnly = true;
-            this.ErrorPercent.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
             this.ErrorPercent.Visible = false;
-            this.ErrorPercent.Width = 48;
+            this.ErrorPercent.Width = 60;
             // 
             // ConnectError
             // 
-            dataGridViewCellStyle12.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.ConnectError.DefaultCellStyle = dataGridViewCellStyle12;
+            dataGridViewCellStyle28.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.ConnectError.DefaultCellStyle = dataGridViewCellStyle28;
             this.ConnectError.HeaderText = "Error";
-            this.ConnectError.MinimumWidth = 2;
+            this.ConnectError.MinimumWidth = 60;
             this.ConnectError.Name = "ConnectError";
             this.ConnectError.ReadOnly = true;
-            this.ConnectError.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.ConnectError.Width = 28;
+            this.ConnectError.Width = 60;
             // 
             // ConnectTimeout
             // 
-            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.ConnectTimeout.DefaultCellStyle = dataGridViewCellStyle13;
+            dataGridViewCellStyle29.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.ConnectTimeout.DefaultCellStyle = dataGridViewCellStyle29;
             this.ConnectTimeout.HeaderText = "Timeout";
-            this.ConnectTimeout.MinimumWidth = 2;
+            this.ConnectTimeout.MinimumWidth = 60;
             this.ConnectTimeout.Name = "ConnectTimeout";
             this.ConnectTimeout.ReadOnly = true;
-            this.ConnectTimeout.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.ConnectTimeout.Width = 28;
+            this.ConnectTimeout.Width = 60;
             // 
             // ConnectEmpty
             // 
-            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.ConnectEmpty.DefaultCellStyle = dataGridViewCellStyle14;
+            dataGridViewCellStyle30.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
+            this.ConnectEmpty.DefaultCellStyle = dataGridViewCellStyle30;
             this.ConnectEmpty.HeaderText = "Empty Response";
-            this.ConnectEmpty.MinimumWidth = 2;
+            this.ConnectEmpty.MinimumWidth = 60;
             this.ConnectEmpty.Name = "ConnectEmpty";
             this.ConnectEmpty.ReadOnly = true;
-            this.ConnectEmpty.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.ConnectEmpty.Width = 28;
+            this.ConnectEmpty.Visible = false;
+            this.ConnectEmpty.Width = 60;
             // 
             // Continuous
             // 
-            dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleRight;
-            this.Continuous.DefaultCellStyle = dataGridViewCellStyle15;
             this.Continuous.HeaderText = "Continuous";
+            this.Continuous.MinimumWidth = 60;
             this.Continuous.Name = "Continuous";
             this.Continuous.ReadOnly = true;
             this.Continuous.Visible = false;
-            this.Continuous.Width = 28;
+            this.Continuous.Width = 60;
             // 
             // timer
             // 
@@ -317,14 +316,17 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(784, 461);
             this.Controls.Add(this.tableLayoutPanel1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Margin = new System.Windows.Forms.Padding(2);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
             this.Name = "ServerLogForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ServerLog";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ServerLogForm_FormClosed);
-            this.ResizeEnd += new System.EventHandler(this.ServerLogForm_ResizeEnd);
             this.Move += new System.EventHandler(this.ServerLogForm_Move);
             ((System.ComponentModel.ISupportInitialize)(this.ServerDataGrid)).EndInit();
             this.tableLayoutPanel1.ResumeLayout(false);
