@@ -620,8 +620,8 @@
             this.tableLayoutPanel4.Controls.Add(this.AddButton, 0, 0);
             this.tableLayoutPanel4.Controls.Add(this.DownButton, 1, 2);
             this.tableLayoutPanel4.Controls.Add(this.UpButton, 0, 2);
-            this.tableLayoutPanel4.Controls.Add(this.ModifyButton, 0, 1);
-            this.tableLayoutPanel4.Controls.Add(this.DeleteButton, 1, 0);
+            this.tableLayoutPanel4.Controls.Add(this.ModifyButton, 1, 0);
+            this.tableLayoutPanel4.Controls.Add(this.DeleteButton, 0, 1);
             this.tableLayoutPanel4.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.tableLayoutPanel4.Location = new System.Drawing.Point(0, 441);
             this.tableLayoutPanel4.Margin = new System.Windows.Forms.Padding(0, 5, 0, 0);
@@ -671,7 +671,7 @@
             // 
             this.ModifyButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.ModifyButton.AutoSize = true;
-            this.ModifyButton.Location = new System.Drawing.Point(0, 34);
+            this.ModifyButton.Location = new System.Drawing.Point(130, 0);
             this.ModifyButton.Margin = new System.Windows.Forms.Padding(0);
             this.ModifyButton.Name = "ModifyButton";
             this.ModifyButton.Size = new System.Drawing.Size(120, 34);
@@ -683,7 +683,7 @@
             // DeleteButton
             // 
             this.DeleteButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.DeleteButton.Location = new System.Drawing.Point(130, 0);
+            this.DeleteButton.Location = new System.Drawing.Point(0, 34);
             this.DeleteButton.Margin = new System.Windows.Forms.Padding(0);
             this.DeleteButton.Name = "DeleteButton";
             this.DeleteButton.Size = new System.Drawing.Size(120, 34);

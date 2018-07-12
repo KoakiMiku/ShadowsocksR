@@ -97,14 +97,13 @@ namespace ShadowsocksR.View
             UpButton.Text = I18N.GetString("Up");
             DownButton.Text = I18N.GetString("Down");
 
-            const string mark_str = "* ";
-            IPLabel.Text = mark_str + I18N.GetString("Server IP");
-            ServerPortLabel.Text = mark_str + I18N.GetString("Server Port");
+            IPLabel.Text = I18N.GetString("Server IP");
+            ServerPortLabel.Text = I18N.GetString("Server Port");
             labelUDPPort.Text = I18N.GetString("UDP Port");
-            PasswordLabel.Text = mark_str + I18N.GetString("Password");
-            EncryptionLabel.Text = mark_str + I18N.GetString("Encryption");
-            TCPProtocolLabel.Text = mark_str + I18N.GetString(TCPProtocolLabel.Text);
-            labelObfs.Text = mark_str + I18N.GetString(labelObfs.Text);
+            PasswordLabel.Text = I18N.GetString("Password");
+            EncryptionLabel.Text = I18N.GetString("Encryption");
+            TCPProtocolLabel.Text = I18N.GetString(TCPProtocolLabel.Text);
+            labelObfs.Text = I18N.GetString(labelObfs.Text);
             labelRemarks.Text = I18N.GetString("Remarks");
             labelGroup.Text = I18N.GetString("Group");
 
@@ -119,6 +118,7 @@ namespace ShadowsocksR.View
             CheckUDPoverUDP.Text = I18N.GetString(CheckUDPoverUDP.Text);
             CheckObfsUDP.Text = I18N.GetString(CheckObfsUDP.Text);
             checkSSRLink.Text = I18N.GetString(checkSSRLink.Text);
+
             for (int i = 0; i < TCPProtocolComboBox.Items.Count; ++i)
             {
                 TCPProtocolComboBox.Items[i] = I18N.GetString(TCPProtocolComboBox.Items[i].ToString());
@@ -386,6 +386,7 @@ namespace ShadowsocksR.View
             if (ServersListBox.Items.Count == 0)
             {
                 LoadDefaultServer();
+                ModifyButton.Enabled = false;
                 DeleteButton.Enabled = false;
                 UpButton.Enabled = false;
                 DownButton.Enabled = false;
@@ -450,6 +451,7 @@ namespace ShadowsocksR.View
 
             if (ServersListBox.Items.Count != 0)
             {
+                ModifyButton.Enabled = true;
                 DeleteButton.Enabled = true;
                 UpButton.Enabled = true;
                 DownButton.Enabled = true;
@@ -495,6 +497,7 @@ namespace ShadowsocksR.View
             if (ServersListBox.Items.Count == 0)
             {
                 PictureQRcode.Visible = false;
+                ModifyButton.Enabled = false;
                 DeleteButton.Enabled = false;
                 UpButton.Enabled = false;
                 DownButton.Enabled = false;
@@ -511,6 +514,7 @@ namespace ShadowsocksR.View
 
             if (ServersListBox.Items.Count != 0)
             {
+                ModifyButton.Enabled = true;
                 DeleteButton.Enabled = true;
                 UpButton.Enabled = true;
                 DownButton.Enabled = true;
