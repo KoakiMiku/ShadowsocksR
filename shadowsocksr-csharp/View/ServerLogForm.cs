@@ -569,30 +569,6 @@ namespace ShadowsocksR.View
             if (updateTick == 2 || updateSize == 1)
             {
                 updateSize = 0;
-                //autosizeColumns();
-            }
-        }
-
-        private void ServerDataGrid_MouseUp(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                int row_index = -1, col_index = -1;
-                if (ServerDataGrid.SelectedCells.Count > 0)
-                {
-                    row_index = ServerDataGrid.SelectedCells[0].RowIndex;
-                    col_index = ServerDataGrid.SelectedCells[0].ColumnIndex;
-                }
-                if (row_index >= 0)
-                {
-                    int id = (int)ServerDataGrid[0, row_index].Value;
-                    if (ServerDataGrid.Columns[col_index].Name == "Server")
-                    {
-                        Configuration config = _controller.GetCurrentConfiguration();
-                        _controller.SelectServerIndex(id);
-                    }
-                    ServerDataGrid[0, row_index].Selected = true;
-                }
             }
         }
 
@@ -610,52 +586,6 @@ namespace ShadowsocksR.View
             }
         }
 
-        private void ServerDataGrid_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex >= 0)
-            {
-                int id = (int)ServerDataGrid[0, e.RowIndex].Value;
-                if (ServerDataGrid.Columns[e.ColumnIndex].Name == "ID")
-                {
-                    _controller.ShowConfigForm(id);
-                }
-                if (ServerDataGrid.Columns[e.ColumnIndex].Name == "Server")
-                {
-                    _controller.ShowConfigForm(id);
-                }
-                if (ServerDataGrid.Columns[e.ColumnIndex].Name == "Connecting")
-                {
-                    Configuration config = _controller.GetCurrentConfiguration();
-                    Server server = config.configs[id];
-                    server.GetConnections().CloseAll();
-                }
-                if (ServerDataGrid.Columns[e.ColumnIndex].Name == "MaxDownSpeed" || ServerDataGrid.Columns[e.ColumnIndex].Name == "MaxUpSpeed")
-                {
-                    Configuration config = _controller.GetCurrentConfiguration();
-                    config.configs[id].ServerSpeedLog().ClearMaxSpeed();
-                }
-                if (ServerDataGrid.Columns[e.ColumnIndex].Name == "Upload" || ServerDataGrid.Columns[e.ColumnIndex].Name == "Download")
-                {
-                    Configuration config = _controller.GetCurrentConfiguration();
-                    config.configs[id].ServerSpeedLog().ClearTrans();
-                }
-                if (ServerDataGrid.Columns[e.ColumnIndex].Name == "DownloadRaw")
-                {
-                    Configuration config = _controller.GetCurrentConfiguration();
-                    config.configs[id].ServerSpeedLog().Clear();
-                }
-                if (ServerDataGrid.Columns[e.ColumnIndex].Name == "ConnectError"
-                    || ServerDataGrid.Columns[e.ColumnIndex].Name == "ConnectTimeout"
-                    || ServerDataGrid.Columns[e.ColumnIndex].Name == "ConnectEmpty"
-                    || ServerDataGrid.Columns[e.ColumnIndex].Name == "Continuous")
-                {
-                    Configuration config = _controller.GetCurrentConfiguration();
-                    config.configs[id].ServerSpeedLog().ClearError();
-                }
-                ServerDataGrid[0, e.RowIndex].Selected = true;
-            }
-        }
-
         private void ServerLogForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             Thread thread = workerThread;
@@ -667,138 +597,9 @@ namespace ShadowsocksR.View
             }
         }
 
-        private long Str2Long(String str)
-        {
-            if (str == "-") return -1;
-            //if (String.IsNullOrEmpty(str)) return -1;
-            if (str.LastIndexOf('K') > 0)
-            {
-                Double ret = Convert.ToDouble(str.Substring(0, str.LastIndexOf('K')));
-                return (long)(ret * 1024);
-            }
-            if (str.LastIndexOf('M') > 0)
-            {
-                Double ret = Convert.ToDouble(str.Substring(0, str.LastIndexOf('M')));
-                return (long)(ret * 1024 * 1024);
-            }
-            if (str.LastIndexOf('G') > 0)
-            {
-                Double ret = Convert.ToDouble(str.Substring(0, str.LastIndexOf('G')));
-                return (long)(ret * 1024 * 1024 * 1024);
-            }
-            if (str.LastIndexOf('T') > 0)
-            {
-                Double ret = Convert.ToDouble(str.Substring(0, str.LastIndexOf('T')));
-                return (long)(ret * 1024 * 1024 * 1024 * 1024);
-            }
-            try
-            {
-                Double ret = Convert.ToDouble(str);
-                return (long)ret;
-            }
-            catch
-            {
-                return -1;
-            }
-        }
-
-        private void ServerDataGrid_SortCompare(object sender, DataGridViewSortCompareEventArgs e)
-        {
-            //e.SortResult = 0;
-            if (e.Column.Name == "Server" || e.Column.Name == "Group")
-            {
-                e.SortResult = System.String.Compare(Convert.ToString(e.CellValue1), Convert.ToString(e.CellValue2));
-                e.Handled = true;
-            }
-            else if (e.Column.Name == "ID"
-                || e.Column.Name == "TotalConnect"
-                || e.Column.Name == "Connecting"
-                || e.Column.Name == "ConnectError"
-                || e.Column.Name == "ConnectTimeout"
-                || e.Column.Name == "Continuous")
-            {
-                Int32 v1 = Convert.ToInt32(e.CellValue1);
-                Int32 v2 = Convert.ToInt32(e.CellValue2);
-                e.SortResult = (v1 == v2 ? 0 : (v1 < v2 ? -1 : 1));
-            }
-            else if (e.Column.Name == "ErrorPercent")
-            {
-                String s1 = Convert.ToString(e.CellValue1);
-                String s2 = Convert.ToString(e.CellValue2);
-                Int32 v1 = s1.Length <= 1 ? 0 : Convert.ToInt32(Convert.ToDouble(s1.Substring(0, s1.Length - 1)) * 100);
-                Int32 v2 = s2.Length <= 1 ? 0 : Convert.ToInt32(Convert.ToDouble(s2.Substring(0, s2.Length - 1)) * 100);
-                e.SortResult = v1 == v2 ? 0 : v1 < v2 ? -1 : 1;
-            }
-            else if (e.Column.Name == "AvgLatency"
-                || e.Column.Name == "AvgDownSpeed"
-                || e.Column.Name == "MaxDownSpeed"
-                || e.Column.Name == "AvgUpSpeed"
-                || e.Column.Name == "MaxUpSpeed"
-                || e.Column.Name == "Upload"
-                || e.Column.Name == "Download"
-                || e.Column.Name == "DownloadRaw")
-            {
-                String s1 = Convert.ToString(e.CellValue1);
-                String s2 = Convert.ToString(e.CellValue2);
-                long v1 = Str2Long(s1);
-                long v2 = Str2Long(s2);
-                e.SortResult = (v1 == v2 ? 0 : (v1 < v2 ? -1 : 1));
-            }
-            if (e.SortResult == 0)
-            {
-                int v1 = listOrder[Convert.ToInt32(ServerDataGrid[0, e.RowIndex1].Value)];
-                int v2 = listOrder[Convert.ToInt32(ServerDataGrid[0, e.RowIndex2].Value)];
-                e.SortResult = (v1 == v2 ? 0 : (v1 < v2 ? -1 : 1));
-                if (e.SortResult != 0 && ServerDataGrid.SortOrder == SortOrder.Descending)
-                {
-                    e.SortResult = -e.SortResult;
-                }
-            }
-            if (e.SortResult != 0)
-            {
-                e.Handled = true;
-            }
-        }
-
         private void ServerLogForm_Move(object sender, EventArgs e)
         {
             updatePause = 0;
-        }
-
-        protected override void WndProc(ref Message message)
-        {
-            const int WM_SIZING = 532;
-            //const int WM_SIZE = 533;
-            const int WM_MOVING = 534;
-            const int WM_SYSCOMMAND = 0x0112;
-            const int SC_MINIMIZE = 0xF020;
-            switch (message.Msg)
-            {
-                case WM_SIZING:
-                case WM_MOVING:
-                    updatePause = 2;
-                    break;
-                case WM_SYSCOMMAND:
-                    if ((int)message.WParam == SC_MINIMIZE)
-                    {
-                        Util.Utils.ReleaseMemory();
-                    }
-                    break;
-            }
-            base.WndProc(ref message);
-        }
-
-        private void ServerDataGrid_ColumnWidthChanged(object sender, DataGridViewColumnEventArgs e)
-        {
-            int width = 0;
-            for (int i = 0; i < ServerDataGrid.Columns.Count; ++i)
-            {
-                if (!ServerDataGrid.Columns[i].Visible)
-                    continue;
-                width += ServerDataGrid.Columns[i].Width;
-            }
-            Width = width + SystemInformation.VerticalScrollBarWidth + (Width - ClientSize.Width) + 1;
-            ServerDataGrid.AutoResizeColumnHeadersHeight();
         }
     }
 }
