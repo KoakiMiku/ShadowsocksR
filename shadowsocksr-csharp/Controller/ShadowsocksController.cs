@@ -372,6 +372,7 @@ namespace ShadowsocksR.Controller
             {
                 _pacServer = new PACServer();
                 _pacServer.PACFileChanged += pacServer_PACFileChanged;
+                _pacServer.UserRuleFileChanged += pacServer_UserRuleFileChanged;
             }
             _pacServer.UpdateConfiguration(_config);
             if (gfwListUpdater == null)
@@ -434,9 +435,8 @@ namespace ShadowsocksR.Controller
                 {
                     // translate Microsoft language into human language
                     // i.e. An attempt was made to access a socket in a way forbidden by its access permissions => Port already in use
-                    if (e is SocketException)
+                    if (e is SocketException se)
                     {
-                        SocketException se = (SocketException)e;
                         if (se.SocketErrorCode == SocketError.AccessDenied)
                         {
                             e = new Exception(I18N.GetString("Port already in use") + string.Format(" {0}", _config.localPort), e);
@@ -476,9 +476,8 @@ namespace ShadowsocksR.Controller
                 {
                     // translate Microsoft language into human language
                     // i.e. An attempt was made to access a socket in a way forbidden by its access permissions => Port already in use
-                    if (e is SocketException)
+                    if (e is SocketException se)
                     {
-                        SocketException se = (SocketException)e;
                         if (se.SocketErrorCode == SocketError.AccessDenied)
                         {
                             e = new Exception(I18N.GetString("Port already in use") + string.Format(" {0}", pair.Key), e);
@@ -505,6 +504,11 @@ namespace ShadowsocksR.Controller
         }
 
         private void pacServer_PACFileChanged(object sender, EventArgs e)
+        {
+            UpdateSystemProxy();
+        }
+
+        private void pacServer_UserRuleFileChanged(object sender, EventArgs e)
         {
             UpdateSystemProxy();
         }

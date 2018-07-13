@@ -125,9 +125,8 @@ namespace ShadowsocksR.Controller
         {
             UpdateLogFile();
             // just log useful exceptions, not all of them
-            if (e is SocketException)
+            if (e is SocketException se)
             {
-                SocketException se = (SocketException)e;
                 if (se.SocketErrorCode == SocketError.ConnectionAborted)
                 {
                     // closed by browser when sending
@@ -172,9 +171,8 @@ namespace ShadowsocksR.Controller
         {
             UpdateLogFile();
             // just log useful exceptions, not all of them
-            if (e is ObfsException)
+            if (e is ObfsException oe)
             {
-                ObfsException oe = (ObfsException)e;
                 Error("Proxy server [" + remarks + "(" + server + ")] "
                     + oe.Message);
                 return true;
@@ -188,9 +186,8 @@ namespace ShadowsocksR.Controller
                 // ignore
                 return true;
             }
-            else if (e is SocketException)
+            else if (e is SocketException se)
             {
-                SocketException se = (SocketException)e;
                 if ((uint)se.SocketErrorCode == 0x80004005)
                 {
                     // already closed

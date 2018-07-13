@@ -321,9 +321,8 @@ namespace ShadowsocksR.Controller
         {
             // just log useful exceptions, not all of them
             Server s = server;
-            if (e is ObfsException)
+            if (e is ObfsException oe)
             {
-                ObfsException oe = (ObfsException)e;
                 if (lastErrCode == 0)
                 {
                     if (s != null)
@@ -334,9 +333,8 @@ namespace ShadowsocksR.Controller
                 }
                 return 16; // ObfsException(decrypt error)
             }
-            else if (e is SocketException)
+            else if (e is SocketException se)
             {
-                SocketException se = (SocketException)e;
                 if (se.SocketErrorCode == SocketError.ConnectionAborted
                     || se.SocketErrorCode == SocketError.ConnectionReset
                     || se.SocketErrorCode == SocketError.NotConnected
