@@ -816,14 +816,14 @@ namespace ShadowsocksR.View
             using (OpenFileDialog dlg = new OpenFileDialog())
             {
                 dlg.InitialDirectory = Application.StartupPath;
+                dlg.Filter = I18N.GetString("Config File") + "|*.json";
                 if (dlg.ShowDialog() == DialogResult.OK)
                 {
                     string name = dlg.FileName;
                     Configuration cfg = Configuration.LoadFile(name);
                     if (cfg.configs.Count == 1 && cfg.configs[0].server == Configuration.GetDefaultServer().server)
                     {
-                        //MessageBox.Show("Load config file failed", I18N.GetString("Information"),
-                        //    MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        //
                     }
                     else
                     {

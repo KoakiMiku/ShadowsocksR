@@ -21,6 +21,7 @@ Edit China IP file=编辑大陆规则
 Servers=服务器
 Edit servers=编辑服务器
 Import servers from file=从文件导入服务器
+Config File=配置文件
 Servers Subscribe=服务器订阅
 Subscribe setting=服务器订阅设置
 Update subscribe SSR node=更新服务器订阅
