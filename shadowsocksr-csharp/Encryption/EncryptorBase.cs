@@ -19,8 +19,8 @@ namespace ShadowsocksR.Encryption
             this.name = name;
         }
     }
-    public abstract class EncryptorBase
-        : IEncryptor
+
+    public abstract class EncryptorBase : IEncryptor
     {
         public const int MAX_INPUT_SIZE = 65536;
 
@@ -39,13 +39,12 @@ namespace ShadowsocksR.Encryption
             byte[] hash = MbedTLS.MD5(inputBytes);
             return hash;
         }
+
         public abstract bool SetIV(byte[] iv);
         public abstract void Encrypt(byte[] buf, int length, byte[] outbuf, out int outlength);
-
         public abstract void Decrypt(byte[] buf, int length, byte[] outbuf, out int outlength);
         public abstract void ResetEncrypt();
         public abstract void ResetDecrypt();
-
         public abstract void Dispose();
         public abstract byte[] getIV();
         public abstract byte[] getKey();

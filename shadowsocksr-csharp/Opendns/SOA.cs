@@ -9,7 +9,6 @@
  * Note: Based on DnsLite by Jaimon Mathew
  * */
 
-
 namespace OpenDNS
 {
     /// <summary>
@@ -35,6 +34,5 @@ namespace OpenDNS
 			Expire = _Expire;
 			Minimum = _Minimum;
 		}
-
 	}
 }

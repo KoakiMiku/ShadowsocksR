@@ -36,6 +36,7 @@ namespace ShadowsocksR.View
 
             LoadCurrentConfiguration();
         }
+
         private void SettingsForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             _controller.ConfigChanged -= controller_ConfigChanged;

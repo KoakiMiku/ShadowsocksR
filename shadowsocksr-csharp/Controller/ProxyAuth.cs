@@ -12,20 +12,15 @@ namespace ShadowsocksR.Controller
         private Configuration _config;
         private ServerTransferTotal _transfer;
         private IPRangeSet _IPRange;
-
         private byte[] _firstPacket;
         private int _firstPacketLength;
-
         private Socket _connection;
         private Socket _connectionUDP;
         private string local_sendback_protocol;
-
         protected const int RECV_SIZE = 16384;
         protected byte[] _connetionRecvBuffer = new byte[RECV_SIZE * 2];
-
         public byte command;
         protected byte[] _remoteHeaderSendBuffer;
-
         protected HttpPraser httpProxyState;
 
         public ProxyAuthHandler(Configuration config, ServerTransferTotal transfer, IPRangeSet IPRange, byte[] firstPacket, int length, Socket socket)
@@ -510,13 +505,11 @@ namespace ShadowsocksR.Controller
         private void Connect()
         {
             Handler.GetCurrentServer getCurrentServer = delegate (int localPort, ServerSelectStrategy.FilterFunc filter, string targetURI) { return _config.GetCurrentServer(localPort, filter, targetURI); };
-            Handler.KeepCurrentServer keepCurrentServer = delegate (int localPort, string targetURI, string id) { _config.KeepCurrentServer(localPort, targetURI, id); };
 
             int local_port = ((IPEndPoint)_connection.LocalEndPoint).Port;
             Handler handler = new Handler
             {
                 getCurrentServer = getCurrentServer,
-                keepCurrentServer = keepCurrentServer,
                 connection = new ProxySocketTunLocal(_connection),
                 connectionUDP = _connectionUDP
             };

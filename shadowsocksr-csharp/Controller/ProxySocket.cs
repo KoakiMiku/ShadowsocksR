@@ -28,16 +28,12 @@ namespace ShadowsocksR.Controller
         protected Socket _socket;
         protected EndPoint _socketEndPoint;
         protected IPEndPoint _remoteUDPEndPoint;
-
         protected bool _proxy;
         protected string _proxy_server;
         protected int _proxy_udp_port;
-
         protected const int RecvSize = 1460 * 2;
-
         private byte[] SendEncryptBuffer = new byte[RecvSize];
         private byte[] ReceiveDecryptBuffer = new byte[RecvSize * 2];
-
         protected bool _close;
 
         public ProxySocketTun(Socket socket)
@@ -522,7 +518,6 @@ namespace ShadowsocksR.Controller
             }
             return SendAll(buffer, size, 0);
         }
-
     }
 
     class ProxyEncryptSocket
@@ -530,7 +525,6 @@ namespace ShadowsocksR.Controller
         protected Socket _socket;
         protected EndPoint _socketEndPoint;
         protected IPEndPoint _remoteUDPEndPoint;
-
         protected IEncryptor _encryptor;
         protected object _encryptionLock = new object();
         protected object _decryptionLock = new object();
@@ -542,7 +536,6 @@ namespace ShadowsocksR.Controller
         protected bool _proxy;
         protected string _proxy_server;
         protected int _proxy_udp_port;
-
         //private bool header_sent = false;
         public const int MTU = 1492;
         public const int MSS = MTU - 40;
@@ -550,10 +543,8 @@ namespace ShadowsocksR.Controller
         public int TcpMSS = MSS;
         public int RecvBufferSize;
         public int OverHead;
-
         private byte[] SendEncryptBuffer = new byte[RecvSize];
         private byte[] ReceiveDecryptBuffer = new byte[RecvSize * 2];
-
         protected bool _close;
 
         public ProxyEncryptSocket(AddressFamily af, SocketType type, ProtocolType protocol)
@@ -796,6 +787,7 @@ namespace ShadowsocksR.Controller
             }
             return bytesRead;
         }
+
         public int SendAll(byte[] buffer, int size, SocketFlags flags)
         {
             int sendSize = _socket.Send(buffer, size, 0);

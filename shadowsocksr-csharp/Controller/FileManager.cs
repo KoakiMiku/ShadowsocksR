@@ -66,6 +66,7 @@ namespace ShadowsocksR.Controller
             }
             return null;
         }
+
         public static byte[] DeflateDecompress(byte[] content, int index, int count, out int size)
         {
             size = 0;

@@ -17,9 +17,7 @@ namespace ShadowsocksR.Util
     public class Utils
     {
         private delegate IPHostEntry GetHostEntryHandler(string ip);
-
         public static LRUCache<string, IPAddress> DnsBuffer { get; } = new LRUCache<string, IPAddress>();
-
         static Process current_process = Process.GetCurrentProcess();
 
         public static void ReleaseMemory()
@@ -484,7 +482,6 @@ namespace ShadowsocksR.Util
 
         [DllImport("kernel32.dll")]
         [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool SetProcessWorkingSetSize(IntPtr process,
-            UIntPtr minimumWorkingSetSize, UIntPtr maximumWorkingSetSize);
+        private static extern bool SetProcessWorkingSetSize(IntPtr process, UIntPtr minimumWorkingSetSize, UIntPtr maximumWorkingSetSize);
     }
 }

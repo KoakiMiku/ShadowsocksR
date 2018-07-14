@@ -20,28 +20,22 @@ namespace ShadowsocksR.View
         // yes this is just a menu view controller
         // when config form is closed, it moves away from RAM
         // and it should just do anything related to the config form
-
         private ShadowsocksController controller;
         private UpdateNode updateNodeChecker;
         private UpdateSubscribeManager updateSubscribeManager;
-
         private NotifyIcon _notifyIcon;
         private ContextMenu contextMenu1;
-
         private MenuItem enableItem;
         private MenuItem PACModeItem;
         private MenuItem globalModeItem;
         private MenuItem modeItem;
-
         private MenuItem ruleBypassLan;
         private MenuItem ruleBypassChina;
         private MenuItem ruleBypassNotChina;
         private MenuItem ruleUser;
         private MenuItem ruleDisableBypass;
-
         private MenuItem SeperatorItem;
         private MenuItem ServersItem;
-        private MenuItem sameHostForSameTargetItem;
         private ConfigForm configForm;
         private SettingsForm settingsForm;
         private ServerLogForm serverLogForm;
@@ -273,8 +267,6 @@ namespace ShadowsocksR.View
                 new MenuItem("-"),
                 ServersItem = CreateMenuGroup("Servers", new MenuItem[] {
                     SeperatorItem = new MenuItem("-"),
-                    sameHostForSameTargetItem = CreateMenuItem("Same host for same address", new EventHandler(SelectSameHostForSameTargetItem_Click)),
-                    new MenuItem("-"),
                     CreateMenuItem("Edit servers", new EventHandler(Config_Click)),
                     CreateMenuItem("Server statistic", new EventHandler(ShowServerLogItem_Click)),
                     CreateMenuItem("Disconnect current", new EventHandler(DisconnectCurrent_Click)),
@@ -581,7 +573,6 @@ namespace ShadowsocksR.View
             UpdateServersMenu();
             UpdateSysProxyMode(config);
             UpdateProxyRule(config);
-            sameHostForSameTargetItem.Checked = config.sameHostForSameTarget;
         }
 
         private void UpdateServersMenu()
@@ -929,12 +920,6 @@ namespace ShadowsocksR.View
         private void RuleBypassDisableItem_Click(object sender, EventArgs e)
         {
             controller.ToggleRuleMode((int)ProxyRuleMode.Disable);
-        }
-
-        private void SelectSameHostForSameTargetItem_Click(object sender, EventArgs e)
-        {
-            sameHostForSameTargetItem.Checked = !sameHostForSameTargetItem.Checked;
-            controller.ToggleSameHostForSameTargetRandom(sameHostForSameTargetItem.Checked);
         }
 
         private void CopyPACURLItem_Click(object sender, EventArgs e)

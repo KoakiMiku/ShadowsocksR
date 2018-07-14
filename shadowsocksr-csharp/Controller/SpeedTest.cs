@@ -12,6 +12,7 @@ namespace ShadowsocksR.Controller
             public int dir;
             public int size;
         }
+
         public DateTime timeConnectBegin;
         public DateTime timeConnectEnd;
         public DateTime timeBeginUpload;
@@ -69,6 +70,7 @@ namespace ShadowsocksR.Controller
             }
             return sizeDownload > 1024 * 256 && sizeDownload > (DateTime.Now - timeConnectEnd).TotalSeconds * 1024 * 16;
         }
+
         public void AddProtocolRecvSize(int size)
         {
             sizeProtocolRecv += size;
@@ -124,6 +126,7 @@ namespace ShadowsocksR.Controller
             SOCKS4 = 4,
             SOCKS5 = 5,
         }
+
         protected Protocol protocol = Protocol.NOTBEGIN;
         protected byte[] send_buffer = new byte[0];
         protected byte[] recv_buffer = new byte[0];
@@ -176,6 +179,7 @@ namespace ShadowsocksR.Controller
                 protocol = Protocol.UNKONWN;
             }
         }
+
         public int OnRecv(byte[] recv_data, int length)
         {
             if (protocol == Protocol.UNKONWN || protocol == Protocol.NOTBEGIN) return 0;

@@ -8,7 +8,6 @@ namespace ShadowsocksR.Encryption
     {
         private static Dictionary<string, Type> _registeredEncryptors;
         private static List<string> _registeredEncryptorNames;
-
         private static Type[] _constructorTypes = new Type[] { typeof(string), typeof(string) };
 
         static EncryptorFactory()
@@ -23,15 +22,12 @@ namespace ShadowsocksR.Encryption
                     _registeredEncryptors.Add(method, typeof(NoneEncryptor));
                 }
             }
-
+            foreach (string method in MbedTLSEncryptor.SupportedCiphers())
             {
-                foreach (string method in MbedTLSEncryptor.SupportedCiphers())
+                if (!_registeredEncryptorNames.Contains(method))
                 {
-                    if (!_registeredEncryptorNames.Contains(method))
-                    {
-                        _registeredEncryptorNames.Add(method);
-                        _registeredEncryptors.Add(method, typeof(MbedTLSEncryptor));
-                    }
+                    _registeredEncryptorNames.Add(method);
+                    _registeredEncryptors.Add(method, typeof(MbedTLSEncryptor));
                 }
             }
             if (LibcryptoEncryptor.isSupport())

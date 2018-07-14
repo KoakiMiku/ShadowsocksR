@@ -25,6 +25,7 @@ namespace ShadowsocksR.Controller
                 }
             }
         }
+
         static I18N()
         {
             Strings = new Dictionary<string, string>();

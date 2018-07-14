@@ -9,7 +9,6 @@ namespace ShadowsocksR.Controller
     {
         public event EventHandler NewNodeFound;
         public string NodeResult;
-
         public const string Name = "ShadowsocksR";
 
         public void CheckUpdate(Configuration config, string URL, bool use_proxy)

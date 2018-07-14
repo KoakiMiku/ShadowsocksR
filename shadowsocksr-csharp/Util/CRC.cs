@@ -3,6 +3,7 @@
     class CRC32
     {
         protected static ulong[] Crc32Table = CreateCRC32Table();
+
         //生成CRC32码表  
         public static ulong[] CreateCRC32Table()
         {
@@ -29,6 +30,7 @@
         {
             return CalcCRC32(input, 0, len, value);
         }
+
         public static ulong CalcCRC32(byte[] input, int index, int len, ulong value = 0xffffffff)
         {
             byte[] buffer = input;
@@ -48,6 +50,7 @@
         {
             SetCRC32(buffer, 0, length);
         }
+
         public static void SetCRC32(byte[] buffer, int index, int length)
         {
             ulong crc = ~CalcCRC32(buffer, index, length - 4);
@@ -65,6 +68,7 @@
             return true;
         }
     }
+
     class Adler32
     {
         public static ulong CalcAdler32(byte[] input, int len)

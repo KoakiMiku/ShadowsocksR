@@ -186,23 +186,19 @@ namespace ShadowsocksR.Controller
         {
             private IPRangeSet _IPRange;
             private Configuration _config;
-
             private byte[] _firstPacket;
             private int _firstPacketLength;
             private ProxySocketTunLocal _local;
             private ProxySocketTun _remote;
-
             private bool _closed = false;
             private string _remote_host;
             private int _remote_port;
-
             public const int RecvSize = 1460 * 8;
             // remote receive buffer
             private byte[] remoteRecvBuffer = new byte[RecvSize];
             // connection receive buffer
             private byte[] connetionRecvBuffer = new byte[RecvSize];
             private int _totalRecvSize = 0;
-
             protected int TTL = 600;
             protected System.Timers.Timer timer;
             protected object timerLock = new object();

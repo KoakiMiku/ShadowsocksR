@@ -15,7 +15,6 @@ namespace ShadowsocksR.Controller
         private static string PAC_FILE = PACServer.PAC_FILE;
         private static string USER_RULE_FILE = PACServer.USER_RULE_FILE;
         private static string gfwlist_template = Resources.ssr_gfw;
-
         public event EventHandler<ResultEventArgs> UpdateCompleted;
         public event ErrorEventHandler Error;
 

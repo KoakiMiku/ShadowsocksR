@@ -76,7 +76,6 @@ namespace ShadowsocksR.Model
         public string localAuthPassword;
 
         public List<ServerSubscribe> serverSubscribes;
-        public bool sameHostForSameTarget;
         public bool nodeFeedAutoUpdate;
 
         public bool shareOverLan;
@@ -100,43 +99,6 @@ namespace ShadowsocksR.Model
 
         private static string CONFIG_FILE = "gui-config.json";
 
-        public bool KeepCurrentServer(int localPort, string targetAddr, string id)
-        {
-            if (sameHostForSameTarget && targetAddr != null)
-            {
-                lock (serverStrategyMap)
-                {
-                    if (!serverStrategyMap.ContainsKey(localPort))
-                        serverStrategyMap[localPort] = new ServerSelectStrategy();
-                    ServerSelectStrategy serverStrategy = serverStrategyMap[localPort];
-
-                    if (uri2time.ContainsKey(targetAddr))
-                    {
-                        UriVisitTime visit = uri2time[targetAddr];
-                        int index = -1;
-                        for (int i = 0; i < configs.Count; ++i)
-                        {
-                            if (configs[i].id == id)
-                            {
-                                index = i;
-                                break;
-                            }
-                        }
-                        if (index >= 0 && visit.index == index && configs[index].enable)
-                        {
-                            time2uri.Remove(visit);
-                            visit.index = index;
-                            visit.visitTime = DateTime.Now;
-                            uri2time[targetAddr] = visit;
-                            time2uri[visit] = targetAddr;
-                            return true;
-                        }
-                    }
-                }
-            }
-            return false;
-        }
-
         public Server GetCurrentServer(int localPort, ServerSelectStrategy.FilterFunc filter, string targetAddr = null)
         {
             lock (serverStrategyMap)
@@ -153,19 +115,6 @@ namespace ShadowsocksR.Model
                     uri2time.Remove(p.Value);
                     time2uri.Remove(p.Key);
                     break;
-                }
-                if (sameHostForSameTarget && targetAddr != null && uri2time.ContainsKey(targetAddr))
-                {
-                    UriVisitTime visit = uri2time[targetAddr];
-                    if (visit.index < configs.Count && configs[visit.index].enable)
-                    {
-                        //uri2time.Remove(targetURI);
-                        time2uri.Remove(visit);
-                        visit.visitTime = DateTime.Now;
-                        uri2time[targetAddr] = visit;
-                        time2uri[visit] = targetAddr;
-                        return configs[visit.index];
-                    }
                 }
                 if (index >= 0 && index < configs.Count)
                 {
@@ -296,7 +245,6 @@ namespace ShadowsocksR.Model
             dnsServer = config.dnsServer;
             authUser = config.authUser;
             authPass = config.authPass;
-            sameHostForSameTarget = config.sameHostForSameTarget;
             keepVisitTime = config.keepVisitTime;
             nodeFeedAutoUpdate = config.nodeFeedAutoUpdate;
             serverSubscribes = config.serverSubscribes;

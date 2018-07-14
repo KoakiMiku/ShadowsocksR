@@ -26,7 +26,6 @@ namespace ShadowsocksR.Controller
         // To alert all available WinInet instances, set the Buffer parameter of
         // InternetSetOption to NULL and BufferLength to 0 when passing this option.
         INTERNET_OPTION_PROXY_SETTINGS_CHANGED = 95
-
     }
 
     /// <summary>
@@ -88,7 +87,7 @@ namespace ShadowsocksR.Controller
         [FieldOffset(0)]
         public int dwValue;
         [FieldOffset(0)]
-        public System.IntPtr pszValue;
+        public IntPtr pszValue;
         [FieldOffset(0)]
         public System.Runtime.InteropServices.ComTypes.FILETIME ftValue;
 
@@ -123,15 +122,12 @@ namespace ShadowsocksR.Controller
     public struct INTERNET_PER_CONN_OPTION_LIST : IDisposable
     {
         public int Size;
-
         // The connection to be set. NULL means LAN.
-        public System.IntPtr Connection;
-
+        public IntPtr Connection;
         public int OptionCount;
         public int OptionError;
-
         // List of INTERNET_PER_CONN_OPTIONs.
-        public System.IntPtr pOptions;
+        public IntPtr pOptions;
 
         public void Dispose()
         {
@@ -157,6 +153,7 @@ namespace ShadowsocksR.Controller
             }
         }
     }
+
     public static class WinINet
     {
         /// <summary>
@@ -326,6 +323,7 @@ namespace ShadowsocksR.Controller
             }
         }
     }
+
     internal static class RemoteAccessService
     {
         private enum RasFieldSizeConstants
@@ -388,12 +386,9 @@ namespace ShadowsocksR.Controller
             #endregion
 
             public int dwSize;
-
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = (int)RasFieldSizeConstants.RAS_MaxEntryName + 1)]
             public string szEntryName;
-
             public int dwFlags;
-
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = (int)RasFieldSizeConstants.RAS_MaxPath + 1)]
             public string szPhonebookPath;
         }
@@ -495,6 +490,7 @@ namespace ShadowsocksR.Controller
                 Logging.LogUsefulException(e);
             }
         }
+
         public static RegistryKey OpenUserRegKey(string name, bool writable)
         {
             RegistryKey userKey = RegistryKey.OpenRemoteBaseKey(RegistryHive.CurrentUser, ""
@@ -689,6 +685,7 @@ namespace ShadowsocksR.Controller
             }
         }
     }
+
     internal static class NativeMethods
     {
         [DllImport("wininet.dll", CharSet = CharSet.Auto, SetLastError = true)]

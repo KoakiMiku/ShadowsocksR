@@ -8,16 +8,13 @@ namespace ShadowsocksR.Encryption
         const int CIPHER_SALSA20 = 1;
         const int CIPHER_CHACHA20 = 2;
         const int CIPHER_CHACHA20_IETF = 3;
-
         const int SODIUM_BLOCK_SIZE = 64;
-
         protected int _encryptBytesRemaining;
         protected int _decryptBytesRemaining;
         protected ulong _encryptIC;
         protected ulong _decryptIC;
         protected byte[] _encryptBuf;
         protected byte[] _decryptBuf;
-
         private delegate void crypto_stream(byte[] c, byte[] m, ulong mlen, byte[] n, ulong ic, byte[] k);
         private crypto_stream encryptor_delegate;
 

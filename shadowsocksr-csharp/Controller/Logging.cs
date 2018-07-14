@@ -21,7 +21,6 @@ namespace ShadowsocksR.Controller
         public static string LogFilePath;
         public static string LogFileName;
         protected static string date;
-
         private static FileStream _logFileStream;
         private static StreamWriterWithTimestamp _logStreamWriter;
         private static object _lock = new object();
@@ -239,6 +238,7 @@ namespace ShadowsocksR.Controller
             }
             return false;
         }
+
         public static void Log(LogLevel level, object s)
         {
             UpdateLogFile();
@@ -263,7 +263,6 @@ namespace ShadowsocksR.Controller
             //}
             //Log(level, info + s);
         }
-
     }
 
     // Simply extended System.IO.StreamWriter for adding timestamp workaround
@@ -288,5 +287,4 @@ namespace ShadowsocksR.Controller
             base.Write(GetTimestamp() + value);
         }
     }
-
 }

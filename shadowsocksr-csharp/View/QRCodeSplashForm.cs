@@ -152,7 +152,6 @@ namespace ShadowsocksR.View
     // class that exposes needed win32 gdi functions.
     class Win32
     {
-
         [StructLayout(LayoutKind.Sequential)]
         public struct Point
         {
@@ -161,7 +160,6 @@ namespace ShadowsocksR.View
 
             public Point(Int32 x, Int32 y) { this.x = x; this.y = y; }
         }
-
 
         [StructLayout(LayoutKind.Sequential)]
         public struct Size
@@ -172,7 +170,6 @@ namespace ShadowsocksR.View
             public Size(Int32 cx, Int32 cy) { this.cx = cx; this.cy = cy; }
         }
 
-
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
         struct ARGB
         {
@@ -181,7 +178,6 @@ namespace ShadowsocksR.View
             public byte Red;
             public byte Alpha;
         }
-
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
         public struct BLENDFUNCTION
@@ -192,14 +188,11 @@ namespace ShadowsocksR.View
             public byte AlphaFormat;
         }
 
-
         public const Int32 ULW_COLORKEY = 0x00000001;
         public const Int32 ULW_ALPHA = 0x00000002;
         public const Int32 ULW_OPAQUE = 0x00000004;
-
         public const byte AC_SRC_OVER = 0x00;
         public const byte AC_SRC_ALPHA = 0x01;
-
 
         [DllImport("user32.dll", ExactSpelling = true, SetLastError = true)]
         public static extern int UpdateLayeredWindow(IntPtr hwnd, IntPtr hdcDst, ref Point pptDst, ref Size psize, IntPtr hdcSrc, ref Point pprSrc, Int32 crKey, ref BLENDFUNCTION pblend, Int32 dwFlags);
@@ -223,7 +216,6 @@ namespace ShadowsocksR.View
         public static extern int DeleteObject(IntPtr hObject);
     }
 
-
     public class PerPixelAlphaForm : Form
     {
         // http://www.codeproject.com/Articles/1822/Per-Pixel-Alpha-Blend-in-C
@@ -239,7 +231,6 @@ namespace ShadowsocksR.View
         {
             SetBitmap(bitmap, 255);
         }
-
 
         /// <para>Changes the current bitmap with a custom opacity level.  Here is where all happens!</para>
         public void SetBitmap(Bitmap bitmap, byte opacity)
@@ -287,7 +278,6 @@ namespace ShadowsocksR.View
                 Win32.DeleteDC(memDc);
             }
         }
-
 
         protected override CreateParams CreateParams
         {

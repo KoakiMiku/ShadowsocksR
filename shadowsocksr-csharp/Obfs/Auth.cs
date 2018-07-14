@@ -14,12 +14,12 @@ namespace ShadowsocksR.Obfs
 
     public class AuthSHA1 : VerifySimpleBase
     {
-        public AuthSHA1(string method)
-            : base(method)
+        public AuthSHA1(string method) : base(method)
         {
             has_sent_header = false;
             has_recv_header = false;
         }
+
         private static Dictionary<string, int[]> _obfs = new Dictionary<string, int[]> {
             {"auth_sha1", new int[]{1, 0, 1}},
         };
@@ -190,6 +190,7 @@ namespace ShadowsocksR.Obfs
             has_sent_header = false;
             has_recv_header = false;
         }
+
         private static Dictionary<string, int[]> _obfs = new Dictionary<string, int[]> {
             {"auth_sha1_v2", new int[]{1, 0, 1}},
         };
@@ -410,6 +411,7 @@ namespace ShadowsocksR.Obfs
             has_sent_header = false;
             has_recv_header = false;
         }
+
         private static Dictionary<string, int[]> _obfs = new Dictionary<string, int[]> {
             {"auth_sha1_v4", new int[]{1, 0, 1}},
         };
@@ -666,6 +668,7 @@ namespace ShadowsocksR.Obfs
             g_random.GetBytes(bytes);
             random = new Random(BitConverter.ToInt32(bytes, 0));
         }
+
         private static Dictionary<string, int[]> _obfs = new Dictionary<string, int[]> {
             {"auth_aes128_md5", new int[]{1, 0, 1}},
             {"auth_aes128_sha1", new int[]{1, 0, 1}},
@@ -675,7 +678,6 @@ namespace ShadowsocksR.Obfs
         protected bool has_recv_header;
         protected static RNGCryptoServiceProvider g_random = new RNGCryptoServiceProvider();
         protected string SALT;
-
         protected uint pack_id;
         protected uint recv_id;
         protected byte[] user_key;
@@ -683,7 +685,6 @@ namespace ShadowsocksR.Obfs
         protected hash_func hash;
         protected byte[] send_buffer;
         protected int last_datalength;
-
         protected const int overhead = 9; // 2(length) + 2(len-MAC) + 4(data-MAC) + 1(padding)
         //protected int[] packet_cnt;
         protected Dictionary<int, long> packet_cnt = new Dictionary<int, long>();

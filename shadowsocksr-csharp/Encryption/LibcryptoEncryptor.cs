@@ -9,7 +9,6 @@ namespace ShadowsocksR.Encryption
         const int CIPHER_RC4 = 2;
         const int CIPHER_CAMELLIA = 3;
         const int CIPHER_OTHER_CFB = 4;
-
         private IntPtr _encryptCtx = IntPtr.Zero;
         private IntPtr _decryptCtx = IntPtr.Zero;
 
@@ -39,7 +38,6 @@ namespace ShadowsocksR.Encryption
                 {"aes-128-cbc", new EncryptorInfo(16, 16, false, CIPHER_AES)},
                 {"aes-192-cbc", new EncryptorInfo(24, 16, false, CIPHER_AES)},
                 {"aes-256-cbc", new EncryptorInfo(32, 16, false, CIPHER_AES)},
-
                 {"aes-128-ctr", new EncryptorInfo(16, 16, true, CIPHER_AES)},
                 {"aes-192-ctr", new EncryptorInfo(24, 16, true, CIPHER_AES)},
                 {"aes-256-ctr", new EncryptorInfo(32, 16, true, CIPHER_AES)},
@@ -125,6 +123,7 @@ namespace ShadowsocksR.Encryption
                 }
             }
         }
+
         protected override void cipherUpdate(bool isCipher, int length, byte[] buf, byte[] outbuf)
         {
             if (_disposed)

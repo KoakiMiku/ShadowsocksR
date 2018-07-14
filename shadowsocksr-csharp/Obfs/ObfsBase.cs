@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ShadowsocksR.Obfs
 {
-    public abstract class ObfsBase: IObfs
+    public abstract class ObfsBase : IObfs
     {
         protected ObfsBase(string method)
         {
@@ -13,7 +13,6 @@ namespace ShadowsocksR.Obfs
         protected string Method;
         protected ServerInfo Server;
         protected long SentLength;
-
         public abstract Dictionary<string, int[]> GetObfs();
 
         public string Name()
@@ -31,24 +30,27 @@ namespace ShadowsocksR.Obfs
             return false;
         }
 
-
         public virtual byte[] ClientPreEncrypt(byte[] plaindata, int datalength, out int outlength)
         {
             outlength = datalength;
             return plaindata;
         }
+
         public abstract byte[] ClientEncode(byte[] encryptdata, int datalength, out int outlength);
         public abstract byte[] ClientDecode(byte[] encryptdata, int datalength, out int outlength, out bool needsendback);
+
         public virtual byte[] ClientPostDecrypt(byte[] plaindata, int datalength, out int outlength)
         {
             outlength = datalength;
             return plaindata;
         }
+
         public virtual byte[] ClientUdpPreEncrypt(byte[] plaindata, int datalength, out int outlength)
         {
             outlength = datalength;
             return plaindata;
         }
+
         public virtual byte[] ClientUdpPostDecrypt(byte[] plaindata, int datalength, out int outlength)
         {
             outlength = datalength;
@@ -59,14 +61,17 @@ namespace ShadowsocksR.Obfs
         {
             return null;
         }
+
         public virtual void SetServerInfo(ServerInfo serverInfo)
         {
             Server = serverInfo;
         }
+
         public virtual void SetServerInfoIV(byte[] iv)
         {
             Server.SetIV(iv);
         }
+
         public static int GetHeadSize(byte[] plaindata, int defaultValue)
         {
             if (plaindata == null || plaindata.Length < 2)
@@ -82,10 +87,12 @@ namespace ShadowsocksR.Obfs
                 return 4 + plaindata[1];
             return defaultValue;
         }
+
         public long GetSentLength()
         {
             return SentLength;
         }
+
         public virtual int GetOverhead()
         {
             return 0;
@@ -95,7 +102,6 @@ namespace ShadowsocksR.Obfs
         {
             return Server.tcp_mss;
         }
-
 
         #region IDisposable
         protected bool _disposed;
@@ -118,6 +124,5 @@ namespace ShadowsocksR.Obfs
             }
         }
         #endregion
-
     }
 }

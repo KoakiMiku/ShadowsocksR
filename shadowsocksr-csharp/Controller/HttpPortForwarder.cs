@@ -55,6 +55,7 @@ namespace ShadowsocksR.Controller
                     RspHttpHandshakeReceive();
                 }
             }
+
             private void RspHttpHandshakeReceive()
             {
                 if (httpProxyState == null)
@@ -218,7 +219,6 @@ namespace ShadowsocksR.Controller
                     Close();
                 }
             }
-
 
             private void StartPipe(IAsyncResult ar)
             {

@@ -29,7 +29,6 @@ namespace OpenDNS
         //consider killing
         private byte[] data;
         private int position, length;
-
         //Question
         public string Domain;
         public Types QueryType;
@@ -37,7 +36,6 @@ namespace OpenDNS
         public int Port;
         public ArrayList Servers;
         public bool RecursionDesired;
-
         //Public Properties
         public DnsResponse Response { get; set; }
 

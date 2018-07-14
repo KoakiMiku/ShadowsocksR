@@ -8,7 +8,6 @@ namespace ShadowsocksR.Encryption
     public abstract class IVEncryptor : EncryptorBase
     {
         protected Dictionary<string, EncryptorInfo> ciphers;
-
         private static readonly Dictionary<string, byte[]> CachedKeys = new Dictionary<string, byte[]>();
         protected byte[] _encryptIV;
         protected byte[] _decryptIV;
@@ -23,7 +22,6 @@ namespace ShadowsocksR.Encryption
         protected int keyLen;
         protected byte[] _iv;
         protected int ivLen;
-
         protected byte[] encbuf = new byte[MAX_INPUT_SIZE];
         protected byte[] decbuf = new byte[MAX_INPUT_SIZE];
 
@@ -43,16 +41,19 @@ namespace ShadowsocksR.Encryption
             }
             return false;
         }
+
         public override byte[] getIV()
         {
             return _iv;
         }
+
         public override byte[] getKey()
         {
             byte[] key = (byte[])_key.Clone();
             Array.Resize(ref key, keyLen);
             return key;
         }
+
         public override EncryptorInfo getInfo()
         {
             return _cipherInfo;
@@ -222,11 +223,9 @@ namespace ShadowsocksR.Encryption
         }
 
     }
-    public class NoneEncryptor
-        : IVEncryptor
+    public class NoneEncryptor : IVEncryptor
     {
-        public NoneEncryptor(string method, string password)
-            : base(method, password)
+        public NoneEncryptor(string method, string password) : base(method, password)
         {
             InitKey(method, password);
         }
@@ -253,7 +252,6 @@ namespace ShadowsocksR.Encryption
             }
             Array.Copy(buf, outbuf, length);
         }
-
 
         #region IDisposable
         private bool _disposed;

@@ -104,7 +104,6 @@ namespace ShadowsocksR.Controller
     {
         public string targetHost;
         public int targetPort;
-
         public Double TTL = 0; // Second
         public Double connect_timeout = 0;
         public int try_keep_alive = 0;
@@ -116,18 +115,13 @@ namespace ShadowsocksR.Controller
         // Reconnect
         public int reconnectTimesRemain = 0;
         public int reconnectTimes = 0;
-        public bool random = false;
-        public bool forceRandom = false;
     }
 
     class Handler : IHandler
     {
         private delegate IPHostEntry GetHostEntryHandler(string ip);
-
         public delegate Server GetCurrentServer(int localPort, ServerSelectStrategy.FilterFunc filter, string targetURI = null);
-        public delegate void KeepCurrentServer(int localPort, string targetURI, string id);
         public GetCurrentServer getCurrentServer;
-        public KeepCurrentServer keepCurrentServer;
         public Server server;
         public ServerSelectStrategy.FilterFunc select_server;
         public HandlerConfig cfg = new HandlerConfig();
@@ -136,7 +130,6 @@ namespace ShadowsocksR.Controller
         public Socket connectionUDP;
         protected IPEndPoint connectionUDPEndPoint;
         protected int localPort;
-
         protected ProtocolResponseDetector detector = new ProtocolResponseDetector();
         // remote socket.
         //protected Socket remote;
@@ -149,24 +142,18 @@ namespace ShadowsocksR.Controller
         protected byte[] remoteHeaderSendBuffer;
         // connection send buffer
         protected List<byte[]> connectionSendBufferList = new List<byte[]>();
-
         protected DateTime lastKeepTime;
         private int _totalRecvSize = 0;
-
         protected byte[] remoteUDPRecvBuffer = new byte[BufferSize];
         protected int remoteUDPRecvBufferLength = 0;
         protected object recvUDPoverTCPLock = new object();
-
         protected bool closed = false;
         protected bool local_error = false;
         protected bool is_protocol_sendback = false;
         protected bool is_obfs_sendback = false;
-
         protected bool connectionTCPIdle, connectionUDPIdle, remoteTCPIdle, remoteUDPIdle;
-
         protected SpeedTester speedTester = new SpeedTester();
         protected int lastErrCode;
-        protected Random random = new Random();
         protected System.Timers.Timer timer;
         protected object timerLock = new object();
         protected DateTime lastTimerSetTime;
@@ -179,6 +166,7 @@ namespace ShadowsocksR.Controller
             CONNECTING = 2,
             CONNECTED = 3,
         }
+
         private ConnectState state = ConnectState.READY;
 
         private ConnectState State
@@ -427,7 +415,6 @@ namespace ShadowsocksR.Controller
                 Handler handler = new Handler
                 {
                     getCurrentServer = getCurrentServer,
-                    keepCurrentServer = keepCurrentServer,
                     select_server = select_server,
                     connection = connection,
                     connectionUDP = connectionUDP,
@@ -694,9 +681,6 @@ namespace ShadowsocksR.Controller
                     server.ServerSpeedLog().AddNoErrorTimes();
             }
 
-            if (lastErrCode == 0 && server != null && cfg != null && keepCurrentServer != null)
-                keepCurrentServer(localPort, cfg.targetHost, server.id);
-
             ResetTimeout(0);
             try
             {
@@ -715,7 +699,6 @@ namespace ShadowsocksR.Controller
                         State = ConnectState.END;
                     }
                     getCurrentServer = null;
-                    keepCurrentServer = null;
                 }
 
                 if (!reconnect)
@@ -733,7 +716,6 @@ namespace ShadowsocksR.Controller
 
                 detector = null;
                 speedTester = null;
-                random = null;
                 remoteUDPRecvBuffer = null;
 
                 server = null;
@@ -896,7 +878,6 @@ namespace ShadowsocksR.Controller
                 Close();
             }
         }
-
 
         private void ConnectCallback(IAsyncResult ar)
         {
@@ -1491,7 +1472,6 @@ namespace ShadowsocksR.Controller
 
                 if (lastKeepTime == null || (DateTime.Now - lastKeepTime).TotalSeconds > 5)
                 {
-                    keepCurrentServer?.Invoke(localPort, cfg.targetHost, server.id);
                     lastKeepTime = DateTime.Now;
                 }
 
@@ -1731,5 +1711,4 @@ namespace ShadowsocksR.Controller
             Close();
         }
     }
-
 }

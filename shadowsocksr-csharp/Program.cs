@@ -14,9 +14,6 @@ namespace ShadowsocksR
         static ShadowsocksController _controller;
         static MenuViewController _viewController;
 
-        /// <summary>
-        /// 应用程序的主入口点。
-        /// </summary>
         [STAThread]
         static void Main(string[] args)
         {
@@ -32,7 +29,7 @@ namespace ShadowsocksR
                 {
                     MessageBox.Show(I18N.GetString("Find Shadowsocks icon in your notify tray.") + "\n" +
                         I18N.GetString("If you want to start multiple Shadowsocks, make a copy in another directory."),
-                        I18N.GetString("ShadowsocksR is already running."),
+                        I18N.GetString("ShadowsocksR is already running"),
                         MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
@@ -45,10 +42,8 @@ namespace ShadowsocksR
                         return;
                 }
                 _controller = new ShadowsocksController();
-                //HostMap.Instance().LoadHostFile();
                 _viewController = new MenuViewController(_controller);
                 _controller.Start();
-                //Util.Utils.ReleaseMemory();
                 Application.Run();
             }
         }
@@ -106,6 +101,7 @@ namespace ShadowsocksR
         }
 
         private static int exited = 0;
+
         private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             if (Interlocked.Increment(ref exited) == 1)

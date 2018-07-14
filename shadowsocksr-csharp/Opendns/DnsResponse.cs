@@ -19,24 +19,15 @@ namespace OpenDNS
     public class DnsResponse
     {
         private ResourceRecordCollection _ResourceRecords;
-
         //Read Only Public Properties
         public int QueryID { get; }
-
         public bool AuthorativeAnswer { get; }
-
         public bool IsTruncated { get; }
-
         public bool RecursionRequested { get; }
-
         public bool RecursionAvailable { get; }
-
         public ResponseCodes ResponseCode { get; }
-
         public ResourceRecordCollection Answers { get; }
-
         public ResourceRecordCollection Authorities { get; }
-
         public ResourceRecordCollection AdditionalRecords { get; }
 
         /// <summary>

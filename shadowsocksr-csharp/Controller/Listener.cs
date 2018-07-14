@@ -226,7 +226,6 @@ namespace ShadowsocksR.Controller
             }
         }
 
-
         public void AcceptCallback(IAsyncResult ar)
         {
             if (_stop) return;
@@ -303,7 +302,6 @@ namespace ShadowsocksR.Controller
                 }
             }
         }
-
 
         private void ReceiveCallback(IAsyncResult ar)
         {

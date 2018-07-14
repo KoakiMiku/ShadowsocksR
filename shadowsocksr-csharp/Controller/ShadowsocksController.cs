@@ -41,19 +41,14 @@ namespace ShadowsocksR.Controller
         public event EventHandler ConfigChanged;
         public event EventHandler ToggleModeChanged;
         public event EventHandler ToggleRuleModeChanged;
-        //public event EventHandler ShareOverLANStatusChanged;
         public event EventHandler ShowConfigFormEvent;
-
         // when user clicked Edit PAC, and PAC file has already created
         public event EventHandler<PathEventArgs> PACFileReadyToOpen;
         public event EventHandler<PathEventArgs> UserRuleFileReadyToOpen;
         public event EventHandler<PathEventArgs> ChnIpFileReadyToOpen;
         public event EventHandler<PathEventArgs> HostFileReadyToOpen;
-
         public event EventHandler<GFWListUpdater.ResultEventArgs> UpdatePACFromGFWListCompleted;
-
         public event ErrorEventHandler UpdatePACFromGFWListError;
-
         public event ErrorEventHandler Errored;
 
         public ShadowsocksController()
@@ -247,12 +242,6 @@ namespace ShadowsocksR.Controller
             _config.proxyRuleMode = mode;
             SaveConfig(_config);
             ToggleRuleModeChanged?.Invoke(this, new EventArgs());
-        }
-
-        public void ToggleSameHostForSameTargetRandom(bool enabled)
-        {
-            _config.sameHostForSameTarget = enabled;
-            SaveConfig(_config);
         }
 
         public void SelectServerIndex(int index)

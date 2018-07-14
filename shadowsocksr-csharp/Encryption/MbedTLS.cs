@@ -9,11 +9,9 @@ namespace ShadowsocksR.Encryption
     public class MbedTLS
     {
         private const string DLLNAME = "libsscrypto";
-
         public const int MBEDTLS_ENCRYPT = 1;
         public const int MBEDTLS_DECRYPT = 0;
         public const int MD5_CTX_SIZE = 88;
-
         public const int MBEDTLS_MD_MD5 = 3;
         public const int MBEDTLS_MD_SHA1 = 4;
         public const int MBEDTLS_MD_SHA224 = 5;
@@ -150,6 +148,5 @@ namespace ShadowsocksR.Encryption
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
         public static extern int cipher_get_size_ex();
-
     }
 }

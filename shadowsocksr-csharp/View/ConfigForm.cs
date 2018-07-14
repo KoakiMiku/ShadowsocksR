@@ -14,7 +14,6 @@ namespace ShadowsocksR.View
     public partial class ConfigForm : Form
     {
         private ShadowsocksController _controller;
-
         // this is a copy of configuration that we are working on
         private Configuration _modifiedConfiguration;
         private int _oldSelectedIndex = -1;

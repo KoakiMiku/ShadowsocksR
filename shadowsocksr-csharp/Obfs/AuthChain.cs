@@ -50,9 +50,7 @@ namespace ShadowsocksR.Obfs
 
     class AuthChain_a : VerifySimpleBase
     {
-        protected class AuthDataAesChain : AuthData
-        {
-        }
+        protected class AuthDataAesChain : AuthData { }
 
         public AuthChain_a(string method)
             : base(method)
@@ -75,7 +73,6 @@ namespace ShadowsocksR.Obfs
         protected bool has_recv_header;
         protected static RNGCryptoServiceProvider g_random = new RNGCryptoServiceProvider();
         protected string SALT;
-
         protected uint pack_id;
         protected uint recv_id;
         protected byte[] user_key;
@@ -87,7 +84,6 @@ namespace ShadowsocksR.Obfs
         protected xorshift128plus random_client = new xorshift128plus();
         protected xorshift128plus random_server = new xorshift128plus();
         protected IEncryptor encryptor;
-
         protected const int overhead = 4;
 
         public static List<string> SupportedObfs()
@@ -543,11 +539,7 @@ namespace ShadowsocksR.Obfs
 
     class AuthChain_b : AuthChain_a
     {
-        public AuthChain_b(string method)
-            : base(method)
-        {
-
-        }
+        public AuthChain_b(string method) : base(method) { }
 
         private static Dictionary<string, int[]> _obfs = new Dictionary<string, int[]> {
             {"auth_chain_b", new int[]{1, 0, 1}},
@@ -650,6 +642,5 @@ namespace ShadowsocksR.Obfs
                 return (int)(random.next() % 521);
             return (int)(random.next() % 1021);
         }
-
     }
 }

@@ -4,16 +4,13 @@ using System.Collections.Generic;
 
 namespace ShadowsocksR.Obfs
 {
-    public class VerifyData
-    {
-    }
+    public class VerifyData { }
 
     public abstract class VerifySimpleBase : ObfsBase
     {
         public VerifySimpleBase(string method) : base(method) { }
 
         protected const int RecvBufferSize = 65536 * 2;
-
         protected byte[] recv_buf = new byte[RecvBufferSize];
         protected int recv_buf_len = 0;
         protected Random random = new Random();
@@ -97,6 +94,7 @@ namespace ShadowsocksR.Obfs
             : base(method)
         {
         }
+
         private static Dictionary<string, int[]> _obfs = new Dictionary<string, int[]> {
                 {"verify_deflate", new int[]{1, 0, 1}},
         };
@@ -204,5 +202,4 @@ namespace ShadowsocksR.Obfs
             return outdata;
         }
     }
-
 }

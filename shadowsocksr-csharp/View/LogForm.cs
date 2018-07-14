@@ -10,9 +10,7 @@ namespace ShadowsocksR.View
     public partial class LogForm : Form
     {
         private readonly ShadowsocksController _controller;
-
         private const int MaxReadSize = 65536;
-
         private string _currentLogFile;
         private string _currentLogFileName;
         private long _currentOffset;

@@ -6,6 +6,7 @@ namespace ShadowsocksR.Obfs
     {
         public ObfsException(string info) : base(info) { }
     }
+
     public class ServerInfo
     {
         public string host;
@@ -40,6 +41,7 @@ namespace ShadowsocksR.Obfs
             this.iv = iv;
         }
     }
+
     public interface IObfs : IDisposable
     {
         string Name();

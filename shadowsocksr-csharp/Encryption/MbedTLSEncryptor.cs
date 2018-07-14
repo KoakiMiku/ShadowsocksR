@@ -10,7 +10,6 @@ namespace ShadowsocksR.Encryption
         const int CIPHER_AES = 2;
         const int CIPHER_BLOWFISH = 3;
         const int CIPHER_CAMELLIA = 4;
-
         private IntPtr _encryptCtx = IntPtr.Zero;
         private IntPtr _decryptCtx = IntPtr.Zero;
 

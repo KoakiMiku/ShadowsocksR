@@ -13,12 +13,14 @@ namespace ShadowsocksR.Obfs
             raw_trans_sent = false;
             raw_trans_recv = false;
         }
+
         private static Dictionary<string, int[]> _obfs = new Dictionary<string, int[]> {
                 //modify original protocol, wrap protocol, obfs param
                 {"http_simple", new int[] {0, 1, 1}},
                 {"http_post", new int[] {0, 1, 1}},
                 {"random_head", new int[] {0, 1, 0}},
         };
+
         private static string[] _request_path = new string[]
         {
             "", "",
@@ -45,8 +47,8 @@ namespace ShadowsocksR.Obfs
             "Mozilla/5.0 (iPad; CPU OS 5_0 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9A334 Safari/7534.48.3",
             "Mozilla/5.0 (iPhone; CPU iPhone OS 5_0 like Mac OS X) AppleWebKit/534.46 (KHTML, like Gecko) Version/5.1 Mobile/9A334 Safari/7534.48.3",
         };
-        private static int _useragent_index = new Random().Next(_request_useragent.Length);
 
+        private static int _useragent_index = new Random().Next(_request_useragent.Length);
         private bool has_sent_header;
         //private bool has_recv_header;
         private bool raw_trans_sent;
@@ -260,6 +262,7 @@ namespace ShadowsocksR.Obfs
             }
         }
     }
+
     public class TlsAuthData
     {
         public byte[] clientID;
@@ -285,7 +288,6 @@ namespace ShadowsocksR.Obfs
         private byte[] data_recv_buffer = new byte[0];
         private uint send_id = 0;
         private bool fastauth = false;
-
         protected static RNGCryptoServiceProvider g_random = new RNGCryptoServiceProvider();
         protected Random random = new Random();
         protected const int overhead = 5;
