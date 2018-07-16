@@ -20,6 +20,7 @@ namespace ShadowsocksR.View
         // yes this is just a menu view controller
         // when config form is closed, it moves away from RAM
         // and it should just do anything related to the config form
+
         private ShadowsocksController controller;
         private UpdateNode updateNodeChecker;
         private UpdateSubscribeManager updateSubscribeManager;
@@ -40,7 +41,6 @@ namespace ShadowsocksR.View
         private SettingsForm settingsForm;
         private ServerLogForm serverLogForm;
         private SubscribeForm subScribeForm;
-        private LogForm logForm;
         private string _urlToOpen;
         private System.Timers.Timer timerDelayCheckUpdate;
 
@@ -282,10 +282,7 @@ namespace ShadowsocksR.View
                     CreateMenuItem("Subscribe setting", new EventHandler(SubscribeSetting_Click)),
                 }),
                 new MenuItem("-"),
-                CreateMenuGroup("Other", new MenuItem[] {
-                    CreateMenuItem("Global settings", new EventHandler(Setting_Click)),
-                    CreateMenuItem("Show logs", new EventHandler(ShowLogItem_Click)),
-                }),
+                CreateMenuItem("Global settings", new EventHandler(Setting_Click)),
                 new MenuItem("-"),
                 CreateMenuItem("Quit", new EventHandler(Quit_Click))
             });
@@ -719,27 +716,6 @@ namespace ShadowsocksR.View
             }
         }
 
-        private void ShowGlobalLogForm()
-        {
-            if (logForm != null)
-            {
-                logForm.Activate();
-                logForm.Update();
-                if (logForm.WindowState == FormWindowState.Minimized)
-                {
-                    logForm.WindowState = FormWindowState.Normal;
-                }
-            }
-            else
-            {
-                logForm = new LogForm(controller);
-                logForm.Show();
-                logForm.Activate();
-                logForm.BringToFront();
-                logForm.FormClosed += globalLogForm_FormClosed;
-            }
-        }
-
         private void ShowSubscribeSettingForm()
         {
             if (subScribeForm != null)
@@ -776,12 +752,6 @@ namespace ShadowsocksR.View
         void serverLogForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             serverLogForm = null;
-            Util.Utils.ReleaseMemory();
-        }
-
-        void globalLogForm_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            logForm = null;
             Util.Utils.ReleaseMemory();
         }
 
@@ -964,7 +934,6 @@ namespace ShadowsocksR.View
             controller.UpdatePACFile(Resources.ssr_cnip);
         }
 
-
         private void EditUserRuleFileForGFWListItem_Click(object sender, EventArgs e)
         {
             controller.TouchUserRuleFile();
@@ -1008,11 +977,6 @@ namespace ShadowsocksR.View
                 return;
             }
             updateSubscribeManager.CreateTask(controller.GetCurrentConfiguration(), updateNodeChecker, false);
-        }
-
-        private void ShowLogItem_Click(object sender, EventArgs e)
-        {
-            ShowGlobalLogForm();
         }
 
         private void ShowServerLogItem_Click(object sender, EventArgs e)

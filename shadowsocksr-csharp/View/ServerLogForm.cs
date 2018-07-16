@@ -67,7 +67,7 @@ namespace ShadowsocksR.View
             UpdateLog();
 
             ContextMenu = new ContextMenu(new MenuItem[] {
-                CreateMenuItem("&Clear", new EventHandler(ClearItem_Click)),
+                CreateMenuItem("Clear", new EventHandler(ClearItem_Click)),
             });
 
             for (int i = 0; i < ServerDataGrid.Columns.Count; ++i)

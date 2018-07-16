@@ -156,12 +156,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Controller\ShadowsocksController.cs" />
     <Compile Include="Controller\SystemProxy.cs" />
-    <Compile Include="View\LogForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="View\LogForm.designer.cs">
-      <DependentUpon>LogForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="View\MenuViewController.cs" />
     <Compile Include="View\QRCodeSplashForm.cs">
       <SubType>Form</SubType>
@@ -192,9 +186,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="View\LogForm.resx">
-      <DependentUpon>LogForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="View\ServerLogForm.resx">
       <DependentUpon>ServerLogForm.cs</DependentUpon>

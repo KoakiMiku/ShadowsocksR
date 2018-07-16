@@ -1,9 +1,6 @@
 # translation for Simplified Chinese
 
-Shadowsocks=Shadowsocks
-
 # Menu items
-
 Mode=代理模式
 No modify system proxy=不修改当前状态
 Disable system proxy=直连模式(不代理)
@@ -29,8 +26,6 @@ Update subscribe SSR node(bypass proxy)=更新服务器订阅(不代理)
 Global settings=选项设置
 Start on Boot=开机启动
 Allow Clients from LAN=允许来自局域网的连接
-Same host for same address=优先连接相同节点
-Enable domain white list(http proxy only)=使用域名白名单(仅http代理)
 Update local PAC from GFWList=更新 PAC 为 GFWList
 Update local PAC from Lan IP list=更新 PAC 为绕过局域网
 Update local PAC from Chn White list=更新 PAC 为绕过大陆域名
@@ -38,27 +33,21 @@ Update local PAC from Chn IP list=更新 PAC 为绕过大陆 IP
 Update local PAC from Chn Only list=更新 PAC 为仅通过大陆域名
 Edit local PAC file=编辑 PAC 文件
 Edit user rule for GFWList=编辑 GFWList 用户规则
-Show QRCode=显示二维码
 Scan QRCode from screen=从二维码导入服务器
 Import SSR links from clipboard=从剪贴板导入服务器
 Server statistic=服务器连接统计
 Disconnect current=断开所有连接
-Show logs=显示日志
-Other=其它
 Quit=退出
 Edit Servers=编辑服务器
 Global Settings=选项设置
 
 # Config Form
-
-&Add=添加(&A)
-&Delete=删除(&D)
-&Modify=修改(&M)
+Add=添加
+Modify=修改
+Delete=删除
 Up=上移
 Down=下移
-
 New server=未配置的服务器
-
 Server=服务器
 Server IP=服务器 IP
 Server Port=服务器端口
@@ -66,7 +55,6 @@ UDP Port=UDP端口
 Password=密码
 Encryption=加密
 Remarks=备注
-
 Adv. Setting=高级选项
 Obfs UDP=混淆UDP协议
 NOT all server support belows=以下选项不是所有服务端都支持
@@ -78,38 +66,18 @@ Protocol param=协议参数
 Obfs=混淆
 Obfs param=混淆参数
 SSR Link=SSR链接
-Original=原版
-Verify all=校验所有数据
-
 Local proxy=本地代理
-Build-in http proxy=内置http代理(目前有bug)
 Proxy Port=本地端口
 Username=用户名
 Reconnect Times=重连次数
 Connect Timeout=连接超时
 TTL=空闲断开秒数
-
 OK=确定
 Cancel=取消
 
 # ServerLog Form
-
 ServerLog=服务器记录
-&Control=操作(&C)
-&Disconnect direct connections=断开直连连接(&D)
-Disconnect &All=断开当前所有连接(&A)
-Clear &MaxSpeed=重置历史最高(&M)
-&Clear=清空(&C)
-Clear &Selected Total=清空选中节点历史流量(&S)
-Clear &Total=清空所有历史流量(&T)
-Port &out=导出(&O)
-Copy current link=复制选中链接
-Copy current group links=复制选中组链接
-Copy all enable links=复制所有开启节点链接
-Copy all links=复制所有节点链接
-&Window=窗口(&W)
-Auto &size=自动调整大小(&S)
-Always On &Top=窗口置顶(&T)
+Clear=清空
 Total Connect=总连接
 Enable=开关
 Connecting=连接
@@ -128,22 +96,13 @@ Error Percent=出错比例
 Continuous=连错
 Version=版本
 
-# Global Log Form
-
-Log Viewer=日志查看器
-
 # SubscribeForm Form
-
 Subscribe Settings=订阅设置
 URL=网址
 Group=分组
 Auto update=自动更新
-Add=添加
-Delete=删除
-Modify=修改
 
 # Messages
-
 Shadowsocks Error: {0}=Shadowsocks 错误: {0}
 Port already in use=端口已被占用
 Illegal port number format=非法端口格式
@@ -152,10 +111,6 @@ Please add at least one server subscribe=请添加至少一个服务器订阅
 Server IP can not be blank=服务器 IP 不能为空
 Password can not be blank=密码不能为空
 Port out of range=端口超出范围
-{0} {1} Update Found={0} {1} 更新
-Click menu to download=点击菜单项下载
-ShadowsocksR is here=ShadowsocksR 在这里
-You can turn on/off ShadowsocksR in the context menu=可以在右键菜单中开关 ShadowsocksR
 System Proxy Enabled=系统代理已启用
 System Proxy Disabled=系统代理未启用
 Failed to update PAC file =更新 PAC 文件失败

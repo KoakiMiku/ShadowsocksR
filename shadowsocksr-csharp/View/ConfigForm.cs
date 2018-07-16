@@ -90,9 +90,9 @@ namespace ShadowsocksR.View
         {
             Text = I18N.GetString("Edit Servers");
 
-            AddButton.Text = I18N.GetString("&Add");
-            DeleteButton.Text = I18N.GetString("&Delete");
-            ModifyButton.Text = I18N.GetString("&Modify");
+            AddButton.Text = I18N.GetString("Add");
+            DeleteButton.Text = I18N.GetString("Delete");
+            ModifyButton.Text = I18N.GetString("Modify");
             UpButton.Text = I18N.GetString("Up");
             DownButton.Text = I18N.GetString("Down");
 
@@ -510,6 +510,7 @@ namespace ShadowsocksR.View
                 return;
             }
             LoadConfiguration(_modifiedConfiguration);
+            LoadSelectedServer();
 
             if (ServersListBox.Items.Count != 0)
             {
