@@ -103,7 +103,7 @@ Group=分組
 Auto update=自動更新
 
 # Messages
-Shadowsocks Error: {0}=Shadowsocks 錯誤: {0}
+ShadowsocksR Error: {0}=ShadowsocksR 錯誤: {0}
 Port already in use=連接埠已被占用
 Illegal port number format=非法連接埠格式
 Please add at least one server=請添加至少一個伺服器
@@ -118,7 +118,7 @@ PAC updated=更新 PAC 成功
 No updates found. Please report to GFWList if you have problems with it.=未發現更新。如有問題請提交給 GFWList。
 No QRCode found. Try to zoom in or move it to the center of the screen.=未發現 QR 碼，嘗試把它放大或移動到靠近屏幕中間的位置
 ShadowsocksR is already running=ShadowsocksR 已在運行
-Find Shadowsocks icon in your notify tray.=請在工作列裡尋找 ShadowsocksR 圖標。
+Find ShadowsocksR icon in your notify tray.=請在工作列裡尋找 ShadowsocksR 圖標。
 If you want to start multiple Shadowsocks, make a copy in another directory.=如果想啟動多份，可以另外複製一份到別的目錄。
 Failed to decode QRCode=無法解析 QR 碼
 Failed to update registry=無法修改註冊表
@@ -126,7 +126,6 @@ System Proxy On: =系統代理已啟用：
 Running: Port {0}=正在運行：連接埠 {0}
 Running: =正在運行：
 Password NOT match=密碼不匹配
-Update subscribe SSR node success=SSR 伺服器訂閱更新成功
-Update subscribe SSR node failure=SSR 伺服器訂閱更新失敗
-Success=成功
+Update subscribe node success=伺服器訂閱更新成功
+Update subscribe node failure=伺服器訂閱更新失敗
 Information=通知

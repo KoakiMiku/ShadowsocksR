@@ -111,7 +111,7 @@ namespace ShadowsocksR.View
         void controller_Errored(object sender, System.IO.ErrorEventArgs e)
         {
             MessageBox.Show(e.GetException().ToString(),
-                String.Format(I18N.GetString("Shadowsocks Error: {0}"), e.GetException().Message),
+                String.Format(I18N.GetString("ShadowsocksR Error: {0}"), e.GetException().Message),
                 MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
@@ -331,7 +331,7 @@ namespace ShadowsocksR.View
         {
             GFWListUpdater updater = (GFWListUpdater)sender;
             string result = e.Success ? I18N.GetString("PAC updated") : I18N.GetString("No updates found. Please report to GFWList if you have problems with it.");
-            ShowBalloonTip(I18N.GetString("Shadowsocks"), result, ToolTipIcon.Info, 1000);
+            ShowBalloonTip("ShadowsocksR", result, ToolTipIcon.Info, 1000);
         }
 
         void updateNodeChecker_NewNodeFound(object sender, EventArgs e)
@@ -533,13 +533,11 @@ namespace ShadowsocksR.View
             }
             if (count > 0)
             {
-                ShowBalloonTip(I18N.GetString("Success"),
-                    I18N.GetString("Update subscribe SSR node success"), ToolTipIcon.Info, 10000);
+                ShowBalloonTip("ShadowsocksR", I18N.GetString("Update subscribe node success"), ToolTipIcon.Info, 10000);
             }
             else
             {
-                ShowBalloonTip(I18N.GetString("Error"),
-                    I18N.GetString("Update subscribe SSR node failure"), ToolTipIcon.Info, 10000);
+                ShowBalloonTip("ShadowsocksR", I18N.GetString("Update subscribe node failure"), ToolTipIcon.Info, 10000);
             }
         }
 
