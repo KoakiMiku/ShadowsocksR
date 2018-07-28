@@ -37,7 +37,7 @@ namespace ShadowsocksR.Controller
                 {
                     Directory.CreateDirectory(curpath);
                 }
-                string new_date = DateTime.Now.ToString("yyyy-MM-dd");
+                string new_date = DateTime.Now.ToString("yyyy-MM");
                 LogFileName = "shadowsocksr-" + new_date + ".log";
                 LogFile = Path.Combine(curpath, LogFileName);
                 _logFileStream = new FileStream(LogFile, FileMode.Append);
@@ -108,11 +108,11 @@ namespace ShadowsocksR.Controller
 
         protected static void UpdateLogFile()
         {
-            if (DateTime.Now.ToString("yyyy-MM-dd") != date)
+            if (DateTime.Now.ToString("yyyy-MM") != date)
             {
                 lock (_lock)
                 {
-                    if (DateTime.Now.ToString("yyyy-MM-dd") != date)
+                    if (DateTime.Now.ToString("yyyy-MM") != date)
                     {
                         OpenLogFile();
                     }

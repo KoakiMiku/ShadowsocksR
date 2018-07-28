@@ -97,10 +97,7 @@ namespace ShadowsocksR.Properties {
         /// <summary>
         ///   查找类似 # translation for Simplified Chinese
         ///
-        ///Shadowsocks=Shadowsocks
-        ///
         ///# Menu items
-        ///
         ///Mode=代理模式
         ///No modify system proxy=不修改当前状态
         ///Disable system proxy=直连模式(不代理)
@@ -114,12 +111,14 @@ namespace ShadowsocksR.Properties {
         ///Disable bypass=全局代理
         ///Edit Host file=编辑用户自定义规则
         ///Edit China IP file=编辑大陆规则
+        ///(empty group)=(未分组)
         ///Servers=服务器
         ///Edit servers=编辑服务器
         ///Import servers from file=从文件导入服务器
+        ///Config File=配置文件
         ///Servers Subscribe=服务器订阅
         ///Subscribe setting=服务器订阅设置
-        ///Update subscri [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///Upda [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string cn {
             get {
@@ -262,13 +261,8 @@ namespace ShadowsocksR.Properties {
         ///var ip_proxy = function(){ return wall_proxy(); };
         ///var ipv6_proxy = function(){ return wall_v6_proxy(); };
         ///
-        ////*
-        /// * Copyright (C) 2014 breakwa11
-        /// * https://github.com/breakwa11/gfw_whitelist
-        /// */
-        ///
         ///var cnIpRange = [
-        ///{},{0x10001:1,0x10002:1,0x10003:1,0x10008:4,0x [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///{},{0x10001:1,0x10002:1,0x10003:1,0x10008:4,0x1000c:4,0x10020:16,0x10030:16,0x10100:1,0x10102:1,0x10103:1,0x10104:4,0x10108:4,0x1010c:4,0 [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string ssr_cnip {
             get {
@@ -315,14 +309,12 @@ namespace ShadowsocksR.Properties {
         ///var ip_proxy = function(){ return wall_proxy(); };
         ///var ipv6_proxy = function(){ return wall_v6_proxy(); };
         ///
-        ////*
-        /// * Copyright (C) 2014 breakwa11
-        /// * https://github.com/breakwa11/gfw_whitelist
-        /// */
-        ///
         ///var subnetIpRangeList = [
         ///0,1,
-        ///167772160,184549376,	//10.0.0.0/ [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///167772160,184549376,	//10.0.0.0/8
+        ///2886729728,2887778304,	//172.16.0.0/12
+        ///3232235520,3232301056,	//192.168.0.0/16
+        ///2130706 [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string ssr_lanip {
             get {
@@ -341,13 +333,8 @@ namespace ShadowsocksR.Properties {
         ///var ip_proxy = function(){ return wall_proxy(); };
         ///var ipv6_proxy = function(){ return wall_v6_proxy(); };
         ///
-        ////*
-        /// * Copyright (C) 2014 breakwa11
-        /// * https://github.com/breakwa11/gfw_whitelist
-        /// */
-        ///
         ///var cnIpRange = [
-        ///{},{0x10001:1,0x10002:1,0x10003:1,0x10008:4,0x [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///{},{0x10001:1,0x10002:1,0x10003:1,0x10008:4,0x1000c:4,0x10020:16,0x10030:16,0x10100:1,0x10102:1,0x10103:1,0x10104:4,0x10108:4,0x1010c:4,0 [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string ssr_white {
             get {
@@ -366,13 +353,8 @@ namespace ShadowsocksR.Properties {
         ///var ip_proxy = function(){ return nowall_proxy(); };
         ///var ipv6_proxy = function(){ return wall_v6_proxy(); };
         ///
-        ////*
-        /// * Copyright (C) 2014 breakwa11
-        /// * https://github.com/breakwa11/gfw_whitelist
-        /// */
-        ///
         ///var cnIpRange = [
-        ///{},{0x10001:1,0x10002:1,0x10003:1,0x10008:4,0x100 [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///{},{0x10001:1,0x10002:1,0x10003:1,0x10008:4,0x1000c:4,0x10020:16,0x10030:16,0x10100:1,0x10102:1,0x10103:1,0x10104:4,0x10108:4,0x1010c:4,0x10 [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string ssr_white_r {
             get {
@@ -391,16 +373,6 @@ namespace ShadowsocksR.Properties {
         }
         
         /// <summary>
-        ///   查找 System.Byte[] 类型的本地化资源。
-        /// </summary>
-        internal static byte[] templates {
-            get {
-                object obj = ResourceManager.GetObject("templates", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
-        
-        /// <summary>
         ///   查找类似 ! Put user rules line by line in this file.
         ///! See https://adblockplus.org/en/filter-cheatsheet
         /// 的本地化字符串。
@@ -414,10 +386,7 @@ namespace ShadowsocksR.Properties {
         /// <summary>
         ///   查找类似 # translation for Traditional Chinese
         ///
-        ///Shadowsocks=Shadowsocks
-        ///
         ///# Menu items
-        ///
         ///Mode=代理模式
         ///No modify system proxy=不修改當前狀態
         ///Disable system proxy=直連模式(不代理)
@@ -431,12 +400,14 @@ namespace ShadowsocksR.Properties {
         ///Disable bypass=全局代理
         ///Edit Host file=編輯用戶自定義規則
         ///Edit China IP file=編輯大陸規則
+        ///(empty group)=(未分組)
         ///Servers=伺服器
         ///Edit servers=編輯伺服器
         ///Import servers from file=從文件導入伺服器
+        ///Config File=設定檔
         ///Servers Subscribe=伺服器訂閱
         ///Subscribe setting=伺服器訂閱設置
-        ///Update sub [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///U [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string zh_tw {
             get {

@@ -75,7 +75,6 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.IO.Compression" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="zxing, Version=0.16.4.0, Culture=neutral, PublicKeyToken=4e88037ac681fe60, processorArchitecture=MSIL">
       <HintPath>..\packages\ZXing.Net.0.16.4\lib\net47\zxing.dll</HintPath>
@@ -98,7 +97,6 @@
     <Compile Include="Controller\ProxySocket.cs" />
     <Compile Include="Controller\Socks5Forwarder.cs" />
     <Compile Include="Controller\SpeedTest.cs" />
-    <Compile Include="Controller\Templates.cs" />
     <Compile Include="Controller\UpdateNode.cs" />
     <Compile Include="Encryption\EncryptorBase.cs" />
     <Compile Include="Encryption\EncryptorFactory.cs" />
@@ -213,7 +211,6 @@
     <Content Include="Resources\46418775_p0.jpg" />
     <Content Include="shadowsocksr.ico" />
     <Content Include="Data\host.txt" />
-    <None Include="Data\templates.zip" />
     <None Include="packages.config" />
     <None Include="Resources\ss20.png" />
     <None Include="Resources\ss16.png" />
