@@ -309,6 +309,23 @@ namespace ShadowsocksR.Model
             return ret;
         }
 
+        public static bool CheckFile()
+        {
+            int try_times = 0;
+            while (Load() == null)
+            {
+                if (try_times >= 5)
+                {
+                    return false;
+                }
+                else
+                {
+                    try_times++;
+                }
+            }
+            return true;
+        }
+
         public static Configuration LoadFile(string filename)
         {
             try
@@ -364,9 +381,7 @@ namespace ShadowsocksR.Model
                 config.FixConfiguration();
                 return config;
             }
-            catch
-            {
-            }
+            catch { }
             return null;
         }
 

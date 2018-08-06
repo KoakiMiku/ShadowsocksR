@@ -35,11 +35,11 @@ namespace ShadowsocksR
                 }
                 Directory.SetCurrentDirectory(Application.StartupPath);
                 Logging.OpenLogFile();
-                int try_times = 0;
-                while (Configuration.Load() == null)
+                if (!Configuration.CheckFile())
                 {
-                    if (try_times >= 5)
-                        return;
+                    MessageBox.Show(I18N.GetString("Failed to load config file."), "ShadowsocksR",
+                         MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
                 }
                 _controller = new ShadowsocksController();
                 _viewController = new MenuViewController(_controller);

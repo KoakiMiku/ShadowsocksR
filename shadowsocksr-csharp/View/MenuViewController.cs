@@ -691,7 +691,7 @@ namespace ShadowsocksR.View
             Configuration config = controller.GetCurrentConfiguration();
             if (config.configs.Count == 0)
             {
-                MessageBox.Show(I18N.GetString("Please add at least one server"), I18N.GetString("Information"),
+                MessageBox.Show(I18N.GetString("Please add at least one server"), "ShadowsocksR",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
@@ -846,7 +846,7 @@ namespace ShadowsocksR.View
             Configuration config = controller.GetCurrentConfiguration();
             if (config.configs.Count == 0)
             {
-                MessageBox.Show(I18N.GetString("Please add at least one server"), I18N.GetString("Information"),
+                MessageBox.Show(I18N.GetString("Please add at least one server"), "ShadowsocksR",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
@@ -858,7 +858,7 @@ namespace ShadowsocksR.View
             Configuration config = controller.GetCurrentConfiguration();
             if (config.configs.Count == 0)
             {
-                MessageBox.Show(I18N.GetString("Please add at least one server"), I18N.GetString("Information"),
+                MessageBox.Show(I18N.GetString("Please add at least one server"), "ShadowsocksR",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
@@ -958,7 +958,7 @@ namespace ShadowsocksR.View
             Configuration config = controller.GetCurrentConfiguration();
             if (config.serverSubscribes.Count == 0)
             {
-                MessageBox.Show(I18N.GetString("Please add at least one server subscribe"), I18N.GetString("Information"),
+                MessageBox.Show(I18N.GetString("Please add at least one server subscribe"), "ShadowsocksR",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
@@ -970,7 +970,7 @@ namespace ShadowsocksR.View
             Configuration config = controller.GetCurrentConfiguration();
             if (config.serverSubscribes.Count == 0)
             {
-                MessageBox.Show(I18N.GetString("Please add at least one server subscribe"), I18N.GetString("Information"),
+                MessageBox.Show(I18N.GetString("Please add at least one server subscribe"), "ShadowsocksR",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
@@ -992,7 +992,7 @@ namespace ShadowsocksR.View
             Configuration config = controller.GetCurrentConfiguration();
             if (config.configs.Count == 0)
             {
-                MessageBox.Show(I18N.GetString("Please add at least one server"), I18N.GetString("Information"),
+                MessageBox.Show(I18N.GetString("Please add at least one server"), "ShadowsocksR",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
@@ -1241,8 +1241,8 @@ namespace ShadowsocksR.View
                     }
                 }
             }
-            MessageBox.Show(I18N.GetString("No QRCode found. Try to zoom in or move it to the center of the screen."),
-                I18N.GetString("Information"), MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(I18N.GetString("No QRCode found. Try to zoom in or move it to the center of the screen."), "ShadowsocksR",
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void ScanQRCodeItem_Click(object sender, EventArgs e)

@@ -188,7 +188,7 @@ namespace ShadowsocksR.View
             }
             catch (FormatException)
             {
-                MessageBox.Show(I18N.GetString("Illegal port number format"), I18N.GetString("Information"),
+                MessageBox.Show(I18N.GetString("Illegal port number format"), "ShadowsocksR",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
             catch (Exception ex)
