@@ -152,8 +152,8 @@ namespace ShadowsocksR.View
                 Server server = new Server
                 {
                     server = IPTextBox.Text.Trim(),
-                    server_port = Convert.ToInt32(NumServerPort.Value),
-                    server_udp_port = Convert.ToInt32(NumUDPPort.Value),
+                    server_port = string.IsNullOrWhiteSpace(NumServerPort.Text) ? 0 : Convert.ToInt32(NumServerPort.Value),
+                    server_udp_port = string.IsNullOrWhiteSpace(NumUDPPort.Text) ? 0 : Convert.ToInt32(NumUDPPort.Value),
                     password = PasswordTextBox.Text,
                     method = EncryptionSelect.Text,
                     protocol = TCPProtocolComboBox.Text,

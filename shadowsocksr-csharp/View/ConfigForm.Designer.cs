@@ -273,6 +273,11 @@
             this.NumServerPort.Name = "NumServerPort";
             this.NumServerPort.Size = new System.Drawing.Size(233, 21);
             this.NumServerPort.TabIndex = 9;
+            this.NumServerPort.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             // 
             // PasswordTextBox
             // 
@@ -524,6 +529,11 @@
             this.NumUDPPort.Name = "NumUDPPort";
             this.NumUDPPort.Size = new System.Drawing.Size(233, 21);
             this.NumUDPPort.TabIndex = 31;
+            this.NumUDPPort.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
             this.NumUDPPort.Visible = false;
             // 
             // checkSSRLink

@@ -213,42 +213,32 @@ namespace ShadowsocksR.Model
             }
             else
             {
-                if (server.IndexOf(':') >= 0)
-                {
-                    return remarks + " ([" + server + "]:" + server_port + ")";
-                }
-                else
-                {
-                    return remarks + " (" + server + ":" + server_port + ")";
-                }
+                return remarks;
             }
         }
 
-        public string HiddenName(bool hide = true)
+        public string HiddenName()
         {
             if (string.IsNullOrEmpty(server))
             {
                 return I18N.GetString("New server");
             }
             string server_alter_name = server;
-            if (hide)
+            bool parsed = IPAddress.TryParse(server, out IPAddress ipAddress);
+            if (parsed)
             {
-                bool parsed = IPAddress.TryParse(server, out IPAddress ipAddress);
-                if (parsed)
+                int pos = server.LastIndexOf('.');
+                if (pos > 0)
                 {
-                    int pos = server.LastIndexOf('.');
-                    if (pos > 0)
-                    {
-                        server_alter_name = "*" + server.Substring(pos);
-                    }
+                    server_alter_name = "*" + server.Substring(pos);
                 }
-                else
+            }
+            else
+            {
+                int pos = server.IndexOf('.', 1);
+                if (pos > 0)
                 {
-                    int pos = server.IndexOf('.', 1);
-                    if (pos > 0)
-                    {
-                        server_alter_name = "*" + server.Substring(pos);
-                    }
+                    server_alter_name = "*" + server.Substring(pos);
                 }
             }
             if (string.IsNullOrEmpty(remarks_base64))
@@ -264,14 +254,7 @@ namespace ShadowsocksR.Model
             }
             else
             {
-                if (server.IndexOf(':') >= 0)
-                {
-                    return remarks + " ([" + server_alter_name + "]:" + server_port + ")";
-                }
-                else
-                {
-                    return remarks + " (" + server_alter_name + ":" + server_port + ")";
-                }
+                return remarks;
             }
         }
 
