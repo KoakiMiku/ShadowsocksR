@@ -184,7 +184,9 @@ namespace ShadowsocksR.Model
                             string line = stream.ReadLine();
                             if (line == null)
                                 break;
-                            if (line.Length > 0 && line.StartsWith("#"))
+                            if (string.IsNullOrWhiteSpace(line))
+                                continue;
+                            if (line.StartsWith("#"))
                                 continue;
                             string[] parts = line.Split(new char[] { ' ', '\t', }, 2, StringSplitOptions.RemoveEmptyEntries);
                             if (parts.Length < 2)

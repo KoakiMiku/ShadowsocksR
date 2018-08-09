@@ -86,7 +86,6 @@
   <ItemGroup>
     <Compile Include="Controller\AutoStartup.cs" />
     <Compile Include="Controller\FileManager.cs" />
-    <Compile Include="Controller\GFWListUpdater.cs" />
     <Compile Include="Controller\HttpPortForwarder.cs" />
     <Compile Include="Controller\HttpProxy.cs" />
     <Compile Include="Controller\HttpProxyRunner.cs" />
@@ -109,7 +108,6 @@
     <Compile Include="Encryption\Sodium.cs" />
     <Compile Include="Encryption\SodiumEncryptor.cs" />
     <Compile Include="Encryption\IEncryptor.cs" />
-    <Compile Include="Controller\PACServer.cs" />
     <Compile Include="Model\Host.cs" />
     <Compile Include="Model\IPRangeSet.cs" />
     <Compile Include="Model\IPSegment.cs" />
@@ -201,11 +199,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Data\chn-ip.txt" />
-    <Content Include="Data\ssr-cnip.txt" />
-    <Content Include="Data\ssr-gfw.txt" />
-    <Content Include="Data\ssr-lanip.txt" />
-    <Content Include="Data\ssr-white.txt" />
-    <Content Include="Data\ssr-white_r.txt" />
     <Content Include="Data\zh-tw.txt" />
     <Content Include="FodyWeavers.xml" />
     <Content Include="Resources\46418775_p0.jpg" />
@@ -218,7 +211,6 @@
     <None Include="Resources\ssw128.png" />
     <Content Include="Data\cn.txt" />
     <None Include="Data\privoxy-conf.txt" />
-    <Content Include="Data\user-rule.txt" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">

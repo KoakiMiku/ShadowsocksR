@@ -5,18 +5,15 @@ namespace ShadowsocksR.Model
 {
     public class IPAddressCmp : System.Net.IPAddress, IComparable
     {
-        public IPAddressCmp(System.Net.IPAddress ip)
-            : base(ip.GetAddressBytes())
+        public IPAddressCmp(System.Net.IPAddress ip) : base(ip.GetAddressBytes())
         {
         }
 
-        public IPAddressCmp(byte[] ip)
-            : base(ip)
+        public IPAddressCmp(byte[] ip) : base(ip)
         {
         }
 
-        public IPAddressCmp(string ip)
-            : base(IPAddressCmp.FromString(ip).GetAddressBytes())
+        public IPAddressCmp(string ip) : base(FromString(ip).GetAddressBytes())
         {
         }
 
@@ -50,7 +47,7 @@ namespace ShadowsocksR.Model
             if (AddressFamily == System.Net.Sockets.AddressFamily.InterNetworkV6)
                 return this;
             byte[] b1 = GetAddressBytes();
-            byte[] br = new byte[16] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0xff, 0xff, 0, 0, 0, 0};
+            byte[] br = new byte[16] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0xff, 0xff, 0, 0, 0, 0 };
             b1.CopyTo(br, 12);
             return new IPAddressCmp(br);
         }
@@ -121,7 +118,7 @@ namespace ShadowsocksR.Model
                 }
                 ++index;
                 bool keep = false;
-                while(index < list.Count)
+                while (index < list.Count)
                 {
                     int cmp = (list.GetKey(index) as IPAddressCmp).CompareTo(e);
                     if (cmp >= 0)

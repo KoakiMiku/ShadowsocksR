@@ -1,11 +1,12 @@
-﻿using System;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
+using System;
+using System.Windows.Forms;
 
 namespace ShadowsocksR.Controller
 {
     class AutoStartup
     {
-        static string Key = "ShadowsocksR";
+        static string Key = "ShadowsocksR_" + Application.StartupPath.GetHashCode();
         static string RegistryRunPath = @"Software\Microsoft\Windows\CurrentVersion\Run";
 
         public static bool Set(bool enabled)

@@ -159,47 +159,28 @@ namespace ShadowsocksR.Controller
         /// <summary>
         /// Set IE settings.
         /// </summary>
-        private static void SetIEProxy(bool enable, bool global, string proxyServer, string pacURL, string connName)
+        private static void SetIEProxy(bool enable, string proxyServer, string connName)
         {
             List<INTERNET_PER_CONN_OPTION> _optionlist = new List<INTERNET_PER_CONN_OPTION>();
 
             if (enable)
             {
-                if (global)
+                // global proxy
+                _optionlist.Add(new INTERNET_PER_CONN_OPTION
                 {
-                    // global proxy
-                    _optionlist.Add(new INTERNET_PER_CONN_OPTION
-                    {
-                        dwOption = (int)INTERNET_PER_CONN_OptionEnum.INTERNET_PER_CONN_FLAGS_UI,
-                        Value = { dwValue = (int)(INTERNET_OPTION_PER_CONN_FLAGS_UI.PROXY_TYPE_PROXY
-                                                //| INTERNET_OPTION_PER_CONN_FLAGS_UI.PROXY_TYPE_DIRECT
-                                                ) }
-                    });
-                    _optionlist.Add(new INTERNET_PER_CONN_OPTION
-                    {
-                        dwOption = (int)INTERNET_PER_CONN_OptionEnum.INTERNET_PER_CONN_PROXY_SERVER,
-                        Value = { pszValue = Marshal.StringToHGlobalAuto(proxyServer) }
-                    });
-                    _optionlist.Add(new INTERNET_PER_CONN_OPTION
-                    {
-                        dwOption = (int)INTERNET_PER_CONN_OptionEnum.INTERNET_PER_CONN_PROXY_BYPASS,
-                        Value = { pszValue = Marshal.StringToHGlobalAuto("") }
-                    });
-                }
-                else
+                    dwOption = (int)INTERNET_PER_CONN_OptionEnum.INTERNET_PER_CONN_FLAGS_UI,
+                    Value = { dwValue = (int)(INTERNET_OPTION_PER_CONN_FLAGS_UI.PROXY_TYPE_PROXY) }
+                });
+                _optionlist.Add(new INTERNET_PER_CONN_OPTION
                 {
-                    // pac
-                    _optionlist.Add(new INTERNET_PER_CONN_OPTION
-                    {
-                        dwOption = (int)INTERNET_PER_CONN_OptionEnum.INTERNET_PER_CONN_FLAGS_UI,
-                        Value = { dwValue = (int)INTERNET_OPTION_PER_CONN_FLAGS_UI.PROXY_TYPE_AUTO_PROXY_URL }
-                    });
-                    _optionlist.Add(new INTERNET_PER_CONN_OPTION
-                    {
-                        dwOption = (int)INTERNET_PER_CONN_OptionEnum.INTERNET_PER_CONN_AUTOCONFIG_URL,
-                        Value = { pszValue = Marshal.StringToHGlobalAuto(pacURL) }
-                    });
-                }
+                    dwOption = (int)INTERNET_PER_CONN_OptionEnum.INTERNET_PER_CONN_PROXY_SERVER,
+                    Value = { pszValue = Marshal.StringToHGlobalAuto(proxyServer) }
+                });
+                _optionlist.Add(new INTERNET_PER_CONN_OPTION
+                {
+                    dwOption = (int)INTERNET_PER_CONN_OptionEnum.INTERNET_PER_CONN_PROXY_BYPASS,
+                    Value = { pszValue = Marshal.StringToHGlobalAuto("") }
+                });
             }
             else
             {
@@ -207,14 +188,12 @@ namespace ShadowsocksR.Controller
                 _optionlist.Add(new INTERNET_PER_CONN_OPTION
                 {
                     dwOption = (int)INTERNET_PER_CONN_OptionEnum.INTERNET_PER_CONN_FLAGS_UI,
-                    Value = { dwValue = (int)(INTERNET_OPTION_PER_CONN_FLAGS_UI.PROXY_TYPE_DIRECT
-                                            //| INTERNET_OPTION_PER_CONN_FLAGS_UI.PROXY_TYPE_AUTO_DETECT
-                                            ) }
+                    Value = { dwValue = (int)(INTERNET_OPTION_PER_CONN_FLAGS_UI.PROXY_TYPE_DIRECT) }
                 });
                 _optionlist.Add(new INTERNET_PER_CONN_OPTION
                 {
                     dwOption = (int)INTERNET_PER_CONN_OptionEnum.INTERNET_PER_CONN_PROXY_BYPASS,
-                    Value = { pszValue = Marshal.StringToHGlobalAuto("localhost;127.*;10.*;172.16.*;172.17.*;172.18.*;172.19.*;172.20.*;172.21.*;172.22.*;172.23.*;172.24.*;172.25.*;172.26.*;172.27.*;172.28.*;172.29.*;172.30.*;172.31.*;172.32.*;192.168.*;<local>") }
+                    Value = { pszValue = Marshal.StringToHGlobalAuto("") }
                 });
             }
 
@@ -299,7 +278,7 @@ namespace ShadowsocksR.Controller
             }
         }
 
-        public static void SetIEProxy(bool enable, bool global, string proxyServer, string pacURL)
+        public static void SetIEProxy(bool enable, string proxyServer)
         {
             string[] allConnections = null;
             var ret = RemoteAccessService.GetAllConns(ref allConnections);
@@ -310,15 +289,15 @@ namespace ShadowsocksR.Controller
             if (ret == 1)
             {
                 // no entries, only set LAN
-                SetIEProxy(enable, global, proxyServer, pacURL, null);
+                SetIEProxy(enable, proxyServer, null);
             }
             else if (ret == 0)
             {
                 // found entries, set LAN and each connection
-                SetIEProxy(enable, global, proxyServer, pacURL, null);
+                SetIEProxy(enable, proxyServer, null);
                 foreach (string connName in allConnections)
                 {
-                    SetIEProxy(enable, global, proxyServer, pacURL, connName);
+                    SetIEProxy(enable, proxyServer, connName);
                 }
             }
         }
@@ -505,7 +484,6 @@ namespace ShadowsocksR.Controller
             {
                 sysProxyMode = (int)ProxyMode.Direct;
             }
-            bool global = sysProxyMode == (int)ProxyMode.Global;
             bool enabled = sysProxyMode != (int)ProxyMode.Direct;
             using (RegistryKey registry = OpenUserRegKey(@"Software\Microsoft\Windows\CurrentVersion\Internet Settings", true))
             {
@@ -513,20 +491,9 @@ namespace ShadowsocksR.Controller
                 {
                     if (enabled)
                     {
-                        if (global)
-                        {
-                            RegistrySetValue(registry, "ProxyEnable", 1);
-                            RegistrySetValue(registry, "ProxyServer", "127.0.0.1:" + config.localPort.ToString());
-                            RegistrySetValue(registry, "AutoConfigURL", "");
-                        }
-                        else
-                        {
-                            string pacUrl;
-                            pacUrl = "http://127.0.0.1:" + config.localPort.ToString() + "/pac?" + "auth=" + config.localAuthPassword + "&t=" + Util.Utils.GetTimestamp(DateTime.Now);
-                            RegistrySetValue(registry, "ProxyEnable", 0);
-                            RegistrySetValue(registry, "ProxyServer", "");
-                            RegistrySetValue(registry, "AutoConfigURL", pacUrl);
-                        }
+                        RegistrySetValue(registry, "ProxyEnable", 1);
+                        RegistrySetValue(registry, "ProxyServer", "127.0.0.1:" + config.localPort.ToString());
+                        RegistrySetValue(registry, "AutoConfigURL", "");
                     }
                     else
                     {
@@ -551,20 +518,11 @@ namespace ShadowsocksR.Controller
                 {
                     if (enabled)
                     {
-                        if (global)
-                        {
-                            WinINet.SetIEProxy(true, true, "127.0.0.1:" + config.localPort.ToString(), "");
-                        }
-                        else
-                        {
-                            string pacUrl;
-                            pacUrl = $"http://127.0.0.1:{config.localPort}/pac?auth={config.localAuthPassword}&t={Util.Utils.GetTimestamp(DateTime.Now)}";
-                            WinINet.SetIEProxy(true, false, "", pacUrl);
-                        }
+                        WinINet.SetIEProxy(true, "127.0.0.1:" + config.localPort.ToString());
                     }
                     else
                     {
-                        WinINet.SetIEProxy(false, false, "", "");
+                        WinINet.SetIEProxy(false, "");
                     }
                 }
                 catch (Exception ex)
@@ -626,21 +584,16 @@ namespace ShadowsocksR.Controller
             BytePushback(buffer, ref buffer_len, 70);
             BytePushback(buffer, ref buffer_len, counter + 1);
             if (sysProxyMode == (int)ProxyMode.Direct)
+            {
                 BytePushback(buffer, ref buffer_len, 1);
-            else if (sysProxyMode == (int)ProxyMode.Pac)
-                BytePushback(buffer, ref buffer_len, 5);
+            }
             else
+            {
                 BytePushback(buffer, ref buffer_len, 3);
+            }
 
             string proxy = "127.0.0.1:" + config.localPort.ToString();
             BytePushback(buffer, ref buffer_len, proxy);
-
-            string bypass = sysProxyMode == (int)ProxyMode.Global ? "" : "localhost;127.*;10.*;172.16.*;172.17.*;172.18.*;172.19.*;172.20.*;172.21.*;172.22.*;172.23.*;172.24.*;172.25.*;172.26.*;172.27.*;172.28.*;172.29.*;172.30.*;172.31.*;172.32.*;192.168.*;<local>";
-            BytePushback(buffer, ref buffer_len, bypass);
-
-            string pacUrl = "";
-            pacUrl = "http://127.0.0.1:" + config.localPort.ToString() + "/pac?" + "auth=" + config.localAuthPassword + "&t=" + Util.Utils.GetTimestamp(DateTime.Now);
-            BytePushback(buffer, ref buffer_len, pacUrl);
 
             buffer_len += 0x20;
 
@@ -666,17 +619,6 @@ namespace ShadowsocksR.Controller
                     defConnection = GenConnectionSettings(config, sysProxyMode, counter);
                     RegistrySetValue(registry, "DefaultConnectionSettings", defConnection);
                     RegistrySetValue(registry, "SavedLegacySettings", defConnection);
-                }
-                catch (IOException e)
-                {
-                    Logging.LogUsefulException(e);
-                }
-            }
-            using (RegistryKey registry = OpenUserRegKey(@"Software\Microsoft\Windows\CurrentVersion\Internet Settings", true))
-            {
-                try
-                {
-                    RegistrySetValue(registry, "ProxyOverride", "localhost;127.*;10.*;172.16.*;172.17.*;172.18.*;172.19.*;172.20.*;172.21.*;172.22.*;172.23.*;172.24.*;172.25.*;172.26.*;172.27.*;172.28.*;172.29.*;172.30.*;172.31.*;172.32.*;192.168.*;<local>");
                 }
                 catch (IOException e)
                 {
