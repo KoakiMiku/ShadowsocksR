@@ -301,6 +301,11 @@
             // 
             this.EncryptionSelect.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Left | System.Windows.Forms.AnchorStyles.Right)));
             this.EncryptionSelect.FormattingEnabled = true;
+            this.EncryptionSelect.Items.AddRange(new object[] {
+            "none",
+            "salsa20",
+            "chacha20",
+            "chacha20-ietf"});
             this.EncryptionSelect.Location = new System.Drawing.Point(108, 87);
             this.EncryptionSelect.Margin = new System.Windows.Forms.Padding(3, 3, 3, 7);
             this.EncryptionSelect.Name = "EncryptionSelect";

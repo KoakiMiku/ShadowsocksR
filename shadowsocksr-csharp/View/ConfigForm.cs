@@ -33,12 +33,6 @@ namespace ShadowsocksR.View
             NumUDPPort.Minimum = IPEndPoint.MinPort;
             NumUDPPort.Maximum = IPEndPoint.MaxPort;
 
-            foreach (string name in EncryptorFactory.GetEncryptor())
-            {
-                EncryptorInfo info = EncryptorFactory.GetEncryptorInfo(name);
-                if (info.display)
-                    EncryptionSelect.Items.Add(name);
-            }
             UpdateTexts();
             controller.ConfigChanged += controller_ConfigChanged;
 
