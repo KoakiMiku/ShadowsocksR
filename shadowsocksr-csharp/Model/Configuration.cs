@@ -36,7 +36,6 @@ namespace ShadowsocksR.Model
         BypassLan,
         BypassLanAndChina,
         BypassLanAndNotChina,
-        UserCustom = 16,
     }
 
     [Serializable]
@@ -73,7 +72,6 @@ namespace ShadowsocksR.Model
         public int index;
         public int sysProxyMode;
         public int proxyRuleMode;
-        public string localAuthPassword;
 
         public List<ServerSubscribe> serverSubscribes;
         public bool nodeFeedAutoUpdate;
@@ -225,7 +223,7 @@ namespace ShadowsocksR.Model
             dnsServer = "";
 
             sysProxyMode = (int)ProxyMode.Direct;
-            proxyRuleMode = (int)ProxyRuleMode.Disable;
+            proxyRuleMode = (int)ProxyRuleMode.BypassLanAndChina;
             nodeFeedAutoUpdate = false;
 
             serverSubscribes = new List<ServerSubscribe>();
@@ -275,10 +273,6 @@ namespace ShadowsocksR.Model
                 TTL = 180;
                 keepVisitTime = 180;
             }
-            if (localAuthPassword == null || localAuthPassword.Length < 16)
-            {
-                localAuthPassword = randString(20);
-            }
 
             Dictionary<string, int> id = new Dictionary<string, int>();
             if (index < 0 || index >= configs.Count) index = 0;
@@ -295,18 +289,6 @@ namespace ShadowsocksR.Model
                     id[server.id] = 0;
                 }
             }
-        }
-
-        private static string randString(int len)
-        {
-            string set = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_";
-            string ret = "";
-            Random random = new Random();
-            for (int i = 0; i < len; ++i)
-            {
-                ret += set[random.Next(set.Length)];
-            }
-            return ret;
         }
 
         public static bool CheckFile()

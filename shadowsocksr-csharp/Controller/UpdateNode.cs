@@ -11,7 +11,7 @@ namespace ShadowsocksR.Controller
         public string NodeResult;
         public const string Name = "ShadowsocksR";
 
-        public void CheckUpdate(Configuration config, string URL, bool use_proxy)
+        public void CheckUpdate(Configuration config, string URL)
         {
             NodeResult = null;
             try
@@ -19,7 +19,7 @@ namespace ShadowsocksR.Controller
                 WebClient http = new WebClient();
                 http.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 5.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/35.0.3319.102 Safari/537.36");
                 http.QueryString["rnd"] = Util.Utils.RandUInt32().ToString();
-                if (use_proxy)
+                if (config.sysProxyMode != (int)ProxyMode.Direct)
                 {
                     WebProxy proxy = new WebProxy(IPAddress.Loopback.ToString(), config.localPort);
                     if (!string.IsNullOrEmpty(config.authPass))
@@ -68,38 +68,34 @@ namespace ShadowsocksR.Controller
         Configuration _config;
         List<ServerSubscribe> _serverSubscribes;
         UpdateNode _updater;
-        bool _use_proxy;
 
-        public void CreateTask(Configuration config, UpdateNode updater, bool use_proxy)
+        public void CreateTask(Configuration config, UpdateNode updater)
         {
             if (_config == null)
             {
                 _config = config;
                 _updater = updater;
-                _use_proxy = use_proxy;
                 _serverSubscribes = new List<ServerSubscribe>();
                 for (int i = 0; i < config.serverSubscribes.Count; ++i)
                 {
                     _serverSubscribes.Add(config.serverSubscribes[i]);
                 }
-                Next();
+                if (_serverSubscribes.Count == 0)
+                {
+                    _config = null;
+                }
+                else
+                {
+                    URL = _serverSubscribes[0].URL;
+                    _updater.CheckUpdate(_config, URL);
+                    _serverSubscribes.RemoveAt(0);
+                }
             }
         }
 
-        public bool Next()
+        public void ResetUpdate()
         {
-            if (_serverSubscribes.Count == 0)
-            {
-                _config = null;
-                return false;
-            }
-            else
-            {
-                URL = _serverSubscribes[0].URL;
-                _updater.CheckUpdate(_config, URL, _use_proxy);
-                _serverSubscribes.RemoveAt(0);
-                return true;
-            }
+            _config = null;
         }
 
         public string URL { get; set; }

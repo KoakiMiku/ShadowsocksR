@@ -17,7 +17,7 @@ namespace ShadowsocksR
         [STAThread]
         static void Main(string[] args)
         {
-            using (Mutex mutex = new Mutex(false, "Global\\ShadowsocksR_" + Application.StartupPath.GetHashCode()))
+            using (Mutex mutex = new Mutex(false, "ShadowsocksR_" + Application.StartupPath.GetHashCode()))
             {
                 AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
                 Application.EnableVisualStyles();

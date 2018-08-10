@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
@@ -27,7 +26,6 @@ namespace ShadowsocksR.View
         private NotifyIcon _notifyIcon;
         private ContextMenu contextMenu1;
         private MenuItem enableItem;
-        private MenuItem PACModeItem;
         private MenuItem globalModeItem;
         private MenuItem modeItem;
         private MenuItem ruleBypassLan;
@@ -53,13 +51,9 @@ namespace ShadowsocksR.View
             controller.ToggleModeChanged += controller_ToggleModeChanged;
             controller.ToggleRuleModeChanged += controller_ToggleRuleModeChanged;
             controller.ConfigChanged += controller_ConfigChanged;
-            controller.PACFileReadyToOpen += controller_FileReadyToOpen;
-            controller.UserRuleFileReadyToOpen += controller_FileReadyToOpen;
             controller.ChnIpFileReadyToOpen += controller_FileReadyToOpen;
             controller.HostFileReadyToOpen += controller_FileReadyToOpen;
             controller.Errored += controller_Errored;
-            controller.UpdatePACFromGFWListCompleted += controller_UpdatePACFromGFWListCompleted;
-            controller.UpdatePACFromGFWListError += controller_UpdatePACFromGFWListError;
             controller.ShowConfigFormEvent += Config_Click;
 
             _notifyIcon = new NotifyIcon();
@@ -78,14 +72,7 @@ namespace ShadowsocksR.View
             Configuration config = controller.GetCurrentConfiguration();
             if (config.nodeFeedAutoUpdate)
             {
-                if (config.sysProxyMode == (int)ProxyMode.Direct)
-                {
-                    updateSubscribeManager.CreateTask(controller.GetCurrentConfiguration(), updateNodeChecker, false);
-                }
-                else
-                {
-                    updateSubscribeManager.CreateTask(controller.GetCurrentConfiguration(), updateNodeChecker, true);
-                }
+                updateSubscribeManager.CreateTask(config, updateNodeChecker);
             }
 
             timerDelayCheckUpdate = new System.Timers.Timer(1000.0 * 10);
@@ -125,98 +112,74 @@ namespace ShadowsocksR.View
 
             Configuration config = controller.GetCurrentConfiguration();
             bool enabled = config.sysProxyMode != (int)ProxyMode.Direct;
-            bool global = config.sysProxyMode == (int)ProxyMode.Global;
 
-            try
+            Bitmap icon = null;
+            if (dpi < 97)
             {
-                using (Bitmap icon = new Bitmap("icon.png"))
-                {
-                    _notifyIcon.Icon = Icon.FromHandle(icon.GetHicon());
-                }
+                // dpi = 96;
+                icon = Resources.ss16;
             }
-            catch
+            else if (dpi < 121)
             {
-                Bitmap icon = null;
-                if (dpi < 97)
-                {
-                    // dpi = 96;
-                    icon = Resources.ss16;
-                }
-                else if (dpi < 121)
-                {
-                    // dpi = 120;
-                    icon = Resources.ss20;
-                }
-                else
-                {
-                    icon = Resources.ss24;
-                }
+                // dpi = 120;
+                icon = Resources.ss20;
+            }
+            else
+            {
+                icon = Resources.ss24;
+            }
 
-                double mul_a = 1.0;
-                double mul_r = 1.0;
-                double mul_g = 1.0;
-                double mul_b = 1.0;
+            double mul_r = 1.0;
+            double mul_g = 1.0;
+            double mul_b = 1.0;
+            if (enabled)
+            {
+                mul_r = 1.0;
+                mul_g = 0.0;
+                mul_b = 0.5;
+            }
 
-                if (!enabled)
+            using (Bitmap iconCopy = new Bitmap(icon))
+            {
+                for (int x = 0; x < iconCopy.Width; x++)
                 {
-                    mul_r = 1.0;
-                    mul_g = 1.0;
-                    mul_b = 1.0;
-                }
-                else if (!global)
-                {
-                    mul_r = 0.0;
-                    mul_g = 1.0;
-                    mul_b = 1.0;
-                }
-                else
-                {
-                    mul_r = 1.0;
-                    mul_g = 0.0;
-                    mul_b = 0.5;
-                }
-
-                using (Bitmap iconCopy = new Bitmap(icon))
-                {
-                    for (int x = 0; x < iconCopy.Width; x++)
+                    for (int y = 0; y < iconCopy.Height; y++)
                     {
-                        for (int y = 0; y < iconCopy.Height; y++)
-                        {
-                            Color color = icon.GetPixel(x, y);
-                            iconCopy.SetPixel(x, y,
-                                Color.FromArgb((byte)(color.A * mul_a),
-                                ((byte)(color.R * mul_r)),
-                                ((byte)(color.G * mul_g)),
-                                ((byte)(color.B * mul_b))));
-                        }
+                        Color color = icon.GetPixel(x, y);
+                        iconCopy.SetPixel(x, y,
+                            Color.FromArgb(color.A,
+                            ((byte)(color.R * mul_r)),
+                            ((byte)(color.G * mul_g)),
+                            ((byte)(color.B * mul_b))));
                     }
-                    _notifyIcon.Icon = Icon.FromHandle(iconCopy.GetHicon());
                 }
+                _notifyIcon.Icon = Icon.FromHandle(iconCopy.GetHicon());
             }
 
             string text = string.Empty;
             try
             {
-                if (enabled && global)
+                if (enabled)
                 {
-                    text = config.configs[config.index].remarks + "\r\n" +
-                        I18N.GetString("Running: ") + I18N.GetString("Global");
-                }
-                else if (enabled && !global)
-                {
-                    text = config.configs[config.index].remarks + "\r\n" +
-                        I18N.GetString("Running: ") + I18N.GetString("PAC");
+                    if (!string.IsNullOrEmpty(config.configs[config.index].remarks))
+                    {
+                        text = config.configs[config.index].remarks + "\r\n" +
+                            String.Format(I18N.GetString("Running: Port {0}"), config.localPort);
+                    }
+                    else
+                    {
+                        text = config.configs[config.index].FriendlyName() + "\r\n" +
+                            String.Format(I18N.GetString("Running: Port {0}"), config.localPort);
+                    }
                 }
                 else
                 {
-                    text = String.Format(I18N.GetString("Running: Port {0}"), config.localPort) + "\r\n" +
-                        I18N.GetString("Running: ") + I18N.GetString("Disable system proxy");
+                    text = String.Format(I18N.GetString("Running: Port {0}"), config.localPort);
                 }
             }
             catch
             {
-                text = String.Format(I18N.GetString("Running: Port {0}"), config.localPort) + "\r\n" +
-                       I18N.GetString("Running: ") + I18N.GetString("Disable system proxy");
+                text = String.Format(I18N.GetString("Running: Port {0}"), config.localPort);
                 controller.ToggleMode(ProxyMode.Direct);
             }
             // we want to show more details but notify icon title is limited to 63 characters
@@ -238,20 +201,7 @@ namespace ShadowsocksR.View
             contextMenu1 = new ContextMenu(new MenuItem[] {
                 modeItem = CreateMenuGroup("Mode", new MenuItem[] {
                     enableItem = CreateMenuItem("Disable system proxy", new EventHandler(EnableItem_Click)),
-                    new MenuItem("-"),
-                    PACModeItem = CreateMenuItem("PAC", new EventHandler(PACModeItem_Click)),
-                    globalModeItem = CreateMenuItem("Global", new EventHandler(GlobalModeItem_Click)),
-                }),
-                CreateMenuGroup("PAC ", new MenuItem[] {
-                    CreateMenuItem("Update local PAC from GFWList", new EventHandler(UpdatePACFromGFWListItem_Click)),
-                    new MenuItem("-"),
-                    CreateMenuItem("Update local PAC from Lan IP list", new EventHandler(UpdatePACFromLanIPListItem_Click)),
-                    CreateMenuItem("Update local PAC from Chn White list", new EventHandler(UpdatePACFromCNWhiteListItem_Click)),
-                    CreateMenuItem("Update local PAC from Chn IP list", new EventHandler(UpdatePACFromCNIPListItem_Click)),
-                    CreateMenuItem("Update local PAC from Chn Only list", new EventHandler(UpdatePACFromCNOnlyListItem_Click)),
-                    new MenuItem("-"),
-                    CreateMenuItem("Edit local PAC file", new EventHandler(EditPACFileItem_Click)),
-                    CreateMenuItem("Edit user rule for GFWList", new EventHandler(EditUserRuleFileForGFWListItem_Click)),
+                    globalModeItem = CreateMenuItem("Enable system proxy", new EventHandler(GlobalModeItem_Click)),
                 }),
                 CreateMenuGroup("Proxy rule", new MenuItem[] {
                     ruleDisableBypass = CreateMenuItem("Disable bypass", new EventHandler(RuleBypassDisableItem_Click)),
@@ -259,10 +209,8 @@ namespace ShadowsocksR.View
                     ruleBypassLan = CreateMenuItem("Bypass LAN", new EventHandler(RuleBypassLanItem_Click)),
                     ruleBypassChina = CreateMenuItem("Bypass LAN and China", new EventHandler(RuleBypassChinaItem_Click)),
                     ruleBypassNotChina = CreateMenuItem("Bypass LAN and not China", new EventHandler(RuleBypassNotChinaItem_Click)),
-                    ruleUser = CreateMenuItem("User custom", new EventHandler(RuleUserItem_Click)),
                     new MenuItem("-"),
-                    CreateMenuItem("Edit China IP file", new EventHandler(EditChnIpFileItem_Click)),
-                    CreateMenuItem("Edit Host file", new EventHandler(EditHostFileItem_Click)),
+                    CreateMenuItem("Update China IP", new EventHandler(UpdateChnIpItem_Click)),
                 }),
                 new MenuItem("-"),
                 ServersItem = CreateMenuGroup("Servers", new MenuItem[] {
@@ -273,16 +221,14 @@ namespace ShadowsocksR.View
                     new MenuItem("-"),
                     CreateMenuItem("Import SSR links from clipboard", new EventHandler(CopyAddress_Click)),
                     CreateMenuItem("Scan QRCode from screen", new EventHandler(ScanQRCodeItem_Click)),
-                    CreateMenuItem("Import servers from file", new EventHandler(Import_Click)),
                 }),
                 CreateMenuGroup("Servers Subscribe", new MenuItem[] {
                     CreateMenuItem("Update subscribe SSR node", new EventHandler(CheckNodeUpdate_Click)),
-                    CreateMenuItem("Update subscribe SSR node(bypass proxy)", new EventHandler(CheckNodeUpdateBypassProxy_Click)),
                     new MenuItem("-"),
                     CreateMenuItem("Subscribe setting", new EventHandler(SubscribeSetting_Click)),
                 }),
                 new MenuItem("-"),
-                CreateMenuItem("Global settings", new EventHandler(Setting_Click)),
+                CreateMenuItem("Settings", new EventHandler(Setting_Click)),
                 new MenuItem("-"),
                 CreateMenuItem("Quit", new EventHandler(Quit_Click))
             });
@@ -318,20 +264,6 @@ namespace ShadowsocksR.View
             _notifyIcon.BalloonTipText = content;
             _notifyIcon.BalloonTipIcon = icon;
             _notifyIcon.ShowBalloonTip(timeout);
-        }
-
-        void controller_UpdatePACFromGFWListError(object sender, System.IO.ErrorEventArgs e)
-        {
-            GFWListUpdater updater = (GFWListUpdater)sender;
-            ShowBalloonTip(I18N.GetString("Failed to update PAC file"), e.GetException().Message, ToolTipIcon.Error, 5000);
-            Logging.LogUsefulException(e.GetException());
-        }
-
-        void controller_UpdatePACFromGFWListCompleted(object sender, GFWListUpdater.ResultEventArgs e)
-        {
-            GFWListUpdater updater = (GFWListUpdater)sender;
-            string result = e.Success ? I18N.GetString("PAC updated") : I18N.GetString("No updates found. Please report to GFWList if you have problems with it.");
-            ShowBalloonTip("ShadowsocksR", result, ToolTipIcon.Info, 1000);
         }
 
         void updateNodeChecker_NewNodeFound(object sender, EventArgs e)
@@ -539,6 +471,7 @@ namespace ShadowsocksR.View
             {
                 ShowBalloonTip("ShadowsocksR", I18N.GetString("Update subscribe node failure"), ToolTipIcon.Info, 10000);
             }
+            updateSubscribeManager.ResetUpdate();
         }
 
         void notifyIcon1_BalloonTipClicked(object sender, EventArgs e)
@@ -549,7 +482,6 @@ namespace ShadowsocksR.View
         private void UpdateSysProxyMode(Configuration config)
         {
             enableItem.Checked = config.sysProxyMode == (int)ProxyMode.Direct;
-            PACModeItem.Checked = config.sysProxyMode == (int)ProxyMode.Pac;
             globalModeItem.Checked = config.sysProxyMode == (int)ProxyMode.Global;
         }
 
@@ -559,7 +491,6 @@ namespace ShadowsocksR.View
             ruleBypassLan.Checked = config.proxyRuleMode == (int)ProxyRuleMode.BypassLan;
             ruleBypassChina.Checked = config.proxyRuleMode == (int)ProxyRuleMode.BypassLanAndChina;
             ruleBypassNotChina.Checked = config.proxyRuleMode == (int)ProxyRuleMode.BypassLanAndNotChina;
-            ruleUser.Checked = config.proxyRuleMode == (int)ProxyRuleMode.UserCustom;
         }
 
         private void LoadCurrentConfiguration()
@@ -770,29 +701,6 @@ namespace ShadowsocksR.View
             }
         }
 
-        private void Import_Click(object sender, EventArgs e)
-        {
-            using (OpenFileDialog dlg = new OpenFileDialog())
-            {
-                dlg.InitialDirectory = Application.StartupPath;
-                dlg.Filter = I18N.GetString("Config File") + "|*.json";
-                if (dlg.ShowDialog() == DialogResult.OK)
-                {
-                    string name = dlg.FileName;
-                    Configuration cfg = Configuration.LoadFile(name);
-                    if (cfg.configs.Count == 1 && cfg.configs[0].server == Configuration.GetDefaultServer().server)
-                    {
-                        //
-                    }
-                    else
-                    {
-                        controller.MergeConfiguration(cfg);
-                        LoadCurrentConfiguration();
-                    }
-                }
-            }
-        }
-
         private void Setting_Click(object sender, EventArgs e)
         {
             ShowSettingForm();
@@ -820,9 +728,6 @@ namespace ShadowsocksR.View
             _notifyIcon.Visible = false;
             Application.Exit();
         }
-
-        [DllImport("user32.dll")]
-        private static extern short GetAsyncKeyState(Keys vKey);
 
         private void notifyIcon1_Click(object sender, MouseEventArgs e)
         {
@@ -853,18 +758,6 @@ namespace ShadowsocksR.View
             controller.ToggleMode(ProxyMode.Global);
         }
 
-        private void PACModeItem_Click(object sender, EventArgs e)
-        {
-            Configuration config = controller.GetCurrentConfiguration();
-            if (config.configs.Count == 0)
-            {
-                MessageBox.Show(I18N.GetString("Please add at least one server"), "ShadowsocksR",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-            controller.ToggleMode(ProxyMode.Pac);
-        }
-
         private void RuleBypassLanItem_Click(object sender, EventArgs e)
         {
             controller.ToggleRuleMode((int)ProxyRuleMode.BypassLan);
@@ -880,71 +773,14 @@ namespace ShadowsocksR.View
             controller.ToggleRuleMode((int)ProxyRuleMode.BypassLanAndNotChina);
         }
 
-        private void RuleUserItem_Click(object sender, EventArgs e)
-        {
-            controller.ToggleRuleMode((int)ProxyRuleMode.UserCustom);
-        }
-
         private void RuleBypassDisableItem_Click(object sender, EventArgs e)
         {
             controller.ToggleRuleMode((int)ProxyRuleMode.Disable);
         }
 
-        private void CopyPACURLItem_Click(object sender, EventArgs e)
+        private void UpdateChnIpItem_Click(object sender, EventArgs e)
         {
-            try
-            {
-                Configuration config = controller.GetCurrentConfiguration();
-                string pacUrl;
-                pacUrl = "http://127.0.0.1:" + config.localPort.ToString() + "/pac?" + "auth=" + config.localAuthPassword + "&t=" + Util.Utils.GetTimestamp(DateTime.Now);
-                Clipboard.SetText(pacUrl);
-            }
-            catch { }
-        }
-
-        private void EditPACFileItem_Click(object sender, EventArgs e)
-        {
-            controller.TouchPACFile();
-        }
-
-        private void UpdatePACFromGFWListItem_Click(object sender, EventArgs e)
-        {
-            controller.UpdatePACFromGFWList();
-        }
-
-        private void UpdatePACFromLanIPListItem_Click(object sender, EventArgs e)
-        {
-            controller.UpdatePACFile(Resources.ssr_lanip);
-        }
-
-        private void UpdatePACFromCNWhiteListItem_Click(object sender, EventArgs e)
-        {
-            controller.UpdatePACFile(Resources.ssr_white);
-        }
-
-        private void UpdatePACFromCNOnlyListItem_Click(object sender, EventArgs e)
-        {
-            controller.UpdatePACFile(Resources.ssr_white_r);
-        }
-
-        private void UpdatePACFromCNIPListItem_Click(object sender, EventArgs e)
-        {
-            controller.UpdatePACFile(Resources.ssr_cnip);
-        }
-
-        private void EditUserRuleFileForGFWListItem_Click(object sender, EventArgs e)
-        {
-            controller.TouchUserRuleFile();
-        }
-
-        private void EditHostFileItem_Click(object sender, EventArgs e)
-        {
-            controller.TouchHostFile();
-        }
-
-        private void EditChnIpFileItem_Click(object sender, EventArgs e)
-        {
-            controller.TouchChnIpFile();
+            //TODO: update
         }
 
         private void AServerItem_Click(object sender, EventArgs e)
@@ -962,19 +798,7 @@ namespace ShadowsocksR.View
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-            updateSubscribeManager.CreateTask(controller.GetCurrentConfiguration(), updateNodeChecker, true);
-        }
-
-        private void CheckNodeUpdateBypassProxy_Click(object sender, EventArgs e)
-        {
-            Configuration config = controller.GetCurrentConfiguration();
-            if (config.serverSubscribes.Count == 0)
-            {
-                MessageBox.Show(I18N.GetString("Please add at least one server subscribe"), "ShadowsocksR",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-            updateSubscribeManager.CreateTask(controller.GetCurrentConfiguration(), updateNodeChecker, false);
+            updateSubscribeManager.CreateTask(config, updateNodeChecker);
         }
 
         private void ShowServerLogItem_Click(object sender, EventArgs e)
