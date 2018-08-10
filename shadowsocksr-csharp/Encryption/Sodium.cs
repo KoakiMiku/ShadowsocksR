@@ -12,12 +12,7 @@ namespace ShadowsocksR.Encryption
 
         static Sodium()
         {
-            string runningPath = Path.Combine(System.Windows.Forms.Application.StartupPath, @"temp");
-            if (!Directory.Exists(runningPath))
-            {
-                Directory.CreateDirectory(runningPath);
-            }
-            string dllPath = Path.Combine(runningPath, "libsscrypto.dll");
+            string dllPath = Path.Combine(Path.Combine(System.Windows.Forms.Application.StartupPath, @"temp"), "libsscrypto.dll");
             try
             {
                 if (IntPtr.Size == 4)
@@ -30,7 +25,9 @@ namespace ShadowsocksR.Encryption
                 }
                 LoadLibrary(dllPath);
             }
-            catch (IOException) { }
+            catch (IOException)
+            {
+            }
             catch (Exception e)
             {
                 Logging.LogUsefulException(e);
@@ -41,12 +38,12 @@ namespace ShadowsocksR.Encryption
         private static extern IntPtr LoadLibrary(string path);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void crypto_stream_salsa20_xor_ic(byte[] c, byte[] m, ulong mlen, byte[] n, ulong ic, byte[] k);
+        public extern static void crypto_stream_salsa20_xor_ic(byte[] c, byte[] m, ulong mlen, byte[] n, ulong ic, byte[] k);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void crypto_stream_chacha20_xor_ic(byte[] c, byte[] m, ulong mlen, byte[] n, ulong ic, byte[] k);
+        public extern static void crypto_stream_chacha20_xor_ic(byte[] c, byte[] m, ulong mlen, byte[] n, ulong ic, byte[] k);
 
         [DllImport(DLLNAME, CallingConvention = CallingConvention.Cdecl)]
-        public static extern void crypto_stream_chacha20_ietf_xor_ic(byte[] c, byte[] m, ulong mlen, byte[] n, ulong ic, byte[] k);
+        public extern static int crypto_stream_chacha20_ietf_xor_ic(byte[] c, byte[] m, ulong mlen, byte[] n, uint ic, byte[] k);
     }
 }

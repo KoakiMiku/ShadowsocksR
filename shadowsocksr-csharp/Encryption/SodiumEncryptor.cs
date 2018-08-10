@@ -32,7 +32,7 @@ namespace ShadowsocksR.Encryption
                     encryptor_delegate = Sodium.crypto_stream_chacha20_xor_ic;
                     break;
                 case CIPHER_CHACHA20_IETF:
-                    encryptor_delegate = Sodium.crypto_stream_chacha20_ietf_xor_ic;
+                    encryptor_delegate = crypto_stream_chacha20_ietf_xor_ic;
                     break;
             }
         }
@@ -43,14 +43,14 @@ namespace ShadowsocksR.Encryption
                 {"chacha20-ietf", new EncryptorInfo(32, 12, true, CIPHER_CHACHA20_IETF)},
         };
 
-        public static List<string> SupportedCiphers()
-        {
-            return new List<string>(_ciphers.Keys);
-        }
-
         protected override Dictionary<string, EncryptorInfo> getCiphers()
         {
             return _ciphers;
+        }
+
+        public static List<string> SupportedCiphers()
+        {
+            return new List<string>(_ciphers.Keys);
         }
 
         protected override void cipherUpdate(bool isCipher, int length, byte[] buf, byte[] outbuf)
@@ -107,6 +107,13 @@ namespace ShadowsocksR.Encryption
             _decryptBytesRemaining = 0;
         }
 
-        public override void Dispose() { }
+        void crypto_stream_chacha20_ietf_xor_ic(byte[] c, byte[] m, ulong mlen, byte[] n, ulong ic, byte[] k)
+        {
+            Sodium.crypto_stream_chacha20_ietf_xor_ic(c, m, mlen, n, (uint)ic, k);
+        }
+
+        public override void Dispose()
+        {
+        }
     }
 }

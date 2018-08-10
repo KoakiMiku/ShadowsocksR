@@ -88,9 +88,7 @@ namespace ShadowsocksR.Encryption
                 }
             }
             if (_key == null)
-            {
                 _key = CachedKeys[k];
-            }
             Array.Resize(ref _iv, ivLen);
             randBytes(_iv, ivLen);
         }

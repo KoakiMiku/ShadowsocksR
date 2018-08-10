@@ -48,15 +48,12 @@ namespace ShadowsocksR.Obfs
         }
     }
 
-    class AuthDataAesChain
+    class AuthChain_a : VerifySimpleBase
     {
-        public byte[] clientID;
-        public UInt32 connectionID;
-    }
+        protected class AuthDataAesChain : AuthData { }
 
-    class AuthChain_a : ObfsBase
-    {
-        public AuthChain_a(string method) : base(method)
+        public AuthChain_a(string method)
+            : base(method)
         {
             has_sent_header = false;
             has_recv_header = false;
@@ -72,10 +69,6 @@ namespace ShadowsocksR.Obfs
             {"auth_chain_a", new int[]{1, 0, 1}},
         };
 
-        protected const int RecvBufferSize = 65536 * 2;
-        protected byte[] recv_buf = new byte[RecvBufferSize];
-        protected int recv_buf_len = 0;
-        protected Random random = new Random();
         protected bool has_sent_header;
         protected bool has_recv_header;
         protected static RNGCryptoServiceProvider g_random = new RNGCryptoServiceProvider();
@@ -92,49 +85,6 @@ namespace ShadowsocksR.Obfs
         protected xorshift128plus random_server = new xorshift128plus();
         protected IEncryptor encryptor;
         protected const int overhead = 4;
-
-        public override void SetServerInfo(ServerInfo serverInfo)
-        {
-            base.SetServerInfo(serverInfo);
-        }
-
-        public int LinearRandomInt(int max)
-        {
-            return random.Next(max);
-        }
-
-        public double TrapezoidRandomFloat(double d) // －1 <= d <= 1
-        {
-            if (d == 0)
-                return random.NextDouble();
-
-            double s = random.NextDouble();
-            //(2dx + 2(1 - d))x/2 = s
-            //dx^2 + (1-d)x - s = 0
-            double a = 1 - d;
-            //dx^2 + ax - s = 0
-            //[-a + sqrt(a^2 + 4ds)] / 2d
-            return (Math.Sqrt(a * a + 4 * d * s) - a) / (2 * d);
-        }
-
-        public int TrapezoidRandomInt(int max, double d)
-        {
-            double v = TrapezoidRandomFloat(d);
-            return (int)(v * max);
-        }
-
-        public override byte[] ClientEncode(byte[] encryptdata, int datalength, out int outlength)
-        {
-            outlength = datalength;
-            return encryptdata;
-        }
-
-        public override byte[] ClientDecode(byte[] encryptdata, int datalength, out int outlength, out bool needsendback)
-        {
-            outlength = datalength;
-            needsendback = false;
-            return encryptdata;
-        }
 
         public static List<string> SupportedObfs()
         {
@@ -164,6 +114,11 @@ namespace ShadowsocksR.Obfs
         public override int GetOverhead()
         {
             return overhead;
+        }
+
+        protected MbedTLS.HMAC CreateHMAC(byte[] key)
+        {
+            return new MbedTLS.HMAC_MD5(key);
         }
 
         protected virtual int GetRandLen(int datalength, xorshift128plus random, byte[] last_hash)
@@ -231,12 +186,15 @@ namespace ShadowsocksR.Obfs
             byte[] key = new byte[user_key.Length + 4];
             user_key.CopyTo(key, 0);
             BitConverter.GetBytes(pack_id).CopyTo(key, key.Length - 4);
-            ++pack_id;
 
-            byte[] md5data = MbedTLS.ComputeHash(key, outdata, 0, outlength);
-            last_client_hash = md5data;
-            Array.Copy(md5data, 0, outdata, outlength, 2);
-            outlength += 2;
+            MbedTLS.HMAC md5 = CreateHMAC(key);
+            ++pack_id;
+            {
+                byte[] md5data = md5.ComputeHash(outdata, 0, outlength);
+                last_client_hash = md5data;
+                Array.Copy(md5data, 0, outdata, outlength, 2);
+                outlength += 2;
+            }
         }
 
         public void PackAuthData(byte[] data, int datalength, byte[] outdata, out int outlength)
@@ -280,7 +238,8 @@ namespace ShadowsocksR.Obfs
                 byte[] rnd = new byte[4];
                 random.NextBytes(rnd);
                 rnd.CopyTo(outdata, 0);
-                byte[] md5data = MbedTLS.ComputeHash(key, rnd, 0, rnd.Length);
+                MbedTLS.HMAC md5 = CreateHMAC(key);
+                byte[] md5data = md5.ComputeHash(rnd, 0, rnd.Length);
                 last_client_hash = md5data;
                 Array.Copy(md5data, 0, outdata, rnd.Length, 8);
             }
@@ -313,7 +272,7 @@ namespace ShadowsocksR.Obfs
 
                 byte[] encrypt_key = user_key;
 
-                IEncryptor encryptor = EncryptorFactory.GetEncryptor("aes-128-cbc", Convert.ToBase64String(encrypt_key) + SALT);
+                Encryption.IEncryptor encryptor = Encryption.EncryptorFactory.GetEncryptor("aes-128-cbc", System.Convert.ToBase64String(encrypt_key) + SALT);
 
                 encryptor.SetIV(new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 });
                 encryptor.Encrypt(encrypt, 16, encrypt_data, out int enc_outlen);
@@ -323,12 +282,13 @@ namespace ShadowsocksR.Obfs
             }
             // final HMAC
             {
-                byte[] md5data = MbedTLS.ComputeHash(user_key, encrypt, 0, 20);
+                MbedTLS.HMAC md5 = CreateHMAC(user_key);
+                byte[] md5data = md5.ComputeHash(encrypt, 0, 20);
                 last_server_hash = md5data;
                 Array.Copy(md5data, 0, encrypt, 20, 4);
             }
             encrypt.CopyTo(outdata, 12);
-            encryptor = EncryptorFactory.GetEncryptor("rc4", Convert.ToBase64String(user_key) + Convert.ToBase64String(last_client_hash, 0, 16));
+            encryptor = EncryptorFactory.GetEncryptor("rc4", System.Convert.ToBase64String(user_key) + System.Convert.ToBase64String(last_client_hash, 0, 16));
 
             // combine first chunk
             {
@@ -444,6 +404,7 @@ namespace ShadowsocksR.Obfs
             while (recv_buf_len > 4)
             {
                 BitConverter.GetBytes(recv_id).CopyTo(key, key.Length - 4);
+                MbedTLS.HMAC md5 = CreateHMAC(key);
 
                 int data_len = ((recv_buf[1] ^ last_server_hash[15]) << 8) + (recv_buf[0] ^ last_server_hash[14]);
                 int rand_len = GetRandLen(data_len, random_server, last_server_hash);
@@ -453,46 +414,48 @@ namespace ShadowsocksR.Obfs
                     throw new ObfsException("ClientPostDecrypt data error");
                 }
                 if (len + 4 > recv_buf_len)
-                {
                     break;
-                }
 
-                byte[] md5data = MbedTLS.ComputeHash(key, recv_buf, 0, len + 2);
-                if (md5data[0] != recv_buf[len + 2] || md5data[1] != recv_buf[len + 3])
+                byte[] md5data = md5.ComputeHash(recv_buf, 0, len + 2);
+                if (md5data[0] != recv_buf[len + 2]
+                    || md5data[1] != recv_buf[len + 3]
+                    )
                 {
                     throw new ObfsException("ClientPostDecrypt data uncorrect checksum");
                 }
 
-                int pos;
-                if (data_len > 0 && rand_len > 0)
                 {
-                    pos = 2 + GetRandStartPos(rand_len, random_server);
+                    int pos;
+                    if (data_len > 0 && rand_len > 0)
+                    {
+                        pos = 2 + GetRandStartPos(rand_len, random_server);
+                    }
+                    else
+                    {
+                        pos = 2;
+                    }
+                    int outlen = data_len;
+                    Util.Utils.SetArrayMinSize2(ref outdata, outlength + outlen);
+                    byte[] data = new byte[outlen];
+                    Array.Copy(recv_buf, pos, data, 0, outlen);
+                    encryptor.Decrypt(data, outlen, data, out outlen);
+                    last_server_hash = md5data;
+                    if (recv_id == 1)
+                    {
+                        Server.tcp_mss = data[0] | (data[1] << 8);
+                        pos = 2;
+                        outlen -= 2;
+                    }
+                    else
+                    {
+                        pos = 0;
+                    }
+                    Array.Copy(data, pos, outdata, outlength, outlen);
+                    outlength += outlen;
+                    recv_buf_len -= len + 4;
+                    Array.Copy(recv_buf, len + 4, recv_buf, 0, recv_buf_len);
+                    ++recv_id;
                 }
-                else
-                {
-                    pos = 2;
-                }
-                int outlen = data_len;
-                Util.Utils.SetArrayMinSize2(ref outdata, outlength + outlen);
-                byte[] data = new byte[outlen];
-                Array.Copy(recv_buf, pos, data, 0, outlen);
-                encryptor.Decrypt(data, outlen, data, out outlen);
-                last_server_hash = md5data;
-                if (recv_id == 1)
-                {
-                    Server.tcp_mss = data[0] | (data[1] << 8);
-                    pos = 2;
-                    outlen -= 2;
-                }
-                else
-                {
-                    pos = 0;
-                }
-                Array.Copy(data, pos, outdata, outlength, outlen);
-                outlength += outlen;
-                recv_buf_len -= len + 4;
-                Array.Copy(recv_buf, len + 4, recv_buf, 0, recv_buf_len);
-                ++recv_id;
             }
             return outdata;
         }
@@ -526,12 +489,13 @@ namespace ShadowsocksR.Obfs
             byte[] auth_data = new byte[3];
             random.NextBytes(auth_data);
 
-            byte[] md5data = MbedTLS.ComputeHash(Server.key, auth_data, 0, auth_data.Length);
+            MbedTLS.HMAC md5 = CreateHMAC(Server.key);
+            byte[] md5data = md5.ComputeHash(auth_data, 0, auth_data.Length);
             int rand_len = UdpGetRandLen(random_client, md5data);
             byte[] rand_data = new byte[rand_len];
             random.NextBytes(rand_data);
             outlength = datalength + rand_len + 8;
-            encryptor = EncryptorFactory.GetEncryptor("rc4", Convert.ToBase64String(user_key) + Convert.ToBase64String(md5data, 0, 16));
+            encryptor = EncryptorFactory.GetEncryptor("rc4", System.Convert.ToBase64String(user_key) + System.Convert.ToBase64String(md5data, 0, 16));
             encryptor.Encrypt(plaindata, datalength, outdata, out datalength);
             rand_data.CopyTo(outdata, datalength);
             auth_data.CopyTo(outdata, outlength - 8);
@@ -541,7 +505,11 @@ namespace ShadowsocksR.Obfs
                 uid[i] = (byte)(user_id[i] ^ md5data[i]);
             }
             uid.CopyTo(outdata, outlength - 5);
-            md5data = MbedTLS.ComputeHash(user_key, outdata, 0, outlength - 1);
+            {
+                md5 = CreateHMAC(user_key);
+                md5data = md5.ComputeHash(outdata, 0, outlength - 1);
+                Array.Copy(md5data, 0, outdata, outlength - 1, 1);
+            }
             return outdata;
         }
 
@@ -552,16 +520,18 @@ namespace ShadowsocksR.Obfs
                 outlength = 0;
                 return plaindata;
             }
-            byte[] md5data = MbedTLS.ComputeHash(user_key, plaindata, 0, datalength - 1);
+            MbedTLS.HMAC md5 = CreateHMAC(user_key);
+            byte[] md5data = md5.ComputeHash(plaindata, 0, datalength - 1);
             if (md5data[0] != plaindata[datalength - 1])
             {
                 outlength = 0;
                 return plaindata;
             }
-            md5data = MbedTLS.ComputeHash(Server.key, plaindata, datalength - 8, 7);
+            md5 = CreateHMAC(Server.key);
+            md5data = md5.ComputeHash(plaindata, datalength - 8, 7);
             int rand_len = UdpGetRandLen(random_server, md5data);
             outlength = datalength - rand_len - 8;
-            encryptor = EncryptorFactory.GetEncryptor("rc4", Convert.ToBase64String(user_key) + Convert.ToBase64String(md5data, 0, 16));
+            encryptor = EncryptorFactory.GetEncryptor("rc4", System.Convert.ToBase64String(user_key) + System.Convert.ToBase64String(md5data, 0, 16));
             encryptor.Decrypt(plaindata, outlength, plaindata, out outlength);
             return plaindata;
         }

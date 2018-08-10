@@ -99,8 +99,10 @@ namespace ShadowsocksR.Properties {
         ///
         ///# Menu items
         ///Mode=代理模式
-        ///Disable system proxy=禁用代理
-        ///Enable system proxy=启用代理
+        ///No modify system proxy=不修改当前状态
+        ///Disable system proxy=直连模式(不代理)
+        ///PAC=PAC 模式
+        ///Global=全局模式
         ///Proxy rule=代理规则
         ///Bypass LAN=绕过局域网
         ///Bypass LAN and China=绕过局域网和大陆
@@ -116,12 +118,40 @@ namespace ShadowsocksR.Properties {
         ///Config File=配置文件
         ///Servers Subscribe=服务器订阅
         ///Subscribe setting=服务器订阅设置
-        ///Update subscribe SSR node=更新服务器订阅
-        ///Updat [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///Upda [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string cn {
             get {
                 return ResourceManager.GetString("cn", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 # remote proxy
+        ///.0rz.tw remoteproxy
+        ///.0to255.com remoteproxy
+        ///.1-apple.com.tw remoteproxy
+        ///.10musume.com remoteproxy
+        ///.123rf.com remoteproxy
+        ///.12bet.com remoteproxy
+        ///.12vpn.com remoteproxy
+        ///.141hongkong.com remoteproxy
+        ///.173ng.com remoteproxy
+        ///.1984bbs.com remoteproxy
+        ///.1984bbs.org remoteproxy
+        ///.1bao.org remoteproxy
+        ///.1eew.com remoteproxy
+        ///.1pondo.tv remoteproxy
+        ///.2-hand.info remoteproxy
+        ///.2000fun.com remoteproxy
+        ///.2008xianzhang.info remoteproxy
+        ///.21andy.com remoteproxy
+        ///.24smile.org remoteproxy
+        ///.2shared.c [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        /// </summary>
+        internal static string host {
+            get {
+                return ResourceManager.GetString("host", resourceCulture);
             }
         }
         
@@ -221,6 +251,118 @@ namespace ShadowsocksR.Properties {
         }
         
         /// <summary>
+        ///   查找类似 var direct = &quot;__DIRECT__&quot;;
+        ///if (direct == &quot;__DIR&quot; + &quot;ECT__&quot;) direct = &quot;DIRECT;&quot;;
+        ///
+        ///var wall_proxy = function(){ return &quot;__PROXY__&quot;; };
+        ///var wall_v6_proxy = function(){ return &quot;__PROXY__&quot;; };
+        ///
+        ///var nowall_proxy = function(){ return direct; };
+        ///var ip_proxy = function(){ return wall_proxy(); };
+        ///var ipv6_proxy = function(){ return wall_v6_proxy(); };
+        ///
+        ///var cnIpRange = [
+        ///{},{0x10001:1,0x10002:1,0x10003:1,0x10008:4,0x1000c:4,0x10020:16,0x10030:16,0x10100:1,0x10102:1,0x10103:1,0x10104:4,0x10108:4,0x1010c:4,0 [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        /// </summary>
+        internal static string ssr_cnip {
+            get {
+                return ResourceManager.GetString("ssr_cnip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 var direct = &quot;__DIRECT__&quot;;
+        ///if (direct == &quot;__DIR&quot; + &quot;ECT__&quot;) direct = &quot;DIRECT;&quot;;
+        ///
+        ///var wall_proxy = function(){ return &quot;__PROXY__&quot;; };
+        ///var wall_v6_proxy = function(){ return &quot;__PROXY__&quot;; };
+        ///
+        ///var nowall_proxy = function(){ return direct; };
+        ///var ip_proxy = function(){ return nowall_proxy(); };
+        ///var ipv6_proxy = function(){ return nowall_proxy(); };
+        ///
+        ///var rules = __RULES__;
+        ///
+        ///function createDict()
+        ///{
+        ///	var result = {};
+        ///	result.__proto__ = null;
+        ///	return result;
+        ///}
+        ///
+        ///function getOwnPropertyDescriptor(o [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        /// </summary>
+        internal static string ssr_gfw {
+            get {
+                return ResourceManager.GetString("ssr_gfw", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 var direct = &quot;__DIRECT__&quot;;
+        ///if (direct == &quot;__DIR&quot; + &quot;ECT__&quot;) direct = &quot;DIRECT;&quot;;
+        ///
+        ///var wall_proxy = function(){ return &quot;__PROXY__&quot;; };
+        ///var wall_v6_proxy = function(){ return &quot;__PROXY__&quot;; };
+        ///
+        ///var nowall_proxy = function(){ return direct; };
+        ///var ip_proxy = function(){ return wall_proxy(); };
+        ///var ipv6_proxy = function(){ return wall_v6_proxy(); };
+        ///
+        ///var subnetIpRangeList = [
+        ///0,1,
+        ///167772160,184549376,	//10.0.0.0/8
+        ///2886729728,2887778304,	//172.16.0.0/12
+        ///3232235520,3232301056,	//192.168.0.0/16
+        ///2130706 [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        /// </summary>
+        internal static string ssr_lanip {
+            get {
+                return ResourceManager.GetString("ssr_lanip", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 var direct = &quot;__DIRECT__&quot;;
+        ///if (direct == &quot;__DIR&quot; + &quot;ECT__&quot;) direct = &quot;DIRECT;&quot;;
+        ///
+        ///var wall_proxy = function(){ return &quot;__PROXY__&quot;; };
+        ///var wall_v6_proxy = function(){ return &quot;__PROXY__&quot;; };
+        ///
+        ///var nowall_proxy = function(){ return direct; };
+        ///var ip_proxy = function(){ return wall_proxy(); };
+        ///var ipv6_proxy = function(){ return wall_v6_proxy(); };
+        ///
+        ///var cnIpRange = [
+        ///{},{0x10001:1,0x10002:1,0x10003:1,0x10008:4,0x1000c:4,0x10020:16,0x10030:16,0x10100:1,0x10102:1,0x10103:1,0x10104:4,0x10108:4,0x1010c:4,0 [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        /// </summary>
+        internal static string ssr_white {
+            get {
+                return ResourceManager.GetString("ssr_white", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   查找类似 var direct = &quot;__DIRECT__&quot;;
+        ///if (direct == &quot;__DIR&quot; + &quot;ECT__&quot;) direct = &quot;DIRECT;&quot;;
+        ///
+        ///var wall_proxy = function(){ return direct; };
+        ///var wall_v6_proxy = function(){ return direct; };
+        ///
+        ///var nowall_proxy = function(){ return &quot;__PROXY__&quot;; };
+        ///var ip_proxy = function(){ return nowall_proxy(); };
+        ///var ipv6_proxy = function(){ return wall_v6_proxy(); };
+        ///
+        ///var cnIpRange = [
+        ///{},{0x10001:1,0x10002:1,0x10003:1,0x10008:4,0x1000c:4,0x10020:16,0x10030:16,0x10100:1,0x10102:1,0x10103:1,0x10104:4,0x10108:4,0x1010c:4,0x10 [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        /// </summary>
+        internal static string ssr_white_r {
+            get {
+                return ResourceManager.GetString("ssr_white_r", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找 System.Drawing.Bitmap 类型的本地化资源。
         /// </summary>
         internal static System.Drawing.Bitmap ssw128 {
@@ -231,12 +373,25 @@ namespace ShadowsocksR.Properties {
         }
         
         /// <summary>
+        ///   查找类似 ! Put user rules line by line in this file.
+        ///! See https://adblockplus.org/en/filter-cheatsheet
+        /// 的本地化字符串。
+        /// </summary>
+        internal static string user_rule {
+            get {
+                return ResourceManager.GetString("user_rule", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   查找类似 # translation for Traditional Chinese
         ///
         ///# Menu items
         ///Mode=代理模式
-        ///Disable system proxy=禁用代理
-        ///Enable system proxy=啟用代理
+        ///No modify system proxy=不修改當前狀態
+        ///Disable system proxy=直連模式(不代理)
+        ///PAC=PAC 模式
+        ///Global=全局模式
         ///Proxy rule=代理規則
         ///Bypass LAN=繞過區域網路
         ///Bypass LAN and China=繞過區域網路和大陸
@@ -252,8 +407,7 @@ namespace ShadowsocksR.Properties {
         ///Config File=設定檔
         ///Servers Subscribe=伺服器訂閱
         ///Subscribe setting=伺服器訂閱設置
-        ///Update subscribe SSR node=更新伺服器訂閱
-        ///Up [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///U [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string zh_tw {
             get {

@@ -4,10 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
+using System.IO.Compression;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Security.Cryptography;
+using System.Windows.Forms;
 
 namespace ShadowsocksR.Util
 {
@@ -39,6 +42,24 @@ namespace ShadowsocksR.Util
                 SetProcessWorkingSetSize(current_process.Handle,
                                          (UIntPtr)0xFFFFFFFFFFFFFFFF,
                                          (UIntPtr)0xFFFFFFFFFFFFFFFF);
+            }
+        }
+
+        public static string UnGzip(byte[] buf)
+        {
+            byte[] buffer = new byte[1024];
+            int n;
+            using (MemoryStream sb = new MemoryStream())
+            {
+                using (GZipStream input = new GZipStream(new MemoryStream(buf),
+                    CompressionMode.Decompress, false))
+                {
+                    while ((n = input.Read(buffer, 0, buffer.Length)) > 0)
+                    {
+                        sb.Write(buffer, 0, n);
+                    }
+                }
+                return System.Text.Encoding.UTF8.GetString(sb.ToArray());
             }
         }
 
@@ -231,6 +252,41 @@ namespace ShadowsocksR.Util
             return isLAN(((IPEndPoint)socket.RemoteEndPoint).Address);
         }
 
+        public static String GetTimestamp(DateTime value)
+        {
+            return value.ToString("yyyyMMddHHmmssffff");
+        }
+
+        public static string urlDecode(string str)
+        {
+            string ret = "";
+            for (int i = 0; i < str.Length; ++i)
+            {
+                if (str[i] == '%' && i < str.Length - 2)
+                {
+                    string s = str.Substring(i + 1, 2).ToLower();
+                    int val = 0;
+                    char c1 = s[0];
+                    char c2 = s[1];
+                    val += (c1 < 'a') ? c1 - '0' : 10 + (c1 - 'a');
+                    val *= 16;
+                    val += (c2 < 'a') ? c2 - '0' : 10 + (c2 - 'a');
+
+                    ret += (char)val;
+                    i += 2;
+                }
+                else if (str[i] == '+')
+                {
+                    ret += ' ';
+                }
+                else
+                {
+                    ret += str[i];
+                }
+            }
+            return ret;
+        }
+
         public static void SetArrayMinSize<T>(ref T[] array, int size)
         {
             if (size > array.Length)
@@ -365,6 +421,32 @@ namespace ShadowsocksR.Util
         public static string GetExecutablePath()
         {
             return System.Reflection.Assembly.GetExecutingAssembly().Location;
+        }
+
+        public static int RunAsAdmin(string Arguments)
+        {
+            Process process = null;
+            ProcessStartInfo processInfo = new ProcessStartInfo
+            {
+                Verb = "runas",
+                FileName = Application.ExecutablePath,
+                Arguments = Arguments
+            };
+            try
+            {
+                process = Process.Start(processInfo);
+            }
+            catch (System.ComponentModel.Win32Exception)
+            {
+                return -1;
+            }
+            if (process != null)
+            {
+                process.WaitForExit();
+            }
+            int ret = process.ExitCode;
+            process.Close();
+            return ret;
         }
 
         public static int GetDpiMul()

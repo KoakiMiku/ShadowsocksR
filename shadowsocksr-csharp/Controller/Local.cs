@@ -473,8 +473,9 @@ namespace ShadowsocksR.Controller
         {
             IPEndPoint remoteEP = new IPEndPoint(ipAddress, serverPort);
 
-            if (cfg.socks5RemotePort != 0 || connectionUDP == null ||
-                connectionUDP != null && server.udp_over_tcp)
+            if (cfg.socks5RemotePort != 0
+                || connectionUDP == null
+                || connectionUDP != null && server.udp_over_tcp)
             {
                 remote = new ProxyEncryptSocket(ipAddress.AddressFamily,
                     SocketType.Stream, ProtocolType.Tcp);
@@ -483,7 +484,10 @@ namespace ShadowsocksR.Controller
                 {
                     remote.CreateEncryptor(server.method, server.password);
                 }
-                catch { }
+                catch
+                {
+
+                }
                 remote.SetProtocol(ObfsFactory.GetObfs(server.protocol));
                 remote.SetObfs(ObfsFactory.GetObfs(server.obfs));
             }
@@ -495,6 +499,7 @@ namespace ShadowsocksR.Controller
                     remoteUDP = new ProxyEncryptSocket(ipAddress.AddressFamily,
                         SocketType.Dgram, ProtocolType.Udp);
                     remoteUDP.GetSocket().Bind(new IPEndPoint(ipAddress.AddressFamily == AddressFamily.InterNetworkV6 ? IPAddress.IPv6Any : IPAddress.Any, 0));
+
                     remoteUDP.CreateEncryptor(server.method, server.password);
                     remoteUDP.SetProtocol(ObfsFactory.GetObfs(server.protocol));
                     remoteUDP.SetObfs(ObfsFactory.GetObfs(server.obfs));
