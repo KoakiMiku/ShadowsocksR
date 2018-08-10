@@ -2,14 +2,18 @@
 
 # Menu items
 Mode=代理模式
-Disable system proxy=禁用代理
-Enable system proxy=启用代理
+No modify system proxy=不修改当前状态
+Disable system proxy=直连模式(不代理)
+PAC=PAC 模式
+Global=全局模式
 Proxy rule=代理规则
 Bypass LAN=绕过局域网
 Bypass LAN and China=绕过局域网和大陆
 Bypass LAN and not China=绕过局域网和非大陆
+User custom=用户自定义
 Disable bypass=全局代理
-Update China IP=更新大陆规则
+Edit Host file=编辑用户自定义规则
+Edit China IP file=编辑大陆规则
 (empty group)=(未分组)
 Servers=服务器
 Edit servers=编辑服务器
@@ -19,15 +23,23 @@ Servers Subscribe=服务器订阅
 Subscribe setting=服务器订阅设置
 Update subscribe SSR node=更新服务器订阅
 Update subscribe SSR node(bypass proxy)=更新服务器订阅(不代理)
+Global settings=选项设置
 Start on Boot=开机启动
 Allow Clients from LAN=允许来自局域网的连接
+Update local PAC from GFWList=更新 PAC 为 GFWList
+Update local PAC from Lan IP list=更新 PAC 为绕过局域网
+Update local PAC from Chn White list=更新 PAC 为绕过大陆域名
+Update local PAC from Chn IP list=更新 PAC 为绕过大陆 IP
+Update local PAC from Chn Only list=更新 PAC 为仅通过大陆域名
+Edit local PAC file=编辑 PAC 文件
+Edit user rule for GFWList=编辑 GFWList 用户规则
 Scan QRCode from screen=从二维码导入服务器
 Import SSR links from clipboard=从剪贴板导入服务器
 Server statistic=服务器连接统计
 Disconnect current=断开所有连接
 Quit=退出
 Edit Servers=编辑服务器
-Settings=选项设置
+Global Settings=选项设置
 
 # Config Form
 Add=添加
@@ -101,6 +113,9 @@ Password can not be blank=密码不能为空
 Port out of range=端口超出范围
 System Proxy Enabled=系统代理已启用
 System Proxy Disabled=系统代理未启用
+Failed to update PAC file =更新 PAC 文件失败
+PAC updated=更新 PAC 成功
+No updates found. Please report to GFWList if you have problems with it.=未发现更新，如有问题请提交给 GFWList。
 No QRCode found. Try to zoom in or move it to the center of the screen.=未发现二维码，尝试把它放大或移动到靠近屏幕中间的位置。
 ShadowsocksR is already running=ShadowsocksR 已在运行
 Find ShadowsocksR icon in your notify tray.=请在任务栏里寻找 ShadowsocksR 图标。

@@ -10,7 +10,8 @@ namespace ShadowsocksR.Controller
     public enum ProxyMode
     {
         Direct,
-        Global
+        Pac,
+        Global,
     }
 
     public class ShadowsocksController
@@ -22,10 +23,13 @@ namespace ShadowsocksR.Controller
 
         private Listener _listener;
         private List<Listener> _port_map_listener;
+        private PACServer _pacServer;
         private Configuration _config;
         private ServerTransferTotal _transfer;
         private IPRangeSet _rangeSet;
+        private HostMap _hostMap;
         private HttpProxyRunner polipoRunner;
+        private GFWListUpdater gfwListUpdater;
         private bool stopped = false;
         private bool firstRun = true;
 
@@ -38,8 +42,13 @@ namespace ShadowsocksR.Controller
         public event EventHandler ToggleModeChanged;
         public event EventHandler ToggleRuleModeChanged;
         public event EventHandler ShowConfigFormEvent;
+        // when user clicked Edit PAC, and PAC file has already created
+        public event EventHandler<PathEventArgs> PACFileReadyToOpen;
+        public event EventHandler<PathEventArgs> UserRuleFileReadyToOpen;
         public event EventHandler<PathEventArgs> ChnIpFileReadyToOpen;
         public event EventHandler<PathEventArgs> HostFileReadyToOpen;
+        public event EventHandler<GFWListUpdater.ResultEventArgs> UpdatePACFromGFWListCompleted;
+        public event ErrorEventHandler UpdatePACFromGFWListError;
         public event ErrorEventHandler Errored;
 
         public ShadowsocksController()
@@ -65,6 +74,25 @@ namespace ShadowsocksR.Controller
         protected void ReportError(Exception e)
         {
             Errored?.Invoke(this, new ErrorEventArgs(e));
+        }
+
+        private void ReloadIPRange()
+        {
+            _rangeSet = new IPRangeSet();
+            _rangeSet.ChnIpFileChanged += iPRangeSet_ChnIpFileChanged;
+            _rangeSet.LoadChn();
+            if (_config.proxyRuleMode == (int)ProxyRuleMode.BypassLanAndNotChina)
+            {
+                _rangeSet.Reverse();
+            }
+        }
+
+        private void ReloadHost()
+        {
+            _hostMap = new HostMap();
+            _hostMap.HostFileChanged += hostMap_HostFileChanged;
+            _hostMap.LoadHostFile();
+            HostMap.Instance().Clear(_hostMap);
         }
 
         // always return copy
@@ -268,6 +296,46 @@ namespace ShadowsocksR.Controller
             }
         }
 
+        public void TouchPACFile()
+        {
+            string pacFilename = _pacServer.TouchPACFile();
+            PACFileReadyToOpen?.Invoke(this, new PathEventArgs() { Path = pacFilename });
+        }
+
+        public void TouchUserRuleFile()
+        {
+            string userRuleFilename = _pacServer.TouchUserRuleFile();
+            UserRuleFileReadyToOpen?.Invoke(this, new PathEventArgs() { Path = userRuleFilename });
+        }
+
+        public void TouchChnIpFile()
+        {
+            string chnIpFilename = _rangeSet.TouchChnIpFile();
+            ChnIpFileReadyToOpen?.Invoke(this, new PathEventArgs() { Path = chnIpFilename });
+        }
+
+        public void TouchHostFile()
+        {
+            string hostFilename = _hostMap.TouchHostFile();
+            HostFileReadyToOpen?.Invoke(this, new PathEventArgs() { Path = hostFilename });
+        }
+
+        public void UpdatePACFromGFWList()
+        {
+            if (gfwListUpdater != null)
+            {
+                gfwListUpdater.UpdatePACFromGFWList(_config);
+            }
+        }
+
+        public void UpdatePACFile(string pacfile)
+        {
+            if (gfwListUpdater != null)
+            {
+                gfwListUpdater.UpdatePACFile(pacfile);
+            }
+        }
+
         protected void Reload()
         {
             if (_port_map_listener != null)
@@ -282,19 +350,31 @@ namespace ShadowsocksR.Controller
             _config = MergeGetConfiguration(_config);
             _config.FlushPortMapCache();
 
-            _rangeSet = new IPRangeSet();
-            _rangeSet.ChnIpFileChanged += iPRangeSet_ChnIpFileChanged;
-            _rangeSet.LoadChn();
-            if (_config.proxyRuleMode == (int)ProxyRuleMode.BypassLanAndNotChina)
-            {
-                _rangeSet.Reverse();
-            }
-            _rangeSet.TouchChnIpFile();
+            ReloadIPRange();
+            ReloadHost();
 
             if (polipoRunner == null)
             {
                 polipoRunner = new HttpProxyRunner();
             }
+            if (_pacServer == null)
+            {
+                _pacServer = new PACServer();
+                _pacServer.PACFileChanged += pacServer_PACFileChanged;
+                _pacServer.UserRuleFileChanged += pacServer_UserRuleFileChanged;
+            }
+            _pacServer.UpdateConfiguration(_config);
+            if (gfwListUpdater == null)
+            {
+                gfwListUpdater = new GFWListUpdater();
+                gfwListUpdater.UpdateCompleted += pacServer_PACUpdateCompleted;
+                gfwListUpdater.Error += pacServer_PACUpdateError;
+            }
+
+            _pacServer.TouchPACFile();
+            _pacServer.TouchUserRuleFile();
+            _rangeSet.TouchChnIpFile();
+            _hostMap.TouchHostFile();
 
             // don't put polipoRunner.Start() before pacServer.Stop()
             // or bind will fail when switching bind address from 0.0.0.0 to 127.0.0.1
@@ -333,6 +413,7 @@ namespace ShadowsocksR.Controller
                         Local local = new Local(_config, _transfer, _rangeSet);
                         List<Listener.IService> services = new List<Listener.IService>();
                         services.Add(local);
+                        services.Add(_pacServer);
                         services.Add(new HttpPortForwarder(polipoRunner.RunningPort, _config));
                         _listener = new Listener(services);
                         _listener.Start(_config, 0);
@@ -411,6 +492,16 @@ namespace ShadowsocksR.Controller
             SystemProxy.Update(_config, false);
         }
 
+        private void pacServer_PACFileChanged(object sender, EventArgs e)
+        {
+            UpdateSystemProxy();
+        }
+
+        private void pacServer_UserRuleFileChanged(object sender, EventArgs e)
+        {
+            UpdateSystemProxy();
+        }
+
         private void hostMap_HostFileChanged(object sender, EventArgs e)
         {
             UpdateSystemProxy();
@@ -419,6 +510,16 @@ namespace ShadowsocksR.Controller
         private void iPRangeSet_ChnIpFileChanged(object sender, EventArgs e)
         {
             UpdateSystemProxy();
+        }
+
+        private void pacServer_PACUpdateCompleted(object sender, GFWListUpdater.ResultEventArgs e)
+        {
+            UpdatePACFromGFWListCompleted?.Invoke(sender, e);
+        }
+
+        private void pacServer_PACUpdateError(object sender, ErrorEventArgs e)
+        {
+            UpdatePACFromGFWListError?.Invoke(sender, e);
         }
 
         public void ShowConfigForm(int index)

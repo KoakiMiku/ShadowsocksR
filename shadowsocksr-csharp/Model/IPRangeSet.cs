@@ -9,6 +9,8 @@ namespace ShadowsocksR.Model
     {
         FileSystemWatcher ChnIpFileWatcher;
 
+        private const string APNIC_FILENAME = "delegated-apnic-latest";
+        private const string APNIC_EXT_FILENAME = "delegated-apnic-extended-latest";
         private const string CHN_FILENAME = "chn-ip.txt";
         private uint[] _set;
 
@@ -104,6 +106,57 @@ namespace ShadowsocksR.Model
             return isIn(BitConverter.ToUInt32(bytes_addr, 0));
         }
 
+        public bool LoadApnic(string zone)
+        {
+            string filename = APNIC_EXT_FILENAME;
+            string absFilePath = Path.Combine(System.Windows.Forms.Application.StartupPath, filename);
+            if (!File.Exists(absFilePath))
+            {
+                filename = APNIC_FILENAME;
+                absFilePath = Path.Combine(System.Windows.Forms.Application.StartupPath, filename);
+            }
+            if (File.Exists(absFilePath))
+            {
+                try
+                {
+                    using (StreamReader stream = File.OpenText(absFilePath))
+                    {
+                        using (StreamWriter out_stream = new StreamWriter(File.OpenWrite(CHN_FILENAME)))
+                        {
+                            while (true)
+                            {
+                                string line = stream.ReadLine();
+                                if (line == null)
+                                    break;
+                                string[] parts = line.Split('|');
+                                if (parts.Length < 7)
+                                    continue;
+                                if (parts[0] != "apnic" || parts[1] != zone || parts[2] != "ipv4")
+                                    continue;
+                                IPAddress.TryParse(parts[3], out IPAddress addr);
+                                uint size = UInt32.Parse(parts[4]);
+                                Insert(addr, size);
+
+                                byte[] addr_bytes = addr.GetAddressBytes();
+                                Array.Reverse(addr_bytes);
+                                uint ip_addr = BitConverter.ToUInt32(addr_bytes, 0);
+                                ip_addr += size - 1;
+                                addr_bytes = BitConverter.GetBytes(ip_addr);
+                                Array.Reverse(addr_bytes);
+                                out_stream.Write(parts[3] + " " + (new IPAddress(addr_bytes)).ToString() + "\r\n");
+                            }
+                        }
+                    }
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
+            }
+            return false;
+        }
+
         public bool LoadChn()
         {
             string absFilePath = Path.Combine(System.Windows.Forms.Application.StartupPath, CHN_FILENAME);
@@ -131,6 +184,10 @@ namespace ShadowsocksR.Model
                 {
                     return false;
                 }
+            }
+            else
+            {
+                return !LoadApnic("CN");
             }
             return false;
         }

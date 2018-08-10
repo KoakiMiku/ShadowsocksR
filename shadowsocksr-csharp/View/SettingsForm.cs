@@ -44,7 +44,7 @@ namespace ShadowsocksR.View
 
         private void UpdateTexts()
         {
-            Text = I18N.GetString("Settings");
+            Text = I18N.GetString("Global Settings");
 
             ListenGroup.Text = I18N.GetString("Local proxy");
             checkShareOverLan.Text = I18N.GetString("Allow Clients from LAN");
@@ -57,7 +57,7 @@ namespace ShadowsocksR.View
             TTLLabel.Text = I18N.GetString("TTL");
             labelTimeout.Text = I18N.GetString("Connect Timeout");
 
-            groupBox.Text = I18N.GetString("Settings");
+            groupBox.Text = I18N.GetString("Global settings");
             checkAutoStartup.Text = I18N.GetString("Start on Boot");
 
             OKButton.Text = I18N.GetString("OK");

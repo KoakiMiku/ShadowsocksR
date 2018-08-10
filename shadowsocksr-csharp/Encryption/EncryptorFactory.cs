@@ -30,6 +30,18 @@ namespace ShadowsocksR.Encryption
                     _registeredEncryptors.Add(method, typeof(MbedTLSEncryptor));
                 }
             }
+            if (LibcryptoEncryptor.isSupport())
+            {
+                LibcryptoEncryptor.InitAviable();
+                foreach (string method in LibcryptoEncryptor.SupportedCiphers())
+                {
+                    if (!_registeredEncryptorNames.Contains(method))
+                    {
+                        _registeredEncryptorNames.Add(method);
+                        _registeredEncryptors.Add(method, typeof(LibcryptoEncryptor));
+                    }
+                }
+            }
             foreach (string method in SodiumEncryptor.SupportedCiphers())
             {
                 if (!_registeredEncryptorNames.Contains(method))
@@ -49,7 +61,7 @@ namespace ShadowsocksR.Encryption
         {
             if (string.IsNullOrEmpty(method))
             {
-                method = "none";
+                method = "aes-256-cfb";
             }
             method = method.ToLowerInvariant();
             Type t = _registeredEncryptors[method];
@@ -62,7 +74,7 @@ namespace ShadowsocksR.Encryption
         {
             if (string.IsNullOrEmpty(method))
             {
-                method = "none";
+                method = "aes-256-cfb";
             }
             method = method.ToLowerInvariant();
             Type t = _registeredEncryptors[method];

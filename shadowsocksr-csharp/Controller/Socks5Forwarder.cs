@@ -64,12 +64,40 @@ namespace ShadowsocksR.Controller
                         }
                         else
                         {
-                            if ((_config.proxyRuleMode == (int)ProxyRuleMode.BypassLanAndChina ||
-                                _config.proxyRuleMode == (int)ProxyRuleMode.BypassLanAndNotChina) &&
-                                _IPRange != null)
+                            if ((_config.proxyRuleMode == (int)ProxyRuleMode.BypassLanAndChina || _config.proxyRuleMode == (int)ProxyRuleMode.BypassLanAndNotChina) && _IPRange != null || _config.proxyRuleMode == (int)ProxyRuleMode.UserCustom)
                             {
                                 if (!IPAddress.TryParse(host, out ipAddress))
                                 {
+                                    if (_config.proxyRuleMode == (int)ProxyRuleMode.UserCustom)
+                                    {
+                                        HostMap hostMap = HostMap.Instance();
+                                        if (hostMap.GetHost(host, out string host_addr))
+                                        {
+                                            if (!String.IsNullOrEmpty(host_addr))
+                                            {
+                                                string lower_host_addr = host_addr.ToLower();
+                                                if (lower_host_addr.StartsWith("reject") || lower_host_addr.StartsWith("direct"))
+                                                {
+                                                    return CONNECT_DIRECT;
+                                                }
+                                                else if (lower_host_addr.StartsWith("localproxy"))
+                                                {
+                                                    return CONNECT_LOCALPROXY;
+                                                }
+                                                else if (lower_host_addr.StartsWith("remoteproxy"))
+                                                {
+                                                    return CONNECT_REMOTEPROXY;
+                                                }
+                                                else if (lower_host_addr.IndexOf('.') >= 0 || lower_host_addr.IndexOf(':') >= 0)
+                                                {
+                                                    if (!IPAddress.TryParse(lower_host_addr, out ipAddress))
+                                                    {
+                                                        //
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
                                     if (ipAddress == null)
                                     {
                                         ipAddress = Utils.DnsBuffer.Get(host);
@@ -113,20 +141,41 @@ namespace ShadowsocksR.Controller
                 }
                 if (ipAddress != null)
                 {
-                    if (Utils.isLAN(ipAddress))
+                    if (_config.proxyRuleMode == (int)ProxyRuleMode.UserCustom)
                     {
-                        return CONNECT_DIRECT;
-                    }
-                    if ((_config.proxyRuleMode == (int)ProxyRuleMode.BypassLanAndChina ||
-                        _config.proxyRuleMode == (int)ProxyRuleMode.BypassLanAndNotChina) &&
-                        _IPRange != null &&
-                        ipAddress.AddressFamily == AddressFamily.InterNetwork)
-                    {
-                        if (_IPRange.IsInIPRange(ipAddress))
+                        HostMap hostMap = HostMap.Instance();
+                        if (hostMap.GetIP(ipAddress, out string host_addr))
                         {
-                            return CONNECT_LOCALPROXY;
+                            string lower_host_addr = host_addr.ToLower();
+                            if (lower_host_addr.StartsWith("reject") || lower_host_addr.StartsWith("direct"))
+                            {
+                                return CONNECT_DIRECT;
+                            }
+                            else if (lower_host_addr.StartsWith("localproxy"))
+                            {
+                                return CONNECT_LOCALPROXY;
+                            }
+                            else if (lower_host_addr.StartsWith("remoteproxy"))
+                            {
+                                return CONNECT_REMOTEPROXY;
+                            }
                         }
-                        Utils.DnsBuffer.Sweep();
+                    }
+                    else
+                    {
+                        if (Utils.isLAN(ipAddress))
+                        {
+                            return CONNECT_DIRECT;
+                        }
+                        if ((_config.proxyRuleMode == (int)ProxyRuleMode.BypassLanAndChina || _config.proxyRuleMode == (int)ProxyRuleMode.BypassLanAndNotChina) &&
+                            _IPRange != null && ipAddress.AddressFamily == AddressFamily.InterNetwork)
+                        {
+                            if (_IPRange.IsInIPRange(ipAddress))
+                            {
+                                return CONNECT_LOCALPROXY;
+                            }
+                            Utils.DnsBuffer.Sweep();
+                        }
                     }
                 }
             }
@@ -204,6 +253,29 @@ namespace ShadowsocksR.Controller
 
                             if (!IPAddress.TryParse(_remote_host, out ipAddress))
                             {
+                                if (_config.proxyRuleMode == (int)ProxyRuleMode.UserCustom)
+                                {
+                                    HostMap hostMap = HostMap.Instance();
+                                    if (hostMap.GetHost(_remote_host, out string host_addr))
+                                    {
+                                        if (!String.IsNullOrEmpty(host_addr))
+                                        {
+                                            string lower_host_addr = host_addr.ToLower();
+                                            if (lower_host_addr.StartsWith("reject"))
+                                            {
+                                                Close();
+                                                return;
+                                            }
+                                            else if (lower_host_addr.IndexOf('.') >= 0 || lower_host_addr.IndexOf(':') >= 0)
+                                            {
+                                                if (!IPAddress.TryParse(lower_host_addr, out ipAddress))
+                                                {
+                                                    //
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                                 if (ipAddress == null)
                                 {
                                     ipAddress = Utils.DnsBuffer.Get(_remote_host);
@@ -232,7 +304,20 @@ namespace ShadowsocksR.Controller
                         }
                         _remote_port = _targetPort;
                     }
-
+                    if (ipAddress != null && _config.proxyRuleMode == (int)ProxyRuleMode.UserCustom)
+                    {
+                        HostMap hostMap = HostMap.Instance();
+                        if (hostMap.GetIP(ipAddress, out string host_addr))
+                        {
+                            string lower_host_addr = host_addr.ToLower();
+                            if (lower_host_addr.StartsWith("reject")
+                                )
+                            {
+                                Close();
+                                return;
+                            }
+                        }
+                    }
                     // ProxyAuth recv only socks5 head, so don't need to save anything else
                     IPEndPoint remoteEP = new IPEndPoint(ipAddress, _targetPort);
 
