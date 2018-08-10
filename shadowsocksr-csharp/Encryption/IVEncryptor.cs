@@ -88,7 +88,9 @@ namespace ShadowsocksR.Encryption
                 }
             }
             if (_key == null)
+            {
                 _key = CachedKeys[k];
+            }
             Array.Resize(ref _iv, ivLen);
             randBytes(_iv, ivLen);
         }
@@ -102,13 +104,13 @@ namespace ShadowsocksR.Encryption
             {
                 if (i == 0)
                 {
-                    md5sum = Sodium.MD5(password);
+                    md5sum = MbedTLS.MD5(password);
                 }
                 else
                 {
                     md5sum.CopyTo(result, 0);
                     password.CopyTo(result, md5sum.Length);
-                    md5sum = Sodium.MD5(result);
+                    md5sum = MbedTLS.MD5(result);
                 }
                 md5sum.CopyTo(key, i);
                 i += md5sum.Length;

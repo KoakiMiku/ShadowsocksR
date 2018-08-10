@@ -231,10 +231,9 @@ namespace ShadowsocksR.Obfs
             byte[] key = new byte[user_key.Length + 4];
             user_key.CopyTo(key, 0);
             BitConverter.GetBytes(pack_id).CopyTo(key, key.Length - 4);
-
             ++pack_id;
 
-            byte[] md5data = Sodium.ComputeHash(key, outdata, 0, outlength);
+            byte[] md5data = MbedTLS.ComputeHash(key, outdata, 0, outlength);
             last_client_hash = md5data;
             Array.Copy(md5data, 0, outdata, outlength, 2);
             outlength += 2;
@@ -281,7 +280,7 @@ namespace ShadowsocksR.Obfs
                 byte[] rnd = new byte[4];
                 random.NextBytes(rnd);
                 rnd.CopyTo(outdata, 0);
-                byte[] md5data = Sodium.ComputeHash(key, rnd, 0, rnd.Length);
+                byte[] md5data = MbedTLS.ComputeHash(key, rnd, 0, rnd.Length);
                 last_client_hash = md5data;
                 Array.Copy(md5data, 0, outdata, rnd.Length, 8);
             }
@@ -324,7 +323,7 @@ namespace ShadowsocksR.Obfs
             }
             // final HMAC
             {
-                byte[] md5data = Sodium.ComputeHash(user_key, encrypt, 0, 20);
+                byte[] md5data = MbedTLS.ComputeHash(user_key, encrypt, 0, 20);
                 last_server_hash = md5data;
                 Array.Copy(md5data, 0, encrypt, 20, 4);
             }
@@ -458,7 +457,7 @@ namespace ShadowsocksR.Obfs
                     break;
                 }
 
-                byte[] md5data = Sodium.ComputeHash(key, recv_buf, 0, len + 2);
+                byte[] md5data = MbedTLS.ComputeHash(key, recv_buf, 0, len + 2);
                 if (md5data[0] != recv_buf[len + 2] || md5data[1] != recv_buf[len + 3])
                 {
                     throw new ObfsException("ClientPostDecrypt data uncorrect checksum");
@@ -527,7 +526,7 @@ namespace ShadowsocksR.Obfs
             byte[] auth_data = new byte[3];
             random.NextBytes(auth_data);
 
-            byte[] md5data = Sodium.ComputeHash(Server.key, auth_data, 0, auth_data.Length);
+            byte[] md5data = MbedTLS.ComputeHash(Server.key, auth_data, 0, auth_data.Length);
             int rand_len = UdpGetRandLen(random_client, md5data);
             byte[] rand_data = new byte[rand_len];
             random.NextBytes(rand_data);
@@ -542,10 +541,7 @@ namespace ShadowsocksR.Obfs
                 uid[i] = (byte)(user_id[i] ^ md5data[i]);
             }
             uid.CopyTo(outdata, outlength - 5);
-            {
-                md5data = Sodium.ComputeHash(user_key, outdata, 0, outlength - 1);
-                Array.Copy(md5data, 0, outdata, outlength - 1, 1);
-            }
+            md5data = MbedTLS.ComputeHash(user_key, outdata, 0, outlength - 1);
             return outdata;
         }
 
@@ -556,13 +552,13 @@ namespace ShadowsocksR.Obfs
                 outlength = 0;
                 return plaindata;
             }
-            byte[] md5data = Sodium.ComputeHash(user_key, plaindata, 0, datalength - 1);
+            byte[] md5data = MbedTLS.ComputeHash(user_key, plaindata, 0, datalength - 1);
             if (md5data[0] != plaindata[datalength - 1])
             {
                 outlength = 0;
                 return plaindata;
             }
-            md5data = Sodium.ComputeHash(Server.key, plaindata, datalength - 8, 7);
+            md5data = MbedTLS.ComputeHash(Server.key, plaindata, datalength - 8, 7);
             int rand_len = UdpGetRandLen(random_server, md5data);
             outlength = datalength - rand_len - 8;
             encryptor = EncryptorFactory.GetEncryptor("rc4", Convert.ToBase64String(user_key) + Convert.ToBase64String(md5data, 0, 16));

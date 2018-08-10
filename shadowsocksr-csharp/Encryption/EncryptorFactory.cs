@@ -22,6 +22,14 @@ namespace ShadowsocksR.Encryption
                     _registeredEncryptors.Add(method, typeof(NoneEncryptor));
                 }
             }
+            foreach (string method in MbedTLSEncryptor.SupportedCiphers())
+            {
+                if (!_registeredEncryptorNames.Contains(method))
+                {
+                    _registeredEncryptorNames.Add(method);
+                    _registeredEncryptors.Add(method, typeof(MbedTLSEncryptor));
+                }
+            }
             foreach (string method in SodiumEncryptor.SupportedCiphers())
             {
                 if (!_registeredEncryptorNames.Contains(method))

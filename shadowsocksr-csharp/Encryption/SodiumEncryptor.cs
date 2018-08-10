@@ -43,14 +43,14 @@ namespace ShadowsocksR.Encryption
                 {"chacha20-ietf", new EncryptorInfo(32, 12, true, CIPHER_CHACHA20_IETF)},
         };
 
-        protected override Dictionary<string, EncryptorInfo> getCiphers()
-        {
-            return _ciphers;
-        }
-
         public static List<string> SupportedCiphers()
         {
             return new List<string>(_ciphers.Keys);
+        }
+
+        protected override Dictionary<string, EncryptorInfo> getCiphers()
+        {
+            return _ciphers;
         }
 
         protected override void cipherUpdate(bool isCipher, int length, byte[] buf, byte[] outbuf)
@@ -107,8 +107,6 @@ namespace ShadowsocksR.Encryption
             _decryptBytesRemaining = 0;
         }
 
-        public override void Dispose()
-        {
-        }
+        public override void Dispose() { }
     }
 }
