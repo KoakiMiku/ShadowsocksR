@@ -25,7 +25,6 @@ namespace ShadowsocksR.Controller
         private Configuration _config;
         private ServerTransferTotal _transfer;
         private IPRangeSet _rangeSet;
-        private HostMap _hostMap;
         private HttpProxyRunner polipoRunner;
         private bool stopped = false;
         private bool firstRun = true;
@@ -66,25 +65,6 @@ namespace ShadowsocksR.Controller
         protected void ReportError(Exception e)
         {
             Errored?.Invoke(this, new ErrorEventArgs(e));
-        }
-
-        private void ReloadIPRange()
-        {
-            _rangeSet = new IPRangeSet();
-            _rangeSet.ChnIpFileChanged += iPRangeSet_ChnIpFileChanged;
-            _rangeSet.LoadChn();
-            if (_config.proxyRuleMode == (int)ProxyRuleMode.BypassLanAndNotChina)
-            {
-                _rangeSet.Reverse();
-            }
-        }
-
-        private void ReloadHost()
-        {
-            _hostMap = new HostMap();
-            _hostMap.HostFileChanged += hostMap_HostFileChanged;
-            _hostMap.LoadHostFile();
-            HostMap.Instance().Clear(_hostMap);
         }
 
         // always return copy
@@ -288,18 +268,6 @@ namespace ShadowsocksR.Controller
             }
         }
 
-        public void TouchChnIpFile()
-        {
-            string chnIpFilename = _rangeSet.TouchChnIpFile();
-            ChnIpFileReadyToOpen?.Invoke(this, new PathEventArgs() { Path = chnIpFilename });
-        }
-
-        public void TouchHostFile()
-        {
-            string hostFilename = _hostMap.TouchHostFile();
-            HostFileReadyToOpen?.Invoke(this, new PathEventArgs() { Path = hostFilename });
-        }
-
         protected void Reload()
         {
             if (_port_map_listener != null)
@@ -314,16 +282,19 @@ namespace ShadowsocksR.Controller
             _config = MergeGetConfiguration(_config);
             _config.FlushPortMapCache();
 
-            ReloadIPRange();
-            ReloadHost();
+            _rangeSet = new IPRangeSet();
+            _rangeSet.ChnIpFileChanged += iPRangeSet_ChnIpFileChanged;
+            _rangeSet.LoadChn();
+            if (_config.proxyRuleMode == (int)ProxyRuleMode.BypassLanAndNotChina)
+            {
+                _rangeSet.Reverse();
+            }
+            _rangeSet.TouchChnIpFile();
 
             if (polipoRunner == null)
             {
                 polipoRunner = new HttpProxyRunner();
             }
-
-            _rangeSet.TouchChnIpFile();
-            _hostMap.TouchHostFile();
 
             // don't put polipoRunner.Start() before pacServer.Stop()
             // or bind will fail when switching bind address from 0.0.0.0 to 127.0.0.1

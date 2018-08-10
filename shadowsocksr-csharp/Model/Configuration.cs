@@ -36,7 +36,6 @@ namespace ShadowsocksR.Model
         BypassLan,
         BypassLanAndChina,
         BypassLanAndNotChina,
-        UserCustom = 16,
     }
 
     [Serializable]

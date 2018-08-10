@@ -229,7 +229,7 @@ namespace ShadowsocksR.Controller
 
             optionList.Connection = String.IsNullOrEmpty(connName)
                 ? IntPtr.Zero // NULL means LAN
-                : Marshal.StringToHGlobalAuto(connName); // TODO: not working if contains Chinese
+                : Marshal.StringToHGlobalAuto(connName);
 
             optionList.OptionCount = _optionlist.Count;
             optionList.OptionError = 0;

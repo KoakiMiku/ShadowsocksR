@@ -99,7 +99,8 @@ namespace ShadowsocksR.Properties {
         ///
         ///# Menu items
         ///Mode=代理模式
-        ///Global=全局模式
+        ///Disable system proxy=禁用代理
+        ///Enable system proxy=启用代理
         ///Proxy rule=代理规则
         ///Bypass LAN=绕过局域网
         ///Bypass LAN and China=绕过局域网和大陆
@@ -115,40 +116,12 @@ namespace ShadowsocksR.Properties {
         ///Config File=配置文件
         ///Servers Subscribe=服务器订阅
         ///Subscribe setting=服务器订阅设置
-        ///Upda [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///Update subscribe SSR node=更新服务器订阅
+        ///Updat [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string cn {
             get {
                 return ResourceManager.GetString("cn", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   查找类似 # remote proxy
-        ///.0rz.tw remoteproxy
-        ///.0to255.com remoteproxy
-        ///.1-apple.com.tw remoteproxy
-        ///.10musume.com remoteproxy
-        ///.123rf.com remoteproxy
-        ///.12bet.com remoteproxy
-        ///.12vpn.com remoteproxy
-        ///.141hongkong.com remoteproxy
-        ///.173ng.com remoteproxy
-        ///.1984bbs.com remoteproxy
-        ///.1984bbs.org remoteproxy
-        ///.1bao.org remoteproxy
-        ///.1eew.com remoteproxy
-        ///.1pondo.tv remoteproxy
-        ///.2-hand.info remoteproxy
-        ///.2000fun.com remoteproxy
-        ///.2008xianzhang.info remoteproxy
-        ///.21andy.com remoteproxy
-        ///.24smile.org remoteproxy
-        ///.2shared.c [字符串的其余部分被截断]&quot;; 的本地化字符串。
-        /// </summary>
-        internal static string host {
-            get {
-                return ResourceManager.GetString("host", resourceCulture);
             }
         }
         
@@ -262,7 +235,8 @@ namespace ShadowsocksR.Properties {
         ///
         ///# Menu items
         ///Mode=代理模式
-        ///Global=全局模式
+        ///Disable system proxy=禁用代理
+        ///Enable system proxy=啟用代理
         ///Proxy rule=代理規則
         ///Bypass LAN=繞過區域網路
         ///Bypass LAN and China=繞過區域網路和大陸
@@ -278,7 +252,8 @@ namespace ShadowsocksR.Properties {
         ///Config File=設定檔
         ///Servers Subscribe=伺服器訂閱
         ///Subscribe setting=伺服器訂閱設置
-        ///U [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///Update subscribe SSR node=更新伺服器訂閱
+        ///Up [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string zh_tw {
             get {

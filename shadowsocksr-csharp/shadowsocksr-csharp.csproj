@@ -105,7 +105,6 @@
     <Compile Include="Encryption\Sodium.cs" />
     <Compile Include="Encryption\SodiumEncryptor.cs" />
     <Compile Include="Encryption\IEncryptor.cs" />
-    <Compile Include="Model\Host.cs" />
     <Compile Include="Model\IPRangeSet.cs" />
     <Compile Include="Model\IPSegment.cs" />
     <Compile Include="Model\LRUCache.cs" />
@@ -198,7 +197,6 @@
     <Content Include="FodyWeavers.xml" />
     <Content Include="Resources\46418775_p0.jpg" />
     <Content Include="shadowsocksr.ico" />
-    <Content Include="Data\host.txt" />
     <None Include="packages.config" />
     <None Include="Resources\ss20.png" />
     <None Include="Resources\ss16.png" />

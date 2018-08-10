@@ -209,10 +209,8 @@ namespace ShadowsocksR.View
                     ruleBypassLan = CreateMenuItem("Bypass LAN", new EventHandler(RuleBypassLanItem_Click)),
                     ruleBypassChina = CreateMenuItem("Bypass LAN and China", new EventHandler(RuleBypassChinaItem_Click)),
                     ruleBypassNotChina = CreateMenuItem("Bypass LAN and not China", new EventHandler(RuleBypassNotChinaItem_Click)),
-                    ruleUser = CreateMenuItem("User custom", new EventHandler(RuleUserItem_Click)),
                     new MenuItem("-"),
-                    CreateMenuItem("Edit China IP file", new EventHandler(EditChnIpFileItem_Click)),
-                    CreateMenuItem("Edit Host file", new EventHandler(EditHostFileItem_Click)),
+                    CreateMenuItem("Update China IP", new EventHandler(UpdateChnIpItem_Click)),
                 }),
                 new MenuItem("-"),
                 ServersItem = CreateMenuGroup("Servers", new MenuItem[] {
@@ -226,10 +224,12 @@ namespace ShadowsocksR.View
                 }),
                 CreateMenuGroup("Servers Subscribe", new MenuItem[] {
                     CreateMenuItem("Update subscribe SSR node", new EventHandler(CheckNodeUpdate_Click)),
+                    new MenuItem("-"),
                     CreateMenuItem("Subscribe setting", new EventHandler(SubscribeSetting_Click)),
                 }),
                 new MenuItem("-"),
                 CreateMenuItem("Settings", new EventHandler(Setting_Click)),
+                new MenuItem("-"),
                 CreateMenuItem("Quit", new EventHandler(Quit_Click))
             });
         }
@@ -491,7 +491,6 @@ namespace ShadowsocksR.View
             ruleBypassLan.Checked = config.proxyRuleMode == (int)ProxyRuleMode.BypassLan;
             ruleBypassChina.Checked = config.proxyRuleMode == (int)ProxyRuleMode.BypassLanAndChina;
             ruleBypassNotChina.Checked = config.proxyRuleMode == (int)ProxyRuleMode.BypassLanAndNotChina;
-            ruleUser.Checked = config.proxyRuleMode == (int)ProxyRuleMode.UserCustom;
         }
 
         private void LoadCurrentConfiguration()
@@ -774,24 +773,14 @@ namespace ShadowsocksR.View
             controller.ToggleRuleMode((int)ProxyRuleMode.BypassLanAndNotChina);
         }
 
-        private void RuleUserItem_Click(object sender, EventArgs e)
-        {
-            controller.ToggleRuleMode((int)ProxyRuleMode.UserCustom);
-        }
-
         private void RuleBypassDisableItem_Click(object sender, EventArgs e)
         {
             controller.ToggleRuleMode((int)ProxyRuleMode.Disable);
         }
 
-        private void EditHostFileItem_Click(object sender, EventArgs e)
+        private void UpdateChnIpItem_Click(object sender, EventArgs e)
         {
-            controller.TouchHostFile();
-        }
-
-        private void EditChnIpFileItem_Click(object sender, EventArgs e)
-        {
-            controller.TouchChnIpFile();
+            //TODO: update
         }
 
         private void AServerItem_Click(object sender, EventArgs e)
