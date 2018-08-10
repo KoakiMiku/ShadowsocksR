@@ -217,9 +217,8 @@
             this.ObfsComboBox.FormattingEnabled = true;
             this.ObfsComboBox.Items.AddRange(new object[] {
             "plain",
-            "http_simple",
-            "http_post",
-            "random_head"});
+            "tls1.2_ticket_auth",
+            "tls1.2_ticket_fastauth"});
             this.ObfsComboBox.Location = new System.Drawing.Point(108, 174);
             this.ObfsComboBox.Margin = new System.Windows.Forms.Padding(3, 3, 3, 7);
             this.ObfsComboBox.Name = "ObfsComboBox";
