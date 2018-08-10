@@ -113,65 +113,47 @@ namespace ShadowsocksR.View
             Configuration config = controller.GetCurrentConfiguration();
             bool enabled = config.sysProxyMode != (int)ProxyMode.Direct;
 
-            try
+            Bitmap icon = null;
+            if (dpi < 97)
             {
-                using (Bitmap icon = new Bitmap("icon.png"))
-                {
-                    _notifyIcon.Icon = Icon.FromHandle(icon.GetHicon());
-                }
+                // dpi = 96;
+                icon = Resources.ss16;
             }
-            catch
+            else if (dpi < 121)
             {
-                Bitmap icon = null;
-                if (dpi < 97)
-                {
-                    // dpi = 96;
-                    icon = Resources.ss16;
-                }
-                else if (dpi < 121)
-                {
-                    // dpi = 120;
-                    icon = Resources.ss20;
-                }
-                else
-                {
-                    icon = Resources.ss24;
-                }
+                // dpi = 120;
+                icon = Resources.ss20;
+            }
+            else
+            {
+                icon = Resources.ss24;
+            }
 
-                double mul_a = 1.0;
-                double mul_r = 1.0;
-                double mul_g = 1.0;
-                double mul_b = 1.0;
+            double mul_r = 1.0;
+            double mul_g = 1.0;
+            double mul_b = 1.0;
+            if (enabled)
+            {
+                mul_r = 1.0;
+                mul_g = 0.0;
+                mul_b = 0.5;
+            }
 
-                if (!enabled)
+            using (Bitmap iconCopy = new Bitmap(icon))
+            {
+                for (int x = 0; x < iconCopy.Width; x++)
                 {
-                    mul_r = 1.0;
-                    mul_g = 1.0;
-                    mul_b = 1.0;
-                }
-                else
-                {
-                    mul_r = 1.0;
-                    mul_g = 0.0;
-                    mul_b = 0.5;
-                }
-
-                using (Bitmap iconCopy = new Bitmap(icon))
-                {
-                    for (int x = 0; x < iconCopy.Width; x++)
+                    for (int y = 0; y < iconCopy.Height; y++)
                     {
-                        for (int y = 0; y < iconCopy.Height; y++)
-                        {
-                            Color color = icon.GetPixel(x, y);
-                            iconCopy.SetPixel(x, y,
-                                Color.FromArgb((byte)(color.A * mul_a),
-                                ((byte)(color.R * mul_r)),
-                                ((byte)(color.G * mul_g)),
-                                ((byte)(color.B * mul_b))));
-                        }
+                        Color color = icon.GetPixel(x, y);
+                        iconCopy.SetPixel(x, y,
+                            Color.FromArgb(color.A,
+                            ((byte)(color.R * mul_r)),
+                            ((byte)(color.G * mul_g)),
+                            ((byte)(color.B * mul_b))));
                     }
-                    _notifyIcon.Icon = Icon.FromHandle(iconCopy.GetHicon());
                 }
+                _notifyIcon.Icon = Icon.FromHandle(iconCopy.GetHicon());
             }
 
             string text = string.Empty;
