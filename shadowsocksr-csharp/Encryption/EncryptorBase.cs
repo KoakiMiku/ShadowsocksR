@@ -36,7 +36,7 @@ namespace ShadowsocksR.Encryption
         protected byte[] GetPasswordHash()
         {
             byte[] inputBytes = Encoding.UTF8.GetBytes(Password);
-            byte[] hash = MbedTLS.MD5(inputBytes);
+            byte[] hash = Sodium.MD5(inputBytes);
             return hash;
         }
 

@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
@@ -73,7 +72,7 @@ namespace ShadowsocksR.View
             Configuration config = controller.GetCurrentConfiguration();
             if (config.nodeFeedAutoUpdate)
             {
-                updateSubscribeManager.CreateTask(controller.GetCurrentConfiguration(), updateNodeChecker);
+                updateSubscribeManager.CreateTask(config, updateNodeChecker);
             }
 
             timerDelayCheckUpdate = new System.Timers.Timer(1000.0 * 10);
@@ -490,6 +489,7 @@ namespace ShadowsocksR.View
             {
                 ShowBalloonTip("ShadowsocksR", I18N.GetString("Update subscribe node failure"), ToolTipIcon.Info, 10000);
             }
+            updateSubscribeManager.ResetUpdate();
         }
 
         void notifyIcon1_BalloonTipClicked(object sender, EventArgs e)
@@ -827,7 +827,7 @@ namespace ShadowsocksR.View
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
-            updateSubscribeManager.CreateTask(controller.GetCurrentConfiguration(), updateNodeChecker);
+            updateSubscribeManager.CreateTask(config, updateNodeChecker);
         }
 
         private void ShowServerLogItem_Click(object sender, EventArgs e)

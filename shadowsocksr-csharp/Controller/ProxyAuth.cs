@@ -547,8 +547,8 @@ namespace ShadowsocksR.Controller
                         _remoteHeaderSendBuffer = newFirstPacket;
                         handler.Start(_remoteHeaderSendBuffer, _remoteHeaderSendBuffer.Length, null);
                     }
-                    else if (_connectionUDP == null && cfg.type == PortMapType.RuleProxy
-                        && (new Socks5Forwarder(_config, _IPRange)).Handle(_remoteHeaderSendBuffer, _remoteHeaderSendBuffer.Length, _connection, local_sendback_protocol))
+                    else if (_connectionUDP == null && cfg.type == PortMapType.RuleProxy &&
+                        (new Socks5Forwarder(_config, _IPRange)).Handle(_remoteHeaderSendBuffer, _remoteHeaderSendBuffer.Length, _connection, local_sendback_protocol))
                     {
                     }
                     else

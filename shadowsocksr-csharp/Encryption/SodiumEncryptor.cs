@@ -32,7 +32,7 @@ namespace ShadowsocksR.Encryption
                     encryptor_delegate = Sodium.crypto_stream_chacha20_xor_ic;
                     break;
                 case CIPHER_CHACHA20_IETF:
-                    encryptor_delegate = crypto_stream_chacha20_ietf_xor_ic;
+                    encryptor_delegate = Sodium.crypto_stream_chacha20_ietf_xor_ic;
                     break;
             }
         }
@@ -105,11 +105,6 @@ namespace ShadowsocksR.Encryption
             _decryptIVReceived = 0;
             _decryptIC = 0;
             _decryptBytesRemaining = 0;
-        }
-
-        void crypto_stream_chacha20_ietf_xor_ic(byte[] c, byte[] m, ulong mlen, byte[] n, ulong ic, byte[] k)
-        {
-            Sodium.crypto_stream_chacha20_ietf_xor_ic(c, m, mlen, n, (uint)ic, k);
         }
 
         public override void Dispose()

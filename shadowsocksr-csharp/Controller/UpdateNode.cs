@@ -80,24 +80,22 @@ namespace ShadowsocksR.Controller
                 {
                     _serverSubscribes.Add(config.serverSubscribes[i]);
                 }
-                Next();
+                if (_serverSubscribes.Count == 0)
+                {
+                    _config = null;
+                }
+                else
+                {
+                    URL = _serverSubscribes[0].URL;
+                    _updater.CheckUpdate(_config, URL);
+                    _serverSubscribes.RemoveAt(0);
+                }
             }
         }
 
-        public bool Next()
+        public void ResetUpdate()
         {
-            if (_serverSubscribes.Count == 0)
-            {
-                _config = null;
-                return false;
-            }
-            else
-            {
-                URL = _serverSubscribes[0].URL;
-                _updater.CheckUpdate(_config, URL);
-                _serverSubscribes.RemoveAt(0);
-                return true;
-            }
+            _config = null;
         }
 
         public string URL { get; set; }

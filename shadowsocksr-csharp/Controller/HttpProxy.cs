@@ -222,7 +222,7 @@ namespace ShadowsocksR.Controller
             {
                 string authString = header_dict["Proxy-Authorization"].Substring("Basic ".Length);
                 string authStr = httpAuthUser + ":" + (httpAuthPass ?? "");
-                string httpAuthString = System.Convert.ToBase64String(Encoding.UTF8.GetBytes(authStr));
+                string httpAuthString = Convert.ToBase64String(Encoding.UTF8.GetBytes(authStr));
                 if (httpAuthString == authString)
                 {
                     auth_ok = true;

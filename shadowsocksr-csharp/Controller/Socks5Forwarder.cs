@@ -64,7 +64,8 @@ namespace ShadowsocksR.Controller
                         }
                         else
                         {
-                            if ((_config.proxyRuleMode == (int)ProxyRuleMode.BypassLanAndChina || _config.proxyRuleMode == (int)ProxyRuleMode.BypassLanAndNotChina) && _IPRange != null || _config.proxyRuleMode == (int)ProxyRuleMode.UserCustom)
+                            if ((_config.proxyRuleMode == (int)ProxyRuleMode.BypassLanAndChina || _config.proxyRuleMode == (int)ProxyRuleMode.BypassLanAndNotChina) &&
+                                _IPRange != null || _config.proxyRuleMode == (int)ProxyRuleMode.UserCustom)
                             {
                                 if (!IPAddress.TryParse(host, out ipAddress))
                                 {

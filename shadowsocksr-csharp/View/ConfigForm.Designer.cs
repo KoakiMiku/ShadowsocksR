@@ -219,9 +219,7 @@
             "plain",
             "http_simple",
             "http_post",
-            "random_head",
-            "tls1.2_ticket_auth",
-            "tls1.2_ticket_fastauth"});
+            "random_head"});
             this.ObfsComboBox.Location = new System.Drawing.Point(108, 174);
             this.ObfsComboBox.Margin = new System.Windows.Forms.Padding(3, 3, 3, 7);
             this.ObfsComboBox.Name = "ObfsComboBox";
@@ -442,10 +440,6 @@
             this.TCPProtocolComboBox.FormattingEnabled = true;
             this.TCPProtocolComboBox.Items.AddRange(new object[] {
             "origin",
-            "verify_deflate",
-            "auth_sha1_v4",
-            "auth_aes128_md5",
-            "auth_aes128_sha1",
             "auth_chain_a",
             "auth_chain_b"});
             this.TCPProtocolComboBox.Location = new System.Drawing.Point(108, 117);
