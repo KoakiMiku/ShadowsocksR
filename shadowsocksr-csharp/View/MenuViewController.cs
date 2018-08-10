@@ -23,6 +23,8 @@ namespace ShadowsocksR.View
         private ShadowsocksController controller;
         private UpdateNode updateNodeChecker;
         private UpdateSubscribeManager updateSubscribeManager;
+        private UpdateChinaIP updateChinaIPChecker;
+        private UpdateChinaIPManager updateChinaIPManager;
         private NotifyIcon _notifyIcon;
         private ContextMenu contextMenu1;
         private MenuItem enableItem;
@@ -31,7 +33,6 @@ namespace ShadowsocksR.View
         private MenuItem ruleBypassLan;
         private MenuItem ruleBypassChina;
         private MenuItem ruleBypassNotChina;
-        private MenuItem ruleUser;
         private MenuItem ruleDisableBypass;
         private MenuItem SeperatorItem;
         private MenuItem ServersItem;
@@ -51,10 +52,7 @@ namespace ShadowsocksR.View
             controller.ToggleModeChanged += controller_ToggleModeChanged;
             controller.ToggleRuleModeChanged += controller_ToggleRuleModeChanged;
             controller.ConfigChanged += controller_ConfigChanged;
-            controller.ChnIpFileReadyToOpen += controller_FileReadyToOpen;
-            controller.HostFileReadyToOpen += controller_FileReadyToOpen;
             controller.Errored += controller_Errored;
-            controller.ShowConfigFormEvent += Config_Click;
 
             _notifyIcon = new NotifyIcon();
             UpdateTrayIcon();
@@ -64,8 +62,11 @@ namespace ShadowsocksR.View
 
             updateNodeChecker = new UpdateNode();
             updateNodeChecker.NewNodeFound += updateNodeChecker_NewNodeFound;
-
             updateSubscribeManager = new UpdateSubscribeManager();
+
+            updateChinaIPChecker = new UpdateChinaIP();
+            updateChinaIPChecker.NewChinaIPFound += updateChinaIPChecker_NewChinaIPFound;
+            updateChinaIPManager = new UpdateChinaIPManager();
 
             LoadCurrentConfiguration();
 
@@ -157,31 +158,58 @@ namespace ShadowsocksR.View
             }
 
             string text = string.Empty;
+            string temp = string.Empty;
+            switch (config.proxyRuleMode)
+            {
+                case (int)ProxyRuleMode.Disable:
+                    temp = I18N.GetString("Proxy rule") + "：" +
+                        I18N.GetString("Disable bypass");
+                    break;
+                case (int)ProxyRuleMode.BypassLan:
+                    temp = I18N.GetString("Proxy rule") + "：" +
+                        I18N.GetString("Bypass LAN");
+                    break;
+                case (int)ProxyRuleMode.BypassLanAndChina:
+                    temp = I18N.GetString("Proxy rule") + "：" +
+                        I18N.GetString("Bypass LAN and China");
+                    break;
+                case (int)ProxyRuleMode.BypassLanAndNotChina:
+                    temp = I18N.GetString("Proxy rule") + "：" +
+                        I18N.GetString("Bypass LAN and not China");
+                    break;
+                default:
+                    break;
+            }
+
             try
             {
                 if (enabled)
                 {
+
                     if (!string.IsNullOrEmpty(config.configs[config.index].remarks))
                     {
-                        text = config.configs[config.index].remarks + "\r\n" +
-                            String.Format(I18N.GetString("Running: Port {0}"), config.localPort);
+                        text = config.configs[config.index].remarks +
+                            "\r\n" + temp;
                     }
                     else
                     {
-                        text = config.configs[config.index].FriendlyName() + "\r\n" +
-                            String.Format(I18N.GetString("Running: Port {0}"), config.localPort);
+                        text = config.configs[config.index].FriendlyName() +
+                            "\r\n" + temp;
                     }
                 }
                 else
                 {
-                    text = String.Format(I18N.GetString("Running: Port {0}"), config.localPort);
+                    text = String.Format(I18N.GetString("Running: Port {0}"), config.localPort) +
+                        "\r\n" + temp;
                 }
             }
             catch
             {
-                text = String.Format(I18N.GetString("Running: Port {0}"), config.localPort);
+                text = String.Format(I18N.GetString("Running: Port {0}"), config.localPort) +
+                    "\r\n" + temp;
                 controller.ToggleMode(ProxyMode.Direct);
             }
+
             // we want to show more details but notify icon title is limited to 63 characters
             _notifyIcon.Text = text.Substring(0, Math.Min(63, text.Length));
         }
@@ -252,13 +280,7 @@ namespace ShadowsocksR.View
             UpdateProxyRule(config);
         }
 
-        void controller_FileReadyToOpen(object sender, ShadowsocksController.PathEventArgs e)
-        {
-            string argument = @"/select, " + e.Path;
-            Process.Start("explorer.exe", argument);
-        }
-
-        void ShowBalloonTip(string title, string content, ToolTipIcon icon, int timeout)
+        private void ShowBalloonTip(string title, string content, ToolTipIcon icon, int timeout)
         {
             _notifyIcon.BalloonTipTitle = title;
             _notifyIcon.BalloonTipText = content;
@@ -266,7 +288,7 @@ namespace ShadowsocksR.View
             _notifyIcon.ShowBalloonTip(timeout);
         }
 
-        void updateNodeChecker_NewNodeFound(object sender, EventArgs e)
+        private void updateNodeChecker_NewNodeFound(object sender, EventArgs e)
         {
             int count = 0;
             if (!String.IsNullOrEmpty(updateNodeChecker.NodeResult))
@@ -465,16 +487,67 @@ namespace ShadowsocksR.View
             }
             if (count > 0)
             {
-                ShowBalloonTip("ShadowsocksR", I18N.GetString("Update subscribe node success"), ToolTipIcon.Info, 10000);
+                ShowBalloonTip("ShadowsocksR", I18N.GetString("Update subscribe node success"),
+                    ToolTipIcon.Info, 10000);
             }
             else
             {
-                ShowBalloonTip("ShadowsocksR", I18N.GetString("Update subscribe node failure"), ToolTipIcon.Info, 10000);
+                ShowBalloonTip("ShadowsocksR", I18N.GetString("Update subscribe node failure"),
+                    ToolTipIcon.Info, 10000);
             }
             updateSubscribeManager.ResetUpdate();
         }
 
-        void notifyIcon1_BalloonTipClicked(object sender, EventArgs e)
+        private void updateChinaIPChecker_NewChinaIPFound(object sender, EventArgs e)
+        {
+            if (!String.IsNullOrEmpty(updateChinaIPChecker.ChinaIPResult))
+            {
+                List<string> list = new List<string>();
+
+                string[] lines = updateChinaIPChecker.ChinaIPResult
+                    .Split(new char[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var line in lines)
+                {
+                    if (string.IsNullOrWhiteSpace(line))
+                    {
+                        continue;
+                    }
+                    if (line.StartsWith("#"))
+                    {
+                        continue;
+                    }
+                    if (line.StartsWith("apnic|CN|ipv4"))
+                    {
+                        string[] temp = line.Split('|');
+                        string[] array = temp[3].Split('.');
+                        long value = long.Parse(array[0]) << 24 |
+                            long.Parse(array[1]) << 16 |
+                            long.Parse(array[2]) << 8 |
+                            long.Parse(array[3]);
+                        value += Convert.ToInt32(temp[4]) - 1;
+                        string result = $"{temp[3]} " +
+                            $"{(value >> 24) & 0xFF}." +
+                            $"{(value >> 16) & 0xFF}." +
+                            $"{(value >> 8) & 0xFF}." +
+                            $"{value & 0xFF}";
+                        list.Add(result);
+                    }
+                }
+
+                string file = string.Join("\r\n", list) + "\r\n";
+                controller.ChinaIPFileUpdated(file);
+                ShowBalloonTip("ShadowsocksR", I18N.GetString("Update China IP success"),
+                    ToolTipIcon.Info, 10000);
+            }
+            else
+            {
+                ShowBalloonTip("ShadowsocksR", I18N.GetString("Update China IP failure"),
+                    ToolTipIcon.Info, 10000);
+            }
+            updateChinaIPManager.ResetUpdate();
+        }
+
+        private void notifyIcon1_BalloonTipClicked(object sender, EventArgs e)
         {
             _notifyIcon.BalloonTipClicked -= notifyIcon1_BalloonTipClicked;
         }
@@ -780,7 +853,8 @@ namespace ShadowsocksR.View
 
         private void UpdateChnIpItem_Click(object sender, EventArgs e)
         {
-            //TODO: update
+            Configuration config = controller.GetCurrentConfiguration();
+            updateChinaIPManager.CreateTask(config, updateChinaIPChecker);
         }
 
         private void AServerItem_Click(object sender, EventArgs e)

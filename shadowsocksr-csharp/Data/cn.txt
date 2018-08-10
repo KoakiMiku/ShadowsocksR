@@ -114,3 +114,5 @@ Password NOT match=密码不匹配
 Update subscribe node success=服务器订阅更新成功
 Update subscribe node failure=服务器订阅更新失败
 Failed to load config file.=加载配置文件失败。
+Update China IP success=大陆规则更新成功
+Update China IP failure=大陆规则更新失败

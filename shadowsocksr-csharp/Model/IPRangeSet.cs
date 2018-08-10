@@ -7,52 +7,26 @@ namespace ShadowsocksR.Model
 {
     public class IPRangeSet
     {
-        FileSystemWatcher ChnIpFileWatcher;
-
         private const string CHN_FILENAME = "chn-ip.txt";
         private uint[] _set;
 
-        public event EventHandler ChnIpFileChanged;
-
         public IPRangeSet()
         {
-            WatchChnIpFile();
             _set = new uint[256 * 256 * 8];
         }
 
-        private void WatchChnIpFile()
+        public void TouchChnIpFile(string file)
         {
-            if (ChnIpFileWatcher != null)
+            if (file == null)
             {
-                ChnIpFileWatcher.Dispose();
-            }
-            ChnIpFileWatcher = new FileSystemWatcher(Directory.GetCurrentDirectory())
-            {
-                NotifyFilter = NotifyFilters.LastWrite | NotifyFilters.FileName | NotifyFilters.DirectoryName,
-                Filter = CHN_FILENAME
-            };
-            ChnIpFileWatcher.Changed += ChnIpFileWatcher_Changed;
-            ChnIpFileWatcher.Created += ChnIpFileWatcher_Changed;
-            ChnIpFileWatcher.Deleted += ChnIpFileWatcher_Changed;
-            ChnIpFileWatcher.Renamed += ChnIpFileWatcher_Changed;
-            ChnIpFileWatcher.EnableRaisingEvents = true;
-        }
-
-        private void ChnIpFileWatcher_Changed(object sender, FileSystemEventArgs e)
-        {
-            ChnIpFileChanged?.Invoke(this, new EventArgs());
-        }
-
-        public string TouchChnIpFile()
-        {
-            if (File.Exists(CHN_FILENAME))
-            {
-                return CHN_FILENAME;
+                if (!File.Exists(CHN_FILENAME))
+                {
+                    File.WriteAllText(CHN_FILENAME, Resources.chn_ip);
+                }
             }
             else
             {
-                File.WriteAllText(CHN_FILENAME, Resources.chn_ip);
-                return CHN_FILENAME;
+                File.WriteAllText(CHN_FILENAME, file);
             }
         }
 
@@ -117,15 +91,23 @@ namespace ShadowsocksR.Model
                         {
                             string line = stream.ReadLine();
                             if (line == null)
+                            {
                                 break;
+                            }
                             string[] parts = line.Split(' ');
                             if (parts.Length < 2)
+                            {
                                 continue;
-                            IPAddress.TryParse(parts[0], out IPAddress addr_beg);
-                            IPAddress.TryParse(parts[1], out IPAddress addr_end);
-                            Insert(addr_beg, addr_end);
+                            }
+                            bool ifBegin = IPAddress.TryParse(parts[0], out IPAddress addr_beg);
+                            bool ifEnd = IPAddress.TryParse(parts[1], out IPAddress addr_end);
+                            if (ifBegin && ifEnd)
+                            {
+                                Insert(addr_beg, addr_end);
+                            }
                         }
                     }
+                    return true;
                 }
                 catch
                 {

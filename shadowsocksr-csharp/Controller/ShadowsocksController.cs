@@ -37,9 +37,6 @@ namespace ShadowsocksR.Controller
         public event EventHandler ConfigChanged;
         public event EventHandler ToggleModeChanged;
         public event EventHandler ToggleRuleModeChanged;
-        public event EventHandler ShowConfigFormEvent;
-        public event EventHandler<PathEventArgs> ChnIpFileReadyToOpen;
-        public event EventHandler<PathEventArgs> HostFileReadyToOpen;
         public event ErrorEventHandler Errored;
 
         public ShadowsocksController()
@@ -283,13 +280,12 @@ namespace ShadowsocksR.Controller
             _config.FlushPortMapCache();
 
             _rangeSet = new IPRangeSet();
-            _rangeSet.ChnIpFileChanged += iPRangeSet_ChnIpFileChanged;
+            _rangeSet.TouchChnIpFile(null);
             _rangeSet.LoadChn();
             if (_config.proxyRuleMode == (int)ProxyRuleMode.BypassLanAndNotChina)
             {
                 _rangeSet.Reverse();
             }
-            _rangeSet.TouchChnIpFile();
 
             if (polipoRunner == null)
             {
@@ -396,7 +392,7 @@ namespace ShadowsocksR.Controller
                 }
             }
             ConfigChanged?.Invoke(this, new EventArgs());
-            UpdateSystemProxy();
+            SystemProxy.Update(_config, false);
             Util.Utils.ReleaseMemory();
         }
 
@@ -406,24 +402,10 @@ namespace ShadowsocksR.Controller
             Reload();
         }
 
-        private void UpdateSystemProxy()
+        public void ChinaIPFileUpdated(string file)
         {
-            SystemProxy.Update(_config, false);
-        }
-
-        private void hostMap_HostFileChanged(object sender, EventArgs e)
-        {
-            UpdateSystemProxy();
-        }
-
-        private void iPRangeSet_ChnIpFileChanged(object sender, EventArgs e)
-        {
-            UpdateSystemProxy();
-        }
-
-        public void ShowConfigForm(int index)
-        {
-            ShowConfigFormEvent?.Invoke(index, new EventArgs());
+            _rangeSet.TouchChnIpFile(file);
+            Reload();
         }
     }
 }

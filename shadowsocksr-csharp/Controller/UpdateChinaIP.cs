@@ -1,18 +1,19 @@
 ﻿using ShadowsocksR.Model;
 using System;
-using System.Collections.Generic;
 using System.Net;
 
 namespace ShadowsocksR.Controller
 {
-    public class UpdateNode
+    public class UpdateChinaIP
     {
-        public event EventHandler NewNodeFound;
-        public string NodeResult;
+        private const string URL = "http://ftp.apnic.net/apnic/stats/apnic/delegated-apnic-latest";
 
-        public void CheckUpdate(Configuration config, string URL)
+        public event EventHandler NewChinaIPFound;
+        public string ChinaIPResult;
+
+        public void CheckUpdate(Configuration config)
         {
-            NodeResult = null;
+            ChinaIPResult = null;
             try
             {
                 WebClient http = new WebClient();
@@ -44,49 +45,34 @@ namespace ShadowsocksR.Controller
         {
             try
             {
-                NodeResult = e.Result;
-                NewNodeFound?.Invoke(this, new EventArgs());
+                ChinaIPResult = e.Result;
+                NewChinaIPFound?.Invoke(this, new EventArgs());
             }
             catch (Exception ex)
             {
-                NodeResult = null;
+                ChinaIPResult = null;
                 if (e.Error != null)
                 {
                     Logging.Debug(e.Error.ToString());
                 }
                 Logging.Debug(ex.ToString());
-                NewNodeFound?.Invoke(this, new EventArgs());
+                NewChinaIPFound?.Invoke(this, new EventArgs());
             }
         }
     }
 
-    public class UpdateSubscribeManager
+    public class UpdateChinaIPManager
     {
         Configuration _config;
-        List<ServerSubscribe> _serverSubscribes;
-        UpdateNode _updater;
+        UpdateChinaIP _updater;
 
-        public void CreateTask(Configuration config, UpdateNode updater)
+        public void CreateTask(Configuration config, UpdateChinaIP updater)
         {
             if (_config == null)
             {
                 _config = config;
                 _updater = updater;
-                _serverSubscribes = new List<ServerSubscribe>();
-                for (int i = 0; i < config.serverSubscribes.Count; ++i)
-                {
-                    _serverSubscribes.Add(config.serverSubscribes[i]);
-                }
-                if (_serverSubscribes.Count == 0)
-                {
-                    _config = null;
-                }
-                else
-                {
-                    URL = _serverSubscribes[0].URL;
-                    _updater.CheckUpdate(_config, URL);
-                    _serverSubscribes.RemoveAt(0);
-                }
+                _updater.CheckUpdate(_config);
             }
         }
 
@@ -94,7 +80,5 @@ namespace ShadowsocksR.Controller
         {
             _config = null;
         }
-
-        public string URL { get; set; }
     }
 }
