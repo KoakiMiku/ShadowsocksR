@@ -110,11 +110,7 @@ namespace ShadowsocksR.View
             {
                 dpi = (int)graphics.DpiX;
             }
-
-            Configuration config = controller.GetCurrentConfiguration();
-            bool enabled = config.sysProxyMode != (int)ProxyMode.Direct;
-
-            Bitmap icon = null;
+            Bitmap icon;
             if (dpi < 97)
             {
                 // dpi = 96;
@@ -130,14 +126,30 @@ namespace ShadowsocksR.View
                 icon = Resources.ss24;
             }
 
-            double mul_r = 1.0;
-            double mul_g = 1.0;
-            double mul_b = 1.0;
-            if (enabled)
+            Configuration config = controller.GetCurrentConfiguration();
+            bool enabled = config.sysProxyMode != (int)ProxyMode.Direct;
+            bool bypass = config.proxyRuleMode != (int)ProxyRuleMode.Disable;
+
+            double mul_r;
+            double mul_g;
+            double mul_b;
+            if (enabled && !bypass)
             {
                 mul_r = 1.0;
                 mul_g = 0.0;
                 mul_b = 0.5;
+            }
+            else if (enabled && bypass)
+            {
+                mul_r = 0.0;
+                mul_g = 1.0;
+                mul_b = 1.0;
+            }
+            else
+            {
+                mul_r = 1.0;
+                mul_g = 1.0;
+                mul_b = 1.0;
             }
 
             using (Bitmap iconCopy = new Bitmap(icon))
@@ -157,56 +169,28 @@ namespace ShadowsocksR.View
                 _notifyIcon.Icon = Icon.FromHandle(iconCopy.GetHicon());
             }
 
-            string text = string.Empty;
-            string temp = string.Empty;
-            switch (config.proxyRuleMode)
-            {
-                case (int)ProxyRuleMode.Disable:
-                    temp = I18N.GetString("Proxy rule") + "：" +
-                        I18N.GetString("Disable bypass");
-                    break;
-                case (int)ProxyRuleMode.BypassLan:
-                    temp = I18N.GetString("Proxy rule") + "：" +
-                        I18N.GetString("Bypass LAN");
-                    break;
-                case (int)ProxyRuleMode.BypassLanAndChina:
-                    temp = I18N.GetString("Proxy rule") + "：" +
-                        I18N.GetString("Bypass LAN and China");
-                    break;
-                case (int)ProxyRuleMode.BypassLanAndNotChina:
-                    temp = I18N.GetString("Proxy rule") + "：" +
-                        I18N.GetString("Bypass LAN and not China");
-                    break;
-                default:
-                    break;
-            }
-
+            string text;
             try
             {
                 if (enabled)
                 {
-
                     if (!string.IsNullOrEmpty(config.configs[config.index].remarks))
                     {
-                        text = config.configs[config.index].remarks +
-                            "\r\n" + temp;
+                        text = config.configs[config.index].remarks;
                     }
                     else
                     {
-                        text = config.configs[config.index].FriendlyName() +
-                            "\r\n" + temp;
+                        text = config.configs[config.index].FriendlyName();
                     }
                 }
                 else
                 {
-                    text = String.Format(I18N.GetString("Running: Port {0}"), config.localPort) +
-                        "\r\n" + temp;
+                    text = String.Format(I18N.GetString("Running: Port {0}"), config.localPort);
                 }
             }
             catch
             {
-                text = String.Format(I18N.GetString("Running: Port {0}"), config.localPort) +
-                    "\r\n" + temp;
+                text = String.Format(I18N.GetString("Running: Port {0}"), config.localPort);
                 controller.ToggleMode(ProxyMode.Direct);
             }
 
@@ -229,6 +213,7 @@ namespace ShadowsocksR.View
             contextMenu1 = new ContextMenu(new MenuItem[] {
                 modeItem = CreateMenuGroup("Mode", new MenuItem[] {
                     enableItem = CreateMenuItem("Disable system proxy", new EventHandler(EnableItem_Click)),
+                    new MenuItem("-"),
                     globalModeItem = CreateMenuItem("Enable system proxy", new EventHandler(GlobalModeItem_Click)),
                 }),
                 CreateMenuGroup("Proxy rule", new MenuItem[] {
@@ -243,17 +228,17 @@ namespace ShadowsocksR.View
                 new MenuItem("-"),
                 ServersItem = CreateMenuGroup("Servers", new MenuItem[] {
                     SeperatorItem = new MenuItem("-"),
-                    CreateMenuItem("Edit servers", new EventHandler(Config_Click)),
-                    CreateMenuItem("Server statistic", new EventHandler(ShowServerLogItem_Click)),
+                    CreateMenuItem("Servers setting", new EventHandler(Config_Click)),
+                    CreateMenuItem("Servers statistic", new EventHandler(ShowServerLogItem_Click)),
                     CreateMenuItem("Disconnect current", new EventHandler(DisconnectCurrent_Click)),
                     new MenuItem("-"),
-                    CreateMenuItem("Import SSR links from clipboard", new EventHandler(CopyAddress_Click)),
+                    CreateMenuItem("Import server from clipboard", new EventHandler(CopyAddress_Click)),
                     CreateMenuItem("Scan QRCode from screen", new EventHandler(ScanQRCodeItem_Click)),
                 }),
                 CreateMenuGroup("Servers Subscribe", new MenuItem[] {
-                    CreateMenuItem("Update subscribe SSR node", new EventHandler(CheckNodeUpdate_Click)),
+                    CreateMenuItem("Subscribe setting", new EventHandler(Subscribe_Click)),
                     new MenuItem("-"),
-                    CreateMenuItem("Subscribe setting", new EventHandler(SubscribeSetting_Click)),
+                    CreateMenuItem("Update subscribe", new EventHandler(CheckNodeUpdate_Click)),
                 }),
                 new MenuItem("-"),
                 CreateMenuItem("Settings", new EventHandler(Setting_Click)),
@@ -880,7 +865,7 @@ namespace ShadowsocksR.View
             ShowServerLogForm();
         }
 
-        private void SubscribeSetting_Click(object sender, EventArgs e)
+        private void Subscribe_Click(object sender, EventArgs e)
         {
             ShowSubscribeSettingForm();
         }

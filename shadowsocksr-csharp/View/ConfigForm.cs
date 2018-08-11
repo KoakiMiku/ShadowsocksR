@@ -82,7 +82,7 @@ namespace ShadowsocksR.View
 
         private void UpdateTexts()
         {
-            Text = I18N.GetString("Edit Servers");
+            Text = I18N.GetString("Servers Setting");
 
             AddButton.Text = I18N.GetString("Add");
             DeleteButton.Text = I18N.GetString("Delete");

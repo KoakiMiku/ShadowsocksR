@@ -20,7 +20,6 @@ namespace ShadowsocksR.Model
                 return 0;
             return visitTime.CompareTo(((UriVisitTime)other).visitTime);
         }
-
     }
 
     public enum PortMapType : int
@@ -223,7 +222,7 @@ namespace ShadowsocksR.Model
             dnsServer = "";
 
             sysProxyMode = (int)ProxyMode.Direct;
-            proxyRuleMode = (int)ProxyRuleMode.BypassLanAndChina;
+            proxyRuleMode = (int)ProxyRuleMode.Disable;
             nodeFeedAutoUpdate = false;
 
             serverSubscribes = new List<ServerSubscribe>();
