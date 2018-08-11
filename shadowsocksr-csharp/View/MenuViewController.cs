@@ -485,6 +485,7 @@ namespace ShadowsocksR.View
 
         private void updateChinaIPChecker_NewChinaIPFound(object sender, EventArgs e)
         {
+            int count = 0;
             if (!String.IsNullOrEmpty(updateChinaIPChecker.ChinaIPResult))
             {
                 List<string> list = new List<string>();
@@ -516,13 +517,19 @@ namespace ShadowsocksR.View
                             $"{(value >> 8) & 0xFF}." +
                             $"{value & 0xFF}";
                         list.Add(result);
+                        count++;
                     }
                 }
-
-                string file = string.Join("\r\n", list) + "\r\n";
-                controller.ChinaIPFileUpdated(file);
+                if (list.Count > 0)
+                {
+                    string file = string.Join("\r\n", list) + "\r\n";
+                    controller.ChinaIPFileUpdated(file);
+                }
+            }
+            if (count > 0)
+            {
                 ShowBalloonTip("ShadowsocksR", I18N.GetString("Update China IP success"),
-                    ToolTipIcon.Info, 10000);
+                  ToolTipIcon.Info, 10000);
             }
             else
             {
