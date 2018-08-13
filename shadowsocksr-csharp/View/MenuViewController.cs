@@ -479,7 +479,7 @@ namespace ShadowsocksR.View
                 ShowBalloonTip("ShadowsocksR", I18N.GetString("Update subscribe node failure"),
                     ToolTipIcon.Info, 10000);
             }
-            updateSubscribeManager.ResetUpdate();
+            updateSubscribeManager.Next();
         }
 
         private void updateChinaIPChecker_NewChinaIPFound(object sender, EventArgs e)

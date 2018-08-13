@@ -65,6 +65,7 @@ namespace ShadowsocksR.Controller
         Configuration _config;
         List<ServerSubscribe> _serverSubscribes;
         UpdateNode _updater;
+        string _URL;
 
         public void CreateTask(Configuration config, UpdateNode updater)
         {
@@ -77,22 +78,24 @@ namespace ShadowsocksR.Controller
                 {
                     _serverSubscribes.Add(config.serverSubscribes[i]);
                 }
-                if (_serverSubscribes.Count == 0)
-                {
-                    _config = null;
-                }
-                else
-                {
-                    URL = _serverSubscribes[0].URL;
-                    _updater.CheckUpdate(_config, URL);
-                    _serverSubscribes.RemoveAt(0);
-                }
+                Next();
             }
         }
 
-        public void ResetUpdate()
+        public bool Next()
         {
-            _config = null;
+            if (_serverSubscribes.Count == 0)
+            {
+                _config = null;
+                return false;
+            }
+            else
+            {
+                _URL = _serverSubscribes[0].URL;
+                _updater.CheckUpdate(_config, _URL);
+                _serverSubscribes.RemoveAt(0);
+                return true;
+            }
         }
 
         public string URL { get; set; }
