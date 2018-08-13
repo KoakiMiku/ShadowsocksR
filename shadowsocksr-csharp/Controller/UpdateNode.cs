@@ -82,19 +82,17 @@ namespace ShadowsocksR.Controller
             }
         }
 
-        public bool Next()
+        public void Next()
         {
             if (_serverSubscribes.Count == 0)
             {
                 _config = null;
-                return false;
             }
             else
             {
                 _URL = _serverSubscribes[0].URL;
                 _updater.CheckUpdate(_config, _URL);
                 _serverSubscribes.RemoveAt(0);
-                return true;
             }
         }
 
