@@ -244,7 +244,7 @@ namespace ShadowsocksR.Controller
                     conn.Close();
                 }
 
-                if ((_authUser ?? "").Length == 0 && !Util.Utils.isLAN(conn))
+                if ((_authUser ?? "").Length == 0 && !Util.Utils.isLocal(conn))
                 {
                     conn.Shutdown(SocketShutdown.Both);
                     conn.Close();

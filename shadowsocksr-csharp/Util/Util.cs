@@ -31,14 +31,14 @@ namespace ShadowsocksR.Util
             if (UIntPtr.Size == 4)
             {
                 SetProcessWorkingSetSize(current_process.Handle,
-                                         (UIntPtr)0xFFFFFFFF,
-                                         (UIntPtr)0xFFFFFFFF);
+                    (UIntPtr)0xFFFFFFFF,
+                    (UIntPtr)0xFFFFFFFF);
             }
             else if (UIntPtr.Size == 8)
             {
                 SetProcessWorkingSetSize(current_process.Handle,
-                                         (UIntPtr)0xFFFFFFFFFFFFFFFF,
-                                         (UIntPtr)0xFFFFFFFFFFFFFFFF);
+                    (UIntPtr)0xFFFFFFFFFFFFFFFF,
+                    (UIntPtr)0xFFFFFFFFFFFFFFFF);
             }
         }
 
@@ -146,44 +146,6 @@ namespace ShadowsocksR.Util
             byte[] addr = ip.GetAddressBytes();
             if (addr.Length == 4)
             {
-                string[] netmasks = new string[]
-                {
-                    "127.0.0.0/8",
-                    "169.254.0.0/16",
-                };
-                foreach (string netmask in netmasks)
-                {
-                    if (isMatchSubNet(ip, netmask))
-                        return true;
-                }
-                return false;
-            }
-            else if (addr.Length == 16)
-            {
-                string[] netmasks = new string[]
-                {
-                    "::1/128",
-                };
-                foreach (string netmask in netmasks)
-                {
-                    if (isMatchSubNet(ip, netmask))
-                        return true;
-                }
-                return false;
-            }
-            return true;
-        }
-
-        public static bool isLocal(Socket socket)
-        {
-            return isLocal(((IPEndPoint)socket.RemoteEndPoint).Address);
-        }
-
-        public static bool isLAN(IPAddress ip)
-        {
-            byte[] addr = ip.GetAddressBytes();
-            if (addr.Length == 4)
-            {
                 if (ip.Equals(new IPAddress(0)))
                     return false;
                 string[] netmasks = new string[]
@@ -226,9 +188,9 @@ namespace ShadowsocksR.Util
             return true;
         }
 
-        public static bool isLAN(Socket socket)
+        public static bool isLocal(Socket socket)
         {
-            return isLAN(((IPEndPoint)socket.RemoteEndPoint).Address);
+            return isLocal(((IPEndPoint)socket.RemoteEndPoint).Address);
         }
 
         public static void SetArrayMinSize<T>(ref T[] array, int size)
@@ -247,17 +209,13 @@ namespace ShadowsocksR.Util
             }
         }
 
-        public static IPAddress QueryDns(string host, string dns_servers, bool IPv6_first = false)
+        public static IPAddress QueryDns(string host, string dns_servers)
         {
             IPAddress ret_ipAddress = null;
             {
                 if (!string.IsNullOrEmpty(dns_servers))
                 {
-                    Types[] types;
-                    if (IPv6_first)
-                        types = new Types[] { Types.AAAA, Types.A };
-                    else
-                        types = new Types[] { Types.A, Types.AAAA };
+                    Types[] types = new Types[] { Types.A, Types.AAAA };
                     string[] _dns_server = dns_servers.Split(',');
                     List<IPEndPoint> dns_server = new List<IPEndPoint>();
                     List<IPEndPoint> local_dns_server = new List<IPEndPoint>();
@@ -354,10 +312,7 @@ namespace ShadowsocksR.Util
                         }
                     }
                 }
-                catch
-                {
-
-                }
+                catch { }
             }
             return ret_ipAddress;
         }

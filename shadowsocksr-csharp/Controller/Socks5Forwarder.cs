@@ -90,7 +90,7 @@ namespace ShadowsocksR.Controller
                                         Utils.DnsBuffer.Set(host, new IPAddress(ipAddress.GetAddressBytes()));
                                         if (host.IndexOf('.') >= 0)
                                         {
-                                            if (Utils.isLAN(ipAddress)) // assume that it is polution if return LAN address
+                                            if (Utils.isLocal(ipAddress)) // assume that it is polution if return LAN address
                                             {
                                                 return CONNECT_REMOTEPROXY;
                                             }
@@ -113,7 +113,7 @@ namespace ShadowsocksR.Controller
                 }
                 if (ipAddress != null)
                 {
-                    if (Utils.isLAN(ipAddress))
+                    if (Utils.isLocal(ipAddress))
                     {
                         return CONNECT_DIRECT;
                     }
