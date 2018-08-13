@@ -5,17 +5,11 @@ namespace ShadowsocksR.Model
 {
     public class IPAddressCmp : System.Net.IPAddress, IComparable
     {
-        public IPAddressCmp(System.Net.IPAddress ip) : base(ip.GetAddressBytes())
-        {
-        }
+        public IPAddressCmp(System.Net.IPAddress ip) : base(ip.GetAddressBytes()) { }
 
-        public IPAddressCmp(byte[] ip) : base(ip)
-        {
-        }
+        public IPAddressCmp(byte[] ip) : base(ip) { }
 
-        public IPAddressCmp(string ip) : base(FromString(ip).GetAddressBytes())
-        {
-        }
+        public IPAddressCmp(string ip) : base(FromString(ip).GetAddressBytes()) { }
 
         public static System.Net.IPAddress FromString(string ip)
         {

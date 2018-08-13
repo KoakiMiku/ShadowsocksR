@@ -29,6 +29,7 @@ namespace ShadowsocksR.Model
     public class Connections
     {
         private Dictionary<IHandler, int> sockets = new Dictionary<IHandler, int>();
+
         public bool AddRef(IHandler socket)
         {
             lock (this)
@@ -44,6 +45,7 @@ namespace ShadowsocksR.Model
                 return true;
             }
         }
+
         public bool DecRef(IHandler socket)
         {
             lock (this)
@@ -63,6 +65,7 @@ namespace ShadowsocksR.Model
                 return true;
             }
         }
+
         public void CloseAll()
         {
             IHandler[] s;
@@ -81,13 +84,6 @@ namespace ShadowsocksR.Model
                 {
 
                 }
-            }
-        }
-        public int Count
-        {
-            get
-            {
-                return sockets.Count;
             }
         }
     }
@@ -140,11 +136,6 @@ namespace ShadowsocksR.Model
             return forwardServer;
         }
 
-        public void SetConnections(Connections Connections)
-        {
-            this.Connections = Connections;
-        }
-
         public Connections GetConnections()
         {
             return Connections;
@@ -155,15 +146,11 @@ namespace ShadowsocksR.Model
             return dnsBuffer;
         }
 
-        public DnsBuffer DnsTargetBuffer()
-        {
-            return dnsTargetBuffer;
-        }
-
         public ServerSpeedLog ServerSpeedLog()
         {
             return serverSpeedLog;
         }
+
         public void SetServerSpeedLog(ServerSpeedLog log)
         {
             serverSpeedLog = log;
@@ -256,28 +243,6 @@ namespace ShadowsocksR.Model
             {
                 return remarks;
             }
-        }
-
-        public Server Clone()
-        {
-            Server ret = new Server
-            {
-                server = server,
-                server_port = server_port,
-                password = password,
-                method = method,
-                protocol = protocol,
-                obfs = obfs,
-                obfsparam = obfsparam ?? "",
-                remarks_base64 = remarks_base64,
-                group = group,
-                enable = enable,
-                udp_over_tcp = udp_over_tcp,
-                id = id,
-                protocoldata = protocoldata,
-                obfsdata = obfsdata
-            };
-            return ret;
         }
 
         public Server()
@@ -494,6 +459,7 @@ namespace ShadowsocksR.Model
         {
             return obfsdata;
         }
+
         public void setObfsData(object data)
         {
             obfsdata = data;
@@ -503,6 +469,7 @@ namespace ShadowsocksR.Model
         {
             return protocoldata;
         }
+
         public void setProtocolData(object data)
         {
             protocoldata = data;

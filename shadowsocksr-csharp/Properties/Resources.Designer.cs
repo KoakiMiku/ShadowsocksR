@@ -105,19 +105,18 @@ namespace ShadowsocksR.Properties {
         ///Bypass LAN=绕过局域网
         ///Bypass LAN and China=绕过局域网和大陆
         ///Bypass LAN and not China=绕过局域网和非大陆
-        ///User custom=用户自定义
         ///Disable bypass=全局代理
-        ///Edit Host file=编辑用户自定义规则
-        ///Edit China IP file=编辑大陆规则
+        ///Update China IP=更新大陆规则
         ///(empty group)=(未分组)
         ///Servers=服务器
-        ///Edit servers=编辑服务器
-        ///Import servers from file=从文件导入服务器
-        ///Config File=配置文件
+        ///Servers setting=服务器设置
+        ///Servers statistic=服务器连接统计
+        ///Disconnect current=断开所有连接
+        ///Import server from clipboard=从剪贴板导入服务器
+        ///Scan QRCode from screen=从二维码导入服务器
         ///Servers Subscribe=服务器订阅
-        ///Subscribe setting=服务器订阅设置
-        ///Update subscribe SSR node=更新服务器订阅
-        ///Updat [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///Subscribe setting=订阅设置
+        ///Update subsc [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string cn {
             get {
@@ -241,19 +240,18 @@ namespace ShadowsocksR.Properties {
         ///Bypass LAN=繞過區域網路
         ///Bypass LAN and China=繞過區域網路和大陸
         ///Bypass LAN and not China=繞過區域網路和非大陸
-        ///User custom=用戶自定義
         ///Disable bypass=全局代理
-        ///Edit Host file=編輯用戶自定義規則
-        ///Edit China IP file=編輯大陸規則
+        ///Update China IP=更新大陸規則
         ///(empty group)=(未分組)
         ///Servers=伺服器
-        ///Edit servers=編輯伺服器
-        ///Import servers from file=從文件導入伺服器
-        ///Config File=設定檔
+        ///Servers setting=伺服器設置
+        ///Servers statistic=伺服器連接統計
+        ///Disconnect current=斷開所有連接
+        ///Import server from clipboard=從剪貼板導入伺服器
+        ///Scan QRCode from screen=從 QR 碼導入伺服器
         ///Servers Subscribe=伺服器訂閱
-        ///Subscribe setting=伺服器訂閱設置
-        ///Update subscribe SSR node=更新伺服器訂閱
-        ///Up [字符串的其余部分被截断]&quot;; 的本地化字符串。
+        ///Subscribe setting=訂閱設置
+        ///Update [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
         internal static string zh_tw {
             get {

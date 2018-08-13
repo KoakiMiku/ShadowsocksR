@@ -73,15 +73,15 @@ namespace ShadowsocksR.Controller
             {
                 return true;
             }
-            if (length > 8
-                && firstPacket[0] == 'C'
-                && firstPacket[1] == 'O'
-                && firstPacket[2] == 'N'
-                && firstPacket[3] == 'N'
-                && firstPacket[4] == 'E'
-                && firstPacket[5] == 'C'
-                && firstPacket[6] == 'T'
-                && firstPacket[7] == ' ')
+            if (length > 8 &&
+                firstPacket[0] == 'C' &&
+                firstPacket[1] == 'O' &&
+                firstPacket[2] == 'N' &&
+                firstPacket[3] == 'N' &&
+                firstPacket[4] == 'E' &&
+                firstPacket[5] == 'C' &&
+                firstPacket[6] == 'T' &&
+                firstPacket[7] == ' ')
             {
                 return true;
             }
@@ -327,8 +327,7 @@ namespace ShadowsocksR.Controller
                     || se.SocketErrorCode == SocketError.ConnectionReset
                     || se.SocketErrorCode == SocketError.NotConnected
                     || se.SocketErrorCode == SocketError.Interrupted
-                    || se.SocketErrorCode == SocketError.Shutdown
-                    )
+                    || se.SocketErrorCode == SocketError.Shutdown)
                 {
                     // closed by browser when sending
                     // normally happens when download is canceled or a tab is closed before page is loaded

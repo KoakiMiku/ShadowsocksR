@@ -28,6 +28,7 @@ namespace ShadowsocksR.Controller
         private HttpProxyRunner polipoRunner;
         private bool stopped = false;
         private bool firstRun = true;
+        private object locker = new object();
 
         public class PathEventArgs : EventArgs
         {
@@ -265,7 +266,15 @@ namespace ShadowsocksR.Controller
             }
         }
 
-        protected void Reload()
+        private void Reload()
+        {
+            lock (locker)
+            {
+                ReloadWait();
+            }
+        }
+
+        private void ReloadWait()
         {
             if (_port_map_listener != null)
             {
@@ -275,6 +284,7 @@ namespace ShadowsocksR.Controller
                 }
                 _port_map_listener = null;
             }
+
             // some logic in configuration updated the config when saving, we need to read it again
             _config = MergeGetConfiguration(_config);
             _config.FlushPortMapCache();
@@ -291,12 +301,6 @@ namespace ShadowsocksR.Controller
             {
                 polipoRunner = new HttpProxyRunner();
             }
-
-            // don't put polipoRunner.Start() before pacServer.Stop()
-            // or bind will fail when switching bind address from 0.0.0.0 to 127.0.0.1
-            // though UseShellExecute is set to true now
-            // http://stackoverflow.com/questions/10235093/socket-doesnt-close-after-application-exits-if-a-launched-process-is-open
-
             bool _firstRun = firstRun;
             for (int i = 1; i <= 5; ++i)
             {
@@ -326,10 +330,11 @@ namespace ShadowsocksR.Controller
                         polipoRunner.Stop();
                         polipoRunner.Start(_config);
 
-                        Local local = new Local(_config, _transfer, _rangeSet);
-                        List<Listener.IService> services = new List<Listener.IService>();
-                        services.Add(local);
-                        services.Add(new HttpPortForwarder(polipoRunner.RunningPort, _config));
+                        List<Listener.IService> services = new List<Listener.IService>
+                        {
+                            new Local(_config, _transfer, _rangeSet),
+                            new HttpPortForwarder(polipoRunner.RunningPort, _config)
+                        };
                         _listener = new Listener(services);
                         _listener.Start(_config, 0);
                     }

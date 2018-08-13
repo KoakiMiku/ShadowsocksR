@@ -228,7 +228,10 @@ namespace ShadowsocksR.Controller
 
         public void AcceptCallback(IAsyncResult ar)
         {
-            if (_stop) return;
+            if (_stop)
+            {
+                return;
+            }
 
             Socket listener = (Socket)ar.AsyncState;
             try
@@ -276,9 +279,7 @@ namespace ShadowsocksR.Controller
                     }
                 }
             }
-            catch (ObjectDisposedException)
-            {
-            }
+            catch (ObjectDisposedException) { }
             catch (Exception e)
             {
                 Console.WriteLine(e);

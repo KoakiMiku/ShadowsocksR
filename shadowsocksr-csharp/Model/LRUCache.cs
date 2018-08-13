@@ -17,23 +17,6 @@ namespace ShadowsocksR.Model
             _sweep_time = sweep_time;
         }
 
-        public void SetTimeout(int time)
-        {
-            _sweep_time = time;
-        }
-
-        public bool isTimeout(K key)
-        {
-            lock (_lock)
-            {
-                if ((DateTime.Now - _key_2_time[key]).TotalSeconds > _sweep_time)
-                {
-                    return true;
-                }
-                return false;
-            }
-        }
-
         public bool ContainsKey(K key)
         {
             lock (_lock)
@@ -84,21 +67,6 @@ namespace ShadowsocksR.Model
                 _key_2_time[key] = t;
                 _store[key] = val;
                 return val;
-            }
-        }
-
-        public void Del(K key)
-        {
-            lock (_lock)
-            {
-                DateTime t;
-                if (_store.ContainsKey(key))
-                {
-                    t = _key_2_time[key];
-                    _key_2_time.Remove(key);
-                    _time_2_key.Remove(t);
-                    _store.Remove(key);
-                }
             }
         }
 

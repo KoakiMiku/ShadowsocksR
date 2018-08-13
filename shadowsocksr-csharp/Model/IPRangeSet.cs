@@ -1,4 +1,5 @@
-﻿using ShadowsocksR.Properties;
+﻿using ShadowsocksR.Controller;
+using ShadowsocksR.Properties;
 using System;
 using System.IO;
 using System.Net;
@@ -21,12 +22,16 @@ namespace ShadowsocksR.Model
             {
                 if (!File.Exists(CHN_FILENAME))
                 {
-                    File.WriteAllText(CHN_FILENAME, Resources.chn_ip);
+                    string runningPath = System.Windows.Forms.Application.StartupPath;
+                    FileManager.ByteArrayToFile(runningPath + "/privoxy.conf",
+                        System.Text.Encoding.UTF8.GetBytes(Resources.chn_ip));
                 }
             }
             else
             {
-                File.WriteAllText(CHN_FILENAME, file);
+                string runningPath = System.Windows.Forms.Application.StartupPath;
+                FileManager.ByteArrayToFile(runningPath + "/privoxy.conf",
+                    System.Text.Encoding.UTF8.GetBytes(file));
             }
         }
 

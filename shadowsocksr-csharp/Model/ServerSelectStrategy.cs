@@ -212,8 +212,8 @@ namespace ShadowsocksR.Model
                         serverListIndex = randomGennarator.Next(serverList.Count);
                         serverListIndex = serverList[serverListIndex].index;
                     }
-                    else if (algorithm == (int)SelectAlgorithm.LowException
-                        || algorithm == (int)SelectAlgorithm.Timer)
+                    else if (algorithm == (int)SelectAlgorithm.LowException ||
+                        algorithm == (int)SelectAlgorithm.Timer)
                     {
                         if (algorithm == (int)SelectAlgorithm.Timer)
                         {
@@ -240,12 +240,10 @@ namespace ShadowsocksR.Model
                                 lastBeginVal += chance;
                             }
                         }
-                        {
-                            double target = randomGennarator.NextDouble() * lastBeginVal;
-                            serverListIndex = lowerBound(chances, target);
-                            serverListIndex = serverList[serverListIndex].index;
-                            return serverListIndex;
-                        }
+                        double target = randomGennarator.NextDouble() * lastBeginVal;
+                        serverListIndex = lowerBound(chances, target);
+                        serverListIndex = serverList[serverListIndex].index;
+                        return serverListIndex;
                     }
                     else //if (algorithm == (int)SelectAlgorithm.LowLatency || algorithm == (int)SelectAlgorithm.SelectedFirst)
                     {
@@ -260,9 +258,9 @@ namespace ShadowsocksR.Model
                                 lastBeginVal += chance;
                             }
                         }
-                        if (algorithm == (int)SelectAlgorithm.SelectedFirst
-                            && randomGennarator.Next(3) == 0
-                            && configs[curIndex].isEnable())
+                        if (algorithm == (int)SelectAlgorithm.SelectedFirst &&
+                            randomGennarator.Next(3) == 0 &&
+                            configs[curIndex].isEnable())
                         {
                             for (int i = 0; i < serverList.Count; ++i)
                             {
@@ -272,12 +270,10 @@ namespace ShadowsocksR.Model
                                 }
                             }
                         }
-                        {
-                            double target = randomGennarator.NextDouble() * lastBeginVal;
-                            serverListIndex = lowerBound(chances, target);
-                            serverListIndex = serverList[serverListIndex].index;
-                            return serverListIndex;
-                        }
+                        double target = randomGennarator.NextDouble() * lastBeginVal;
+                        serverListIndex = lowerBound(chances, target);
+                        serverListIndex = serverList[serverListIndex].index;
+                        return serverListIndex;
                     }
                 }
                 return serverListIndex;

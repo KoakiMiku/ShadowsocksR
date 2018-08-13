@@ -94,7 +94,8 @@ namespace ShadowsocksR.Controller
                 polipoConfig = polipoConfig.Replace("__PRIVOXY_BIND_PORT__", RunningPort.ToString());
                 polipoConfig = polipoConfig.Replace("__PRIVOXY_BIND_IP__", "127.0.0.1");
                 polipoConfig = polipoConfig.Replace("__BYPASS_ACTION__", "");
-                FileManager.ByteArrayToFile(runningPath + "/privoxy.conf", System.Text.Encoding.UTF8.GetBytes(polipoConfig));
+                FileManager.ByteArrayToFile(runningPath + "/privoxy.conf",
+                    System.Text.Encoding.UTF8.GetBytes(polipoConfig));
 
                 Restart();
             }

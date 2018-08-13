@@ -57,16 +57,12 @@ namespace ShadowsocksR.Controller
                     {
                         s.Shutdown(SocketShutdown.Both);
                     }
-                    catch
-                    {
-                    }
+                    catch { }
                     try
                     {
                         s.Close();
                     }
-                    catch
-                    {
-                    }
+                    catch { }
                 }
             }
         }

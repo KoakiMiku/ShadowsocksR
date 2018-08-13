@@ -16,11 +16,11 @@ namespace ShadowsocksR.View
         {
             public DoubleBufferListView()
             {
-                SetStyle(ControlStyles.DoubleBuffer
-                        | ControlStyles.OptimizedDoubleBuffer
-                        | ControlStyles.UserPaint
-                        | ControlStyles.AllPaintingInWmPaint
-                        , true);
+                SetStyle(ControlStyles.DoubleBuffer |
+                    ControlStyles.OptimizedDoubleBuffer |
+                    ControlStyles.UserPaint |
+                    ControlStyles.AllPaintingInWmPaint,
+                    true);
                 UpdateStyles();
             }
         }

@@ -109,7 +109,6 @@
     <Compile Include="Model\IPRangeSet.cs" />
     <Compile Include="Model\IPSegment.cs" />
     <Compile Include="Model\LRUCache.cs" />
-    <Compile Include="Model\MinSearchTree.cs" />
     <Compile Include="Model\Server.cs" />
     <Compile Include="Model\Configuration.cs" />
     <Compile Include="Model\ServerSelectStrategy.cs" />
@@ -196,13 +195,13 @@
     <Content Include="Data\chn-ip.txt" />
     <Content Include="Data\zh-tw.txt" />
     <Content Include="FodyWeavers.xml" />
-    <Content Include="Resources\46418775_p0.jpg" />
+    <Content Include="Data\ngnl.jpg" />
     <Content Include="shadowsocksr.ico" />
     <None Include="packages.config" />
-    <None Include="Resources\ss20.png" />
-    <None Include="Resources\ss16.png" />
-    <None Include="Resources\ss24.png" />
-    <None Include="Resources\ssw128.png" />
+    <None Include="Data\ss20.png" />
+    <None Include="Data\ss16.png" />
+    <None Include="Data\ss24.png" />
+    <None Include="Data\ssw128.png" />
     <Content Include="Data\cn.txt" />
     <None Include="Data\privoxy-conf.txt" />
   </ItemGroup>
