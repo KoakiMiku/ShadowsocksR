@@ -80,10 +80,7 @@ namespace ShadowsocksR.Model
                 {
                     handler.Shutdown();
                 }
-                catch
-                {
-
-                }
+                catch { }
             }
         }
     }

@@ -230,7 +230,6 @@ namespace ShadowsocksR.View
                     SeperatorItem = new MenuItem("-"),
                     CreateMenuItem("Servers setting", new EventHandler(Config_Click)),
                     CreateMenuItem("Servers statistic", new EventHandler(ShowServerLogItem_Click)),
-                    CreateMenuItem("Disconnect current", new EventHandler(DisconnectCurrent_Click)),
                     new MenuItem("-"),
                     CreateMenuItem("Import server from clipboard", new EventHandler(CopyAddress_Click)),
                     CreateMenuItem("Scan QRCode from screen", new EventHandler(ScanQRCodeItem_Click)),
@@ -558,12 +557,22 @@ namespace ShadowsocksR.View
             ruleBypassNotChina.Checked = config.proxyRuleMode == (int)ProxyRuleMode.BypassLanAndNotChina;
         }
 
+        private void DisconnectAllConnections(Configuration config)
+        {
+            for (int id = 0; id < config.configs.Count; ++id)
+            {
+                Server server = config.configs[id];
+                server.GetConnections().CloseAll();
+            }
+        }
+
         private void LoadCurrentConfiguration()
         {
             Configuration config = controller.GetCurrentConfiguration();
             UpdateServersMenu();
             UpdateSysProxyMode(config);
             UpdateProxyRule(config);
+            DisconnectAllConnections(config);
         }
 
         private void UpdateServersMenu()
@@ -875,22 +884,6 @@ namespace ShadowsocksR.View
         private void Subscribe_Click(object sender, EventArgs e)
         {
             ShowSubscribeSettingForm();
-        }
-
-        private void DisconnectCurrent_Click(object sender, EventArgs e)
-        {
-            Configuration config = controller.GetCurrentConfiguration();
-            if (config.configs.Count == 0)
-            {
-                MessageBox.Show(I18N.GetString("Please add at least one server"), "ShadowsocksR",
-                    MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return;
-            }
-            for (int id = 0; id < config.configs.Count; ++id)
-            {
-                Server server = config.configs[id];
-                server.GetConnections().CloseAll();
-            }
         }
 
         private void URL_Split(string text, ref List<string> out_urls)
