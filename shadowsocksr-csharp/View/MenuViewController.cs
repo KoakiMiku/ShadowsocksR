@@ -535,7 +535,7 @@ namespace ShadowsocksR.View
                 ShowBalloonTip("ShadowsocksR", I18N.GetString("Update China IP failure"),
                     ToolTipIcon.Info, 10000);
             }
-            updateChinaIPManager.ResetUpdate();
+            updateChinaIPManager.Reset();
         }
 
         private void notifyIcon1_BalloonTipClicked(object sender, EventArgs e)

@@ -76,7 +76,7 @@ namespace ShadowsocksR.Controller
             }
         }
 
-        public void ResetUpdate()
+        public void Reset()
         {
             _config = null;
         }
