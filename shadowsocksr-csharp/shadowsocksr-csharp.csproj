@@ -119,14 +119,14 @@
     <Compile Include="Obfs\ObfsBase.cs" />
     <Compile Include="Obfs\ObfsFactory.cs" />
     <Compile Include="Obfs\Plain.cs" />
-    <Compile Include="Opendns\Address.cs" />
-    <Compile Include="Opendns\DnsQuery.cs" />
-    <Compile Include="Opendns\DnsResponse.cs" />
-    <Compile Include="Opendns\Enum.cs" />
-    <Compile Include="Opendns\MX.cs" />
-    <Compile Include="Opendns\ResourceRecord.cs" />
-    <Compile Include="Opendns\ResourceRecordCollection.cs" />
-    <Compile Include="Opendns\SOA.cs" />
+    <Compile Include="OpenDNS\Address.cs" />
+    <Compile Include="OpenDNS\DnsQuery.cs" />
+    <Compile Include="OpenDNS\DnsResponse.cs" />
+    <Compile Include="OpenDNS\Enum.cs" />
+    <Compile Include="OpenDNS\MX.cs" />
+    <Compile Include="OpenDNS\ResourceRecord.cs" />
+    <Compile Include="OpenDNS\ResourceRecordCollection.cs" />
+    <Compile Include="OpenDNS\SOA.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

@@ -76,7 +76,6 @@ namespace ShadowsocksR.View
             }
 
             ServerDataGrid.RowTemplate.Height = 20 * dpi_mul / 4;
-            //ServerDataGrid.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.None;
             int width = 0;
             for (int i = 0; i < ServerDataGrid.Columns.Count; ++i)
             {
@@ -85,7 +84,8 @@ namespace ShadowsocksR.View
                 width += ServerDataGrid.Columns[i].Width;
             }
             Width = width + SystemInformation.VerticalScrollBarWidth + (Width - ClientSize.Width) + 1;
-            ServerDataGrid.AutoResizeColumnHeadersHeight();
+
+            timer_Tick(null,null);
         }
 
         private MenuItem CreateMenuItem(string text, EventHandler click)
